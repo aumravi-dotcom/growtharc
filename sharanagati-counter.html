@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<title>🙏 Sharanagati Counter</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
+    user-select:none;
+}
+
+body{
+    background:#090B11;
+    color:white;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    overflow:hidden;
+    height:100vh;
+    cursor:pointer;
+}
+
+#app{
+    width:100%;
+    height:100vh;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+
+    text-align:center;
+    position:relative;
+}
+
+h1{
+    color:#D4AF37;
+    letter-spacing:8px;
+    font-size:18px;
+    font-weight:500;
+    margin-top:10px;
+}
+
+#count{
+    font-size:min(30vw,180px);
+    font-weight:700;
+    margin-top:20px;
+    transition:.08s;
+}
+
+.scale{
+    transform:scale(1.08);
+}
+
+.label{
+    opacity:.7;
+    margin-top:8px;
+    font-size:16px;
+}
+
+.progress{
+    width:280px;
+    height:8px;
+    background:#1f2330;
+    border-radius:50px;
+    margin-top:18px;
+    overflow:hidden;
+}
+
+.progressFill{
+    height:100%;
+    width:0%;
+    background:#D4AF37;
+    transition:.2s;
+}
+
+.stats{
+    margin-top:30px;
+    line-height:2;
+    font-size:20px;
+}
+
+.gold{
+    color:#D4AF37;
+}
+
+#hint{
+    position:absolute;
+    bottom:35px;
+    opacity:.45;
+    font-size:15px;
+}
+
+#plusOne{
+    position:absolute;
+    font-size:42px;
+    color:#D4AF37;
+    opacity:0;
+    pointer-events:none;
+}
+
+.float{
+    animation:float .8s ease-out;
+}
+
+@keyframes float{
+
+0%{
+transform:translateY(0);
+opacity:1;
+}
+
+100%{
+transform:translateY(-120px);
+opacity:0;
+}
+
+}
+
+#lotus{
+
+position:fixed;
+inset:0;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+background:rgba(9,11,17,.96);
+
+opacity:0;
+pointer-events:none;
+
+transition:.5s;
+}
+
+#lotus.show{
+
+opacity:1;
+pointer-events:auto;
+
+}
+
+#flower{
+
+font-size:110px;
+
+animation:bloom .8s ease;
+
+}
+
+@keyframes bloom{
+
+0%{
+
+transform:scale(.2) rotate(-30deg);
+
+}
+
+100%{
+
+transform:scale(1);
+
+}
+
+}
+
+#lotus h2{
+
+margin-top:20px;
+
+color:#D4AF37;
+
+font-size:34px;
+
+}
+
+#lotus p{
+
+margin-top:10px;
+
+font-size:22px;
+
+}
+
+.reset{
+
+position:absolute;
+top:25px;
+right:25px;
+
+width:42px;
+height:42px;
+
+border:1px solid rgba(255,255,255,.2);
+
+border-radius:50%;
+
+display:flex;
+justify-content:center;
+align-items:center;
+
+font-size:18px;
+
+opacity:.5;
+}
+
+.reset:hover{
+
+opacity:1;
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="app">
+
+<div class="reset" id="reset">↺</div>
+
+<div style="font-size:55px;">🙏</div>
+
+<h1>SHARANAGATI</h1>
+
+<div id="count">0</div>
+
+<div class="label">Current Chant</div>
+
+<div style="margin-top:30px;font-size:22px;">
+Bead
+<span class="gold" id="bead">0</span>
+/
+108
+</div>
+
+<div class="progress">
+<div class="progressFill" id="fill"></div>
+</div>
+
+<div class="stats">
+
+<div>
+🌸 Mala
+<span class="gold" id="mala">0</span>
+</div>
+
+<div>
+✨ Lifetime Malas
+<span class="gold" id="life">0</span>
+</div>
+
+</div>
+
+<div id="hint">
+Tap Anywhere • SPACE • ENTER • ↑
+</div>
+
+<div id="plusOne">+1</div>
+
+</div>
+
+<div id="lotus">
+
+<div id="flower">🌸</div>
+
+<h2>MALA COMPLETE</h2>
+
+<p>You completed one Mala.</p>
+
+</div>
+
+<audio id="bell">
+<source src="https://actions.google.com/sounds/v1/alarms/medieval_clock_tower.ogg">
+</audio>
+
+<script>
+
+let chants = Number(localStorage.getItem("chants")) || 0;
+let malas = Number(localStorage.getItem("malas")) || 0;
+let lifetime = Number(localStorage.getItem("life")) || 0;
+
+const count=document.getElementById("count");
+const bead=document.getElementById("bead");
+const mala=document.getElementById("mala");
+const life=document.getElementById("life");
+const fill=document.getElementById("fill");
+const plus=document.getElementById("plusOne");
+
+function save(){
+
+localStorage.setItem("chants",chants);
+localStorage.setItem("malas",malas);
+localStorage.setItem("life",lifetime);
+
+}
+
+function update(){
+
+count.innerText=chants;
+bead.innerText=chants%108;
+mala.innerText=malas;
+life.innerText=lifetime;
+
+fill.style.width=((chants%108)/108*100)+"%";
+
+save();
+
+}
+
+update();
+
+function add(){
+
+chants++;
+
+count.classList.add("scale");
+
+setTimeout(()=>{
+
+count.classList.remove("scale");
+
+},80);
+
+plus.classList.remove("float");
+
+void plus.offsetWidth;
+
+plus.classList.add("float");
+
+if(navigator.vibrate){
+
+navigator.vibrate(12);
+
+}
+
+if(chants%108===0){
+
+malas++;
+lifetime++;
+
+document.getElementById("bell").play();
+
+const lotus=document.getElementById("lotus");
+
+lotus.classList.add("show");
+
+setTimeout(()=>{
+
+lotus.classList.remove("show");
+
+},2200);
+
+}
+
+update();
+
+}
+
+document.body.addEventListener("click",function(e){
+
+if(e.target.id==="reset") return;
+
+add();
+
+});
+
+document.addEventListener("keydown",function(e){
+
+if(e.code==="Space" || e.code==="ArrowUp" || e.code==="Enter"){
+
+e.preventDefault();
+
+add();
+
+}
+
+});
+
+let timer;
+
+const reset=document.getElementById("reset");
+
+reset.addEventListener("mousedown",start);
+
+reset.addEventListener("touchstart",start);
+
+reset.addEventListener("mouseup",cancel);
+
+reset.addEventListener("mouseleave",cancel);
+
+reset.addEventListener("touchend",cancel);
+
+function start(){
+
+timer=setTimeout(function(){
+
+if(confirm("Reset everything?")){
+
+chants=0;
+malas=0;
+lifetime=0;
+
+update();
+
+}
+
+},2000);
+
+}
+
+function cancel(){
+
+clearTimeout(timer);
+
+}
+
+</script>
+
+</body>
+</html>
