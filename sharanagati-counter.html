@@ -222,7 +222,13 @@ opacity:1;
 
 <div id="app">
 
+<div style="position:absolute;top:25px;right:25px;display:flex;gap:10px;z-index:5;">
+
+<div class="reset" id="undo">↶</div>
+
 <div class="reset" id="reset">↺</div>
+
+</div>
 
 <div style="font-size:55px;">🙏</div>
 
@@ -241,20 +247,6 @@ Bead
 
 <div class="progress">
 <div class="progressFill" id="fill"></div>
-</div>
-
-<div class="stats">
-
-<div>
-🌸 Mala
-<span class="gold" id="mala">0</span>
-</div>
-
-<div>
-✨ Lifetime Malas
-<span class="gold" id="life">0</span>
-</div>
-
 </div>
 
 <div id="hint">
@@ -282,21 +274,15 @@ Tap Anywhere • SPACE • ENTER • ↑
 <script>
 
 let chants = Number(localStorage.getItem("chants")) || 0;
-let malas = Number(localStorage.getItem("malas")) || 0;
-let lifetime = Number(localStorage.getItem("life")) || 0;
 
 const count=document.getElementById("count");
 const bead=document.getElementById("bead");
-const mala=document.getElementById("mala");
-const life=document.getElementById("life");
 const fill=document.getElementById("fill");
 const plus=document.getElementById("plusOne");
 
 function save(){
 
 localStorage.setItem("chants",chants);
-localStorage.setItem("malas",malas);
-localStorage.setItem("life",lifetime);
 
 }
 
@@ -304,8 +290,6 @@ function update(){
 
 count.innerText=chants;
 bead.innerText=chants%108;
-mala.innerText=malas;
-life.innerText=lifetime;
 
 fill.style.width=((chants%108)/108*100)+"%";
 
@@ -338,11 +322,7 @@ if(navigator.vibrate){
 navigator.vibrate(12);
 
 }
-
-if(chants%108===0){
-
-malas++;
-lifetime++;
+if(chants>0 && chants%108===0){
 
 document.getElementById("bell").play();
 
@@ -364,6 +344,31 @@ update();
 
 document.body.addEventListener("click",function(e){
 
+if(e.target.id==="reset") return;
+
+if(e.target.id==="undo") return;
+
+add();
+
+});
+
+function undo(){
+
+if(chants===0) return;
+
+chants--;
+
+update();
+
+if(navigator.vibrate){
+
+navigator.vibrate(8);
+
+}
+
+}
+    
+    
 if(e.target.id==="reset") return;
 
 add();
@@ -403,8 +408,6 @@ timer=setTimeout(function(){
 if(confirm("Reset everything?")){
 
 chants=0;
-malas=0;
-lifetime=0;
 
 update();
 
@@ -417,6 +420,14 @@ update();
 function cancel(){
 
 clearTimeout(timer);
+
+document.getElementById("undo").addEventListener("click",function(e){
+
+e.stopPropagation();
+
+undo();
+
+});
 
 }
 
