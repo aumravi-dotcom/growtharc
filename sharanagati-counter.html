@@ -367,13 +367,6 @@ navigator.vibrate(8);
 }
 
 }
-    
-    
-if(e.target.id==="reset") return;
-
-add();
-
-});
 
 document.addEventListener("keydown",function(e){
 
@@ -421,6 +414,8 @@ function cancel(){
 
 clearTimeout(timer);
 
+}
+
 document.getElementById("undo").addEventListener("click",function(e){
 
 e.stopPropagation();
@@ -428,8 +423,6 @@ e.stopPropagation();
 undo();
 
 });
-
-}
 
 </script>
 
