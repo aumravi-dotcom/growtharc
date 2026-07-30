@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Your Application · 100 Healers · Growth Arc</title>
+<meta name="description" content="A few questions so we know exactly where to start. Offered as seva, in the name of Master Choa Kok Sui." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Hanken+Grotesk:wght@300;400;500;600&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0A1128;
+  --navy-2:#101B3A;
+  --navy-3:#16244A;
+  --gold:#C9A24B;
+  --gold-lt:#EBD199;
+  --gold-dim:rgba(201,162,75,.28);
+  --parchment:#F6F0E2;
+  --parchment-dim:rgba(246,240,226,.62);
+  --parchment-faint:rgba(246,240,226,.38);
+  --line:rgba(201,162,75,.18);
+  --ok:#7FB58A;
+  --serif:'Fraunces',Georgia,serif;
+  --sans:'Hanken Grotesk',system-ui,sans-serif;
+  --mono:'Spline Sans Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{
+  background:var(--navy);
+  color:var(--parchment);
+  font-family:var(--sans);
+  font-size:17px;
+  line-height:1.6;
+  font-weight:300;
+  min-height:100vh;
+  overflow-x:hidden;
+  background-image:
+    radial-gradient(1100px 620px at 50% -10%, rgba(201,162,75,.13), transparent 62%),
+    radial-gradient(760px 520px at 108% 108%, rgba(201,162,75,.07), transparent 60%);
+  background-attachment:fixed;
+}
+body::after{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:99;opacity:.045;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.wrap{max-width:660px;margin:0 auto;padding:0 22px}
+.eyebrow{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--gold);font-weight:500;
+}
+
+/* ---------- HEADER ---------- */
+header.top{padding:46px 0 26px;text-align:center}
+.mark{display:flex;align-items:center;justify-content:center;gap:11px;margin-bottom:30px}
+.mark svg{width:30px;height:22px;overflow:visible}
+.mark span{font-family:var(--serif);font-size:16px;letter-spacing:.03em;font-weight:500}
+h1{
+  font-family:var(--serif);font-weight:400;
+  font-size:clamp(30px,7.4vw,46px);line-height:1.1;letter-spacing:-.02em;
+  margin:18px 0 14px;
+}
+h1 em{font-style:italic;color:var(--gold-lt)}
+.sub{color:var(--parchment-dim);font-size:16px;max-width:440px;margin:0 auto}
+
+/* ---------- ARC PROGRESS ---------- */
+.progress{position:sticky;top:0;z-index:40;padding:14px 0 12px;background:linear-gradient(to bottom,var(--navy) 62%,rgba(10,17,40,0));backdrop-filter:blur(6px)}
+.arcbar{position:relative;height:44px;max-width:460px;margin:0 auto}
+.arcbar svg{width:100%;height:100%;overflow:visible;display:block}
+.arc-track{fill:none;stroke:rgba(201,162,75,.16);stroke-width:1.6;stroke-linecap:round}
+.arc-fill{fill:none;stroke:url(#pg);stroke-width:2.4;stroke-linecap:round;
+  stroke-dasharray:var(--len);stroke-dashoffset:var(--len);
+  transition:stroke-dashoffset .85s cubic-bezier(.4,0,.15,1)}
+.arc-dot{fill:var(--gold-lt);transition:transform .85s cubic-bezier(.4,0,.15,1);filter:drop-shadow(0 0 5px rgba(235,209,153,.65))}
+.arc-ends{display:flex;justify-content:space-between;max-width:460px;margin:2px auto 0}
+.arc-ends span{font-family:var(--mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--parchment-faint)}
+.stepname{text-align:center;margin-top:9px}
+.stepname .eyebrow{opacity:.9}
+
+/* ---------- CARD / STEPS ---------- */
+main{padding-bottom:70px}
+.step{display:none;animation:rise .5s cubic-bezier(.2,.7,.3,1) both}
+.step.on{display:block}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+.step-head{margin:26px 0 8px}
+.step-head h2{font-family:var(--serif);font-weight:400;font-size:clamp(24px,5.6vw,31px);line-height:1.2;letter-spacing:-.01em}
+.step-head h2 em{font-style:italic;color:var(--gold-lt)}
+.step-note{color:var(--parchment-dim);font-size:15px;margin-top:11px}
+
+.reassure{
+  margin:20px 0 4px;padding:15px 17px;border-radius:12px;
+  background:rgba(201,162,75,.075);border:1px solid var(--gold-dim);
+  border-left:2.5px solid var(--gold);
+  font-size:14.5px;color:var(--parchment-dim);line-height:1.55;
+}
+.reassure b{color:var(--gold-lt);font-weight:500}
+
+/* ---------- FIELDS ---------- */
+.q{margin-top:30px}
+.q > label.qt, .qt{
+  display:block;font-size:16.5px;font-weight:400;color:var(--parchment);
+  margin-bottom:4px;line-height:1.4;
+}
+.hint{display:block;font-size:13.5px;color:var(--parchment-faint);margin-bottom:12px;line-height:1.45}
+.opt-tag{font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--parchment-faint);margin-left:7px;vertical-align:1px}
+
+input[type=text],input[type=email],input[type=tel],input[type=url],select,textarea{
+  width:100%;padding:15px 16px;font-family:var(--sans);font-size:16.5px;font-weight:300;
+  color:var(--parchment);background:rgba(255,255,255,.035);
+  border:1px solid var(--line);border-radius:11px;outline:none;
+  transition:border-color .22s,background .22s,box-shadow .22s;
+  -webkit-appearance:none;appearance:none;
+}
+textarea{min-height:104px;resize:vertical;line-height:1.55}
+input::placeholder,textarea::placeholder{color:rgba(246,240,226,.26)}
+input:focus,select:focus,textarea:focus{
+  border-color:var(--gold);background:rgba(201,162,75,.07);
+  box-shadow:0 0 0 3px rgba(201,162,75,.13);
+}
+select{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23C9A24B' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 16px center;padding-right:42px;cursor:pointer;
+}
+select option{background:var(--navy-2);color:var(--parchment)}
+select:invalid,select.blank{color:rgba(246,240,226,.26)}
+
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+/* choice chips */
+.choices{display:flex;flex-direction:column;gap:9px}
+.choices.grid2{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.choice{
+  position:relative;display:flex;align-items:center;gap:12px;
+  padding:14px 15px;border:1px solid var(--line);border-radius:11px;
+  background:rgba(255,255,255,.025);cursor:pointer;
+  transition:border-color .2s,background .2s,transform .12s;
+  font-size:15.5px;line-height:1.35;
+}
+.choice:active{transform:scale(.985)}
+.choice input{position:absolute;opacity:0;width:0;height:0}
+.dot{
+  flex:0 0 19px;width:19px;height:19px;border-radius:50%;
+  border:1.5px solid rgba(201,162,75,.5);position:relative;transition:border-color .2s;
+}
+.dot.sq{border-radius:5px}
+.dot::after{
+  content:"";position:absolute;inset:3.5px;border-radius:50%;
+  background:var(--gold-lt);transform:scale(0);transition:transform .2s cubic-bezier(.3,1.5,.5,1);
+}
+.dot.sq::after{border-radius:2px;inset:3px}
+.choice:has(input:checked){border-color:var(--gold);background:rgba(201,162,75,.1)}
+.choice:has(input:checked) .dot{border-color:var(--gold)}
+.choice:has(input:checked) .dot::after{transform:scale(1)}
+.choice:has(input:focus-visible){box-shadow:0 0 0 3px rgba(201,162,75,.18)}
+
+/* conditional reveal */
+.reveal{max-height:0;opacity:0;overflow:hidden;transition:max-height .4s ease,opacity .3s ease,margin .4s ease;margin-top:0}
+.reveal.open{max-height:220px;opacity:1;margin-top:10px}
+
+.err{color:#E9A2A2;font-size:13.5px;margin-top:9px;display:none;font-family:var(--sans)}
+.err.show{display:block}
+
+/* upload */
+.upload{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  padding:19px;border:1px dashed rgba(201,162,75,.42);border-radius:11px;
+  background:rgba(201,162,75,.045);cursor:pointer;font-size:15px;color:var(--gold-lt);
+  transition:background .2s,border-color .2s;
+}
+.upload:hover{background:rgba(201,162,75,.09);border-color:var(--gold)}
+.upload input{display:none}
+.fname{font-size:13.5px;color:var(--ok);margin-top:9px;display:none}
+.fname.show{display:block}
+
+/* ---------- NAV ---------- */
+.nav{display:flex;gap:11px;margin-top:40px;align-items:center}
+.btn{
+  font-family:var(--sans);font-size:16px;font-weight:500;letter-spacing:.01em;
+  padding:16px 30px;border-radius:100px;border:1px solid transparent;cursor:pointer;
+  transition:transform .14s,box-shadow .22s,background .22s;
+}
+.btn:active{transform:translateY(1px) scale(.99)}
+.btn-primary{
+  flex:1;background:linear-gradient(135deg,var(--gold) 0%,var(--gold-lt) 100%);
+  color:var(--navy);box-shadow:0 6px 26px rgba(201,162,75,.28);
+}
+.btn-primary:hover{box-shadow:0 8px 34px rgba(201,162,75,.4)}
+.btn-ghost{background:transparent;border-color:var(--line);color:var(--parchment-dim);padding:16px 22px}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold-lt)}
+.btn[disabled]{opacity:.55;pointer-events:none}
+
+/* ---------- DONE ---------- */
+.done{display:none;text-align:center;padding:64px 0 90px}
+.done.on{display:block;animation:rise .6s cubic-bezier(.2,.7,.3,1) both}
+.done .seal{width:74px;height:74px;margin:0 auto 30px}
+.done h2{font-family:var(--serif);font-weight:400;font-size:clamp(27px,6.4vw,36px);line-height:1.18;margin-bottom:16px}
+.done h2 em{font-style:italic;color:var(--gold-lt)}
+.done p{color:var(--parchment-dim);max-width:400px;margin:0 auto 14px;font-size:16px}
+.ded{
+  margin-top:44px;padding-top:26px;border-top:1px solid var(--line);
+  font-family:var(--serif);font-style:italic;font-size:15px;color:var(--parchment-faint);
+}
+
+footer{padding:34px 0 46px;text-align:center;border-top:1px solid var(--line);margin-top:20px}
+footer p{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--parchment-faint)}
+
+@media(max-width:420px){
+  .choices.grid2{grid-template-columns:1fr}
+  .duo{grid-template-columns:1fr}
+  body{font-size:16px}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+<header class="top">
+  <div class="mark">
+    <svg viewBox="0 0 40 28" aria-hidden="true">
+      <path d="M2 25 Q13 24 20 14 T38 4" fill="none" stroke="#C9A24B" stroke-width="1.8" stroke-linecap="round"/>
+      <circle cx="38" cy="4" r="3.2" fill="#EBD199"/>
+      <circle cx="38" cy="4" r="6.5" fill="none" stroke="rgba(201,162,75,.4)" stroke-width="1"/>
+    </svg>
+    <span>Growth&nbsp;Arc</span>
+  </div>
+  <span class="eyebrow">100 Healers · Your application</span>
+  <h1>A few questions,<br>so I know <em>where to start.</em></h1>
+  <p class="sub">Most of it is tapping. About four minutes. Nothing here is a test — I only need to see the ground before we build on it.</p>
+</header>
+
+<div class="progress">
+  <div class="arcbar">
+    <svg viewBox="0 0 460 44" preserveAspectRatio="none" aria-hidden="true">
+      <defs>
+        <linearGradient id="pg" x1="0" y1="1" x2="1" y2="0">
+          <stop offset="0%" stop-color="rgba(201,162,75,.4)"/>
+          <stop offset="60%" stop-color="#C9A24B"/>
+          <stop offset="100%" stop-color="#EBD199"/>
+        </linearGradient>
+      </defs>
+      <path id="track" class="arc-track" d="M8 38 Q140 36 230 22 T452 6"/>
+      <path id="fill" class="arc-fill" d="M8 38 Q140 36 230 22 T452 6"/>
+      <circle id="dot" class="arc-dot" cx="0" cy="0" r="4"/>
+    </svg>
+  </div>
+  <div class="arc-ends"><span>unseen</span><span>found</span></div>
+  <div class="stepname"><span class="eyebrow" id="stepname">Step 1 of 5 · You</span></div>
+</div>
+
+<main>
+<form id="app" novalidate>
+
+<!-- ============ STEP 1 · YOU ============ -->
+<section class="step on" data-step="1">
+  <div class="step-head">
+    <h2>First, <em>you.</em></h2>
+    <p class="step-note">The easy part.</p>
+  </div>
+
+  <div class="q">
+    <label class="qt" for="name">Your full name</label>
+    <input type="text" id="name" name="name" placeholder="As you'd like to be known" autocomplete="name" required>
+    <div class="err">Please tell me your name.</div>
+  </div>
+
+  <div class="q">
+    <label class="qt" for="whatsapp">WhatsApp number</label>
+    <span class="hint">Same number you registered with — this is how everything reaches you.</span>
+    <input type="tel" id="whatsapp" name="whatsapp" placeholder="+91 98765 43210" autocomplete="tel" required>
+    <div class="err">Please add your WhatsApp number.</div>
+  </div>
+
+  <div class="q">
+    <label class="qt" for="email">Email</label>
+    <input type="email" id="email" name="email" placeholder="you@example.com" autocomplete="email" required>
+    <div class="err">Please add a valid email.</div>
+  </div>
+
+  <div class="q">
+    <label class="qt" for="city">City</label>
+    <span class="hint">This matters more than you'd think — half of being found is being found <em>nearby</em>.</span>
+    <div class="duo">
+      <input type="text" id="city" name="city" placeholder="City" autocomplete="address-level2" required>
+      <input type="text" id="country" name="country" placeholder="Country" value="India" autocomplete="country-name" required>
+    </div>
+    <div class="err">Please add your city.</div>
+  </div>
+
+  <div class="q">
+    <span class="qt">Which language are you most comfortable in?</span>
+    <span class="hint">The live sessions run in Hinglish. All written material is in English.</span>
+    <div class="choices grid2">
+      <label class="choice"><input type="radio" name="language" value="Hindi" required><span class="dot"></span>Hindi</label>
+      <label class="choice"><input type="radio" name="language" value="English"><span class="dot"></span>English</label>
+      <label class="choice"><input type="radio" name="language" value="Hinglish — both"><span class="dot"></span>Both / Hinglish</label>
+      <label class="choice"><input type="radio" name="language" value="Other"><span class="dot"></span>Another language</label>
+    </div>
+    <div class="err">Please pick one.</div>
+  </div>
+
+  <div class="q">
+    <label class="qt" for="years">How long have you been healing?</label>
+    <select id="years" name="years" class="blank" required>
+      <option value="" disabled selected>Choose one</option>
+      <option>Less than a year</option>
+      <option>1–2 years</option>
+      <option>3–5 years</option>
+      <option>6–10 years</option>
+      <option>More than 10 years</option>
+    </select>
+    <div class="err">Please choose one.</div>
+  </div>
+
+  <div class="nav">
+    <button type="button" class="btn btn-primary" data-next>Continue</button>
+  </div>
+</section>
+
+<!-- ============ STEP 2 · YOUR PATH ============ -->
+<section class="step" data-step="2">
+  <div class="step-head">
+    <h2>Your <em>path.</em></h2>
+    <p class="step-note">So I understand the ground you're standing on.</p>
+  </div>
+
+  <div class="q">
+    <span class="qt">Basic Pranic Healing — when?</span>
+    <span class="hint">Roughly is fine. Nobody's checking the dates.</span>
+    <div class="duo">
+      <select name="basic_month" class="blank" required>
+        <option value="" disabled selected>Month</option>
+        <option>January</option><option>February</option><option>March</option><option>April</option>
+        <option>May</option><option>June</option><option>July</option><option>August</option>
+        <option>September</option><option>October</option><option>November</option><option>December</option>
+        <option>I don't remember</option>
+      </select>
+      <select name="basic_year" class="blank yearsel" required>
+        <option value="" disabled selected>Year</option>
+      </select>
+    </div>
+    <div class="err">Please choose both.</div>
+  </div>
+
+  <div class="q">
+    <span class="qt">Arhatic Yoga — when?</span>
+    <div class="choices">
+      <label class="choice"><input type="radio" name="arhatic_done" value="Yes" data-reveal="rev-arhatic" required><span class="dot"></span>Yes, I've done it</label>
+      <label class="choice"><input type="radio" name="arhatic_done" value="Not yet" data-reveal-off="rev-arhatic"><span class="dot"></span>Not yet</label>
+    </div>
+    <div class="reveal" id="rev-arhatic">
+      <div class="duo">
+        <select name="arhatic_month" class="blank">
+          <option value="" disabled selected>Month</option>
+          <option>January</option><option>February</option><option>March</option><option>April</option>
+          <option>May</option><option>June</option><option>July</option><option>August</option>
+          <option>September</option><option>October</option><option>November</option><option>December</option>
+          <option>I don't remember</option>
+        </select>
+        <select name="arhatic_year" class="blank yearsel">
+          <option value="" disabled selected>Year</option>
+        </select>
+      </div>
+      <div style="margin-top:10px">
+        <select name="arhatic_level" class="blank">
+          <option value="" disabled selected>Which level? (optional)</option>
+          <option>Preparatory</option>
+          <option>Preparatory + Not-So-Secret</option>
+          <option>Arhatic Yoga Level 1</option>
+          <option>Arhatic Yoga Level 2</option>
+          <option>Arhatic Yoga Level 3</option>
+          <option>Arhatic Yoga Level 4 and beyond</option>
+        </select>
+      </div>
+    </div>
+    <div class="err">Please pick one.</div>
+  </div>
+
+  <div class="q">
+    <span class="qt">Kriyashakti?</span>
+    <div class="choices grid2">
+      <label class="choice"><input type="radio" name="kriyashakti" value="Yes" required><span class="dot"></span>Yes</label>
+      <label class="choice"><input type="radio" name="kriyashakti" value="No"><span class="dot"></span>No</label>
+      <label class="choice"><input type="radio" name="kriyashakti" value="Planning to"><span class="dot"></span>Planning to</label>
+    </div>
+    <div class="err">Please pick one.</div>
+  </div>
+
+  <div class="q">
+    <label class="qt" for="highest">Your highest level so far</label>
+    <select id="highest" name="highest" class="blank" required>
+      <option value="" disabled selected>Choose one</option>
+      <option>Basic Pranic Healing</option>
+      <option>Advanced Pranic Healing</option>
+      <option>Pranic Psychotherapy</option>
+      <option>Arhatic Yoga</option>
+      <option>Kriyashakti</option>
+    </select>
+    <div class="err">Please choose one.</div>
+  </div>
+
+  <div class="q">
+    <span class="qt">Any other courses?<span class="opt-tag">Optional</span></span>
+    <span class="hint">Tick anything you've done.</span>
+    <div class="choices">
+      <label class="choice"><input type="checkbox" name="other_courses" value="Pranic Crystal Healing"><span class="dot sq"></span>Pranic Crystal Healing</label>
+      <label class="choice"><input type="checkbox" name="other_courses" value="Pranic Face & Body Sculpting"><span class="dot sq"></span>Pranic Face &amp; Body Sculpting</label>
+      <label class="choice"><input type="checkbox" name="other_courses" value="Pranic Psychic Self-Defense"><span class="dot sq"></span>Pranic Psychic Self-Defense</label>
+      <label class="choice"><input type="checkbox" name="other_courses" value="Pranic Feng Shui"><span class="dot sq"></span>Pranic Feng Shui</label>
+      <label class="choice"><input type="checkbox" name="other_courses" value="Superbrain Yoga"><span class="dot sq"></span>Superbrain Yoga</label>
+      <label class="choice"><input type="checkbox" name="other_courses" value="Other"><span class="dot sq"></span>Something else</label>
+    </div>
+  </div>
+
+  <div class="q">
+    <label class="qt" for="centre">Are you connected to a Pranic Healing centre?<span class="opt-tag">Optional</span></label>
+    <input type="text" id="centre" name="centre" placeholder="Centre name & city">
+  </div>
+
+  <div class="nav">
+    <button type="button" class="btn btn-ghost" data-back>Back</button>
+    <button type="button" class="btn btn-primary" data-next>Continue</button>
+  </div>
+</section>
+
+<!-- ============ STEP 3 · YOUR PRACTICE ============ -->
+<section class="step" data-step="3">
+  <div class="step-head">
+    <h2>Your practice <em>today.</em></h2>
+  </div>
+
+  <div class="reassure">
+    <b>There are no wrong answers from here on.</b> I'm not measuring anyone. Whatever you tick next only tells me where to begin — and honestly, the further behind you feel, the faster this tends to move.
+  </div>
+
+  <div class="q">
+    <span class="qt">Where do you heal?</span>
+    <span class="hint">Tick all that apply.</span>
+    <div class="choices">
+      <label class="choice"><input type="checkbox" name="where" value="From home"><span class="dot sq"></span>From my home</label>
+      <label class="choice"><input type="checkbox" name="where" value="At a centre"><span class="dot sq"></span>At a centre or clinic</label>
+      <label class="choice"><input type="checkbox" name="where" value="At clients' homes"><span class="dot sq"></span>I go to my clients</label>
+      <label class="choice"><input type="checkbox" name="where" value="Distance / online"><span class="dot sq"></span>Distance healing / online</label>
+    </div>
+  </div>
+
+  <div class="q">
+    <label class="qt" for="per_week">How many healings in a typical week?</label>
+    <select id="per_week" name="per_week" class="blank" required>
+      <option value="" disabled selected>Choose one</option>
+      <option>None right now</option>
+      <option>1–3</option>
+      <option>4–7</option>
+      <option>8–15</option>
+      <option>More than 15</option>
+    </select>
+    <div class="err">Please choose one.</div>
+  </div>
+
+  <div class="q">
+    <span class="qt">Where do your clients come from now?</span>
+    <span class="hint">Tick all that apply.</span>
+    <div class="choices">
+      <label class="choice"><input type="checkbox" name="source" value="Word of mouth"><span class="dot sq"></span>Word of mouth / referrals</label>
+      <label class="choice"><input type="checkbox" name="source" value="My centre"><span class="dot sq"></span>My centre or teacher</label>
+      <label class="choice"><input type="checkbox" name="source" value="Family & friends"><span class="dot sq"></span>Family and friends</label>
+      <label class="choice"><input type="checkbox" name="source" value="Instagram / Facebook"><span class="dot sq"></span>Instagram or Facebook</label>
+      <label class="choice"><input type="checkbox" name="source" value="Google"><span class="dot sq"></span>Google</label>
+      <label class="choice"><input type="checkbox" name="source" value="I'm just starting"><span class="dot sq"></span>I'm just starting out</label>
+    </div>
+  </div>
+
+  <div class="q">
+    <span class="qt">Do you keep a record of your clients?</span>
+    <div class="choices">
+      <label class="choice"><input type="radio" name="records" value="No record" required><span class="dot"></span>No, it's all in my head</label>
+      <label class="choice"><input type="radio" name="records" value="Notebook"><span class="dot"></span>In a diary or notebook</label>
+      <label class="choice"><input type="radio" name="records" value="Phone notes / WhatsApp"><span class="dot"></span>Phone notes or WhatsApp</label>
+      <label class="choice"><input type="radio" name="records" value="Sheet or app"><span class="dot"></span>A spreadsheet or an app</label>
+    </div>
+    <div class="err">Please pick one.</div>
+  </div>
+
+  <div class="q">
+    <span class="qt">How do people pay you?</span>
+    <span class="hint">Tick all that apply.</span>
+    <div class="choices">
+      <label class="choice"><input type="checkbox" name="payment" value="Cash"><span class="dot sq"></span>Cash</label>
+      <label class="choice"><input type="checkbox" name="payment" value="UPI / GPay / PhonePe"><span class="dot sq"></span>UPI — GPay, PhonePe</label>
+      <label class="choice"><input type="checkbox" name="payment" value="Bank transfer"><span class="dot sq"></span>Bank transfer</label>
+      <label class="choice"><input type="checkbox" name="payment" value="Online payment link"><span class="dot sq"></span>An online payment link</label>
+      <label class="choice"><input type="checkbox" name="payment" value="Donation / I don't charge"><span class="dot sq"></span>Donation, or I don't charge</label>
+    </div>
+  </div>
+
+  <div class="nav">
+    <button type="button" class="btn btn-ghost" data-back>Back</button>
+    <button type="button" class="btn btn-primary" data-next>Continue</button>
+  </div>
+</section>
+
+<!-- ============ STEP 4 · YOUR PRESENCE ============ -->
+<section class="step" data-step="4">
+  <div class="step-head">
+    <h2>Your presence <em>online.</em></h2>
+    <p class="step-note">Most healers tick "no" three times here. That's completely normal — and it's the whole reason this exists.</p>
+  </div>
+
+  <div class="q">
+    <span class="qt">Are you listed on Google?</span>
+    <span class="hint">Meaning: search your name, and you appear on Google Maps.</span>
+    <div class="choices">
+      <label class="choice"><input type="radio" name="google" value="Yes" data-reveal="rev-google" required><span class="dot"></span>Yes</label>
+      <label class="choice"><input type="radio" name="google" value="No" data-reveal-off="rev-google"><span class="dot"></span>No</label>
+      <label class="choice"><input type="radio" name="google" value="Not sure / what is that?" data-reveal-off="rev-google"><span class="dot"></span>I'm not sure what that means</label>
+    </div>
+    <div class="reveal" id="rev-google">
+      <input type="text" name="google_link" placeholder="Paste the link — or just your listing name">
+    </div>
+    <div class="err">Please pick one.</div>
+  </div>
+
+  <div class="q">
+    <span class="qt">Do you have a website?</span>
+    <div class="choices">
+      <label class="choice"><input type="radio" name="website" value="Yes" data-reveal="rev-web" required><span class="dot"></span>Yes</label>
+      <label class="choice"><input type="radio" name="website" value="Started but never finished" data-reveal-off="rev-web"><span class="dot"></span>I started one but never finished it</label>
+      <label class="choice"><input type="radio" name="website" value="No" data-reveal-off="rev-web"><span class="dot"></span>No</label>
+    </div>
+    <div class="reveal" id="rev-web">
+      <input type="text" name="website_link" placeholder="www.yoursite.com">
+    </div>
+    <div class="err">Please pick one.</div>
+  </div>
+
+  <div class="q">
+    <label class="qt" for="insta">Your Instagram</label>
+    <span class="hint">Your healing account, if you have a separate one. Just the handle is fine.</span>
+    <input type="text" id="insta" name="instagram" placeholder="@yourhandle — or type: don't have one">
+  </div>
+
+  <div class="q">
+    <span class="qt">Do you use WhatsApp Business?</span>
+    <span class="hint">The green one with the briefcase, not the regular app.</span>
+    <div class="choices grid2">
+      <label class="choice"><input type="radio" name="wab" value="Yes" required><span class="dot"></span>Yes</label>
+      <label class="choice"><input type="radio" name="wab" value="No"><span class="dot"></span>No</label>
+      <label class="choice"><input type="radio" name="wab" value="Not sure"><span class="dot"></span>Not sure</label>
+    </div>
+    <div class="err">Please pick one.</div>
+  </div>
+
+  <div class="q">
+    <label class="qt" for="from_net">In a week, how many healings come from Instagram, Google or your website?</label>
+    <span class="hint">People who found you online, not people you already knew.</span>
+    <select id="from_net" name="from_net" class="blank" required>
+      <option value="" disabled selected>Choose one</option>
+      <option>None</option>
+      <option>1–2</option>
+      <option>3–5</option>
+      <option>More than 5</option>
+    </select>
+    <div class="err">Please choose one.</div>
+  </div>
+
+  <div class="q">
+    <span class="qt">What have you already tried?</span>
+    <span class="hint">Tick all that apply. No shame in any of these — most of them don't work on their own.</span>
+    <div class="choices">
+      <label class="choice"><input type="checkbox" name="tried" value="Posting reels"><span class="dot sq"></span>Making reels</label>
+      <label class="choice"><input type="checkbox" name="tried" value="Hashtags"><span class="dot sq"></span>Hashtags</label>
+      <label class="choice"><input type="checkbox" name="tried" value="Boosting posts / ads"><span class="dot sq"></span>Boosting posts or running ads</label>
+      <label class="choice"><input type="checkbox" name="tried" value="Hired an agency"><span class="dot sq"></span>Hired an agency</label>
+      <label class="choice"><input type="checkbox" name="tried" value="Hired a freelancer"><span class="dot sq"></span>Hired a freelancer or a relative</label>
+      <label class="choice"><input type="checkbox" name="tried" value="Took a course"><span class="dot sq"></span>Took a course or watched YouTube</label>
+      <label class="choice"><input type="checkbox" name="tried" value="Listing sites"><span class="dot sq"></span>Justdial, Practo, or similar</label>
+      <label class="choice"><input type="checkbox" name="tried" value="Nothing yet"><span class="dot sq"></span>Nothing yet</label>
+    </div>
+  </div>
+
+  <div class="q">
+    <label class="qt" for="why_not">If you've tried — what do you think went wrong?<span class="opt-tag">Optional</span></label>
+    <span class="hint">Say it plainly. This is the most useful thing you can tell me.</span>
+    <textarea id="why_not" name="why_not" placeholder="Even one line helps."></textarea>
+  </div>
+
+  <div class="q">
+    <span class="qt">What's been stopping you?</span>
+    <span class="hint">Tick all that are true. Be honest — nobody else sees this.</span>
+    <div class="choices">
+      <label class="choice"><input type="checkbox" name="blockers" value="Don't know how"><span class="dot sq"></span>I simply don't know how</label>
+      <label class="choice"><input type="checkbox" name="blockers" value="No time"><span class="dot sq"></span>No time — family, work, healings</label>
+      <label class="choice"><input type="checkbox" name="blockers" value="Technology is intimidating"><span class="dot sq"></span>Technology intimidates me</label>
+      <label class="choice"><input type="checkbox" name="blockers" value="Marketing healing feels wrong"><span class="dot sq"></span>Marketing my healing work feels wrong</label>
+      <label class="choice"><input type="checkbox" name="blockers" value="Shy about being visible"><span class="dot sq"></span>I'm shy about being visible</label>
+      <label class="choice"><input type="checkbox" name="blockers" value="Tried and it failed"><span class="dot sq"></span>I tried and it didn't work</label>
+      <label class="choice"><input type="checkbox" name="blockers" value="Cost"><span class="dot sq"></span>It seemed too expensive</label>
+      <label class="choice"><input type="checkbox" name="blockers" value="Too many opinions"><span class="dot sq"></span>Too many people telling me different things</label>
+    </div>
+  </div>
+
+  <div class="q">
+    <span class="qt">Do you have thank-you messages from clients saved somewhere?</span>
+    <span class="hint">WhatsApp messages, texts, anything. You'll be glad of these in week two.</span>
+    <div class="choices grid2">
+      <label class="choice"><input type="radio" name="testimonials" value="Yes, many" required><span class="dot"></span>Yes, many</label>
+      <label class="choice"><input type="radio" name="testimonials" value="A few"><span class="dot"></span>A few</label>
+      <label class="choice"><input type="radio" name="testimonials" value="No"><span class="dot"></span>No</label>
+      <label class="choice"><input type="radio" name="testimonials" value="Never thought to keep them"><span class="dot"></span>Never thought to keep them</label>
+    </div>
+    <div class="err">Please pick one.</div>
+  </div>
+
+  <div class="nav">
+    <button type="button" class="btn btn-ghost" data-back>Back</button>
+    <button type="button" class="btn btn-primary" data-next>Continue</button>
+  </div>
+</section>
+
+<!-- ============ STEP 5 · PRACTICALITIES ============ -->
+<section class="step" data-step="5">
+  <div class="step-head">
+    <h2>Last bit — <em>the practical.</em></h2>
+    <p class="step-note">So the sessions actually suit your week.</p>
+  </div>
+
+  <div class="q">
+    <span class="qt">Which time slots could you actually make?</span>
+    <span class="hint">Tick every one that works — the more you tick, the better your chances of an early batch. All times IST.</span>
+    <div class="choices">
+      <label class="choice"><input type="checkbox" name="slots" value="Thursday 3:00–4:30 PM"><span class="dot sq"></span>Thursday, 3:00 – 4:30 PM</label>
+      <label class="choice"><input type="checkbox" name="slots" value="Sunday 11:00 AM–12:30 PM"><span class="dot sq"></span>Sunday, 11:00 AM – 12:30 PM</label>
+      <label class="choice"><input type="checkbox" name="slots" value="Tuesday 3:00–4:30 PM"><span class="dot sq"></span>Tuesday, 3:00 – 4:30 PM</label>
+      <label class="choice"><input type="checkbox" name="slots" value="Thursday 9:00–10:30 PM"><span class="dot sq"></span>Thursday, 9:00 – 10:30 PM</label>
+      <label class="choice"><input type="checkbox" name="slots" value="Saturday 4:00–5:30 PM"><span class="dot sq"></span>Saturday, 4:00 – 5:30 PM</label>
+    </div>
+  </div>
+
+  <div class="q">
+    <label class="qt" for="month">Which month suits you to begin?</label>
+    <span class="hint">Four weeks, one session a week. We run a batch every month till December.</span>
+    <select id="month" name="month" class="blank" required>
+      <option value="" disabled selected>Choose one</option>
+      <option>August 2026</option>
+      <option>September 2026</option>
+      <option>October 2026</option>
+      <option>November 2026</option>
+      <option>December 2026</option>
+      <option>Any month — whenever there's room</option>
+    </select>
+    <div class="err">Please choose one.</div>
+  </div>
+
+  <div class="q">
+    <span class="qt">How will you join the live sessions?</span>
+    <div class="choices">
+      <label class="choice"><input type="radio" name="device" value="Mobile only" required><span class="dot"></span>On my mobile</label>
+      <label class="choice"><input type="radio" name="device" value="Laptop / computer"><span class="dot"></span>On a laptop or computer</label>
+      <label class="choice"><input type="radio" name="device" value="Mobile mostly, laptop sometimes"><span class="dot"></span>Mobile mostly, laptop sometimes</label>
+    </div>
+    <div class="err">Please pick one.</div>
+  </div>
+
+  <div class="q">
+    <span class="qt">Is there anyone who helps you with technology?</span>
+    <div class="choices">
+      <label class="choice"><input type="radio" name="help" value="No one" required><span class="dot"></span>No one — it's just me</label>
+      <label class="choice"><input type="radio" name="help" value="A family member"><span class="dot"></span>A family member</label>
+      <label class="choice"><input type="radio" name="help" value="A friend"><span class="dot"></span>A friend</label>
+      <label class="choice"><input type="radio" name="help" value="An agency or freelancer"><span class="dot"></span>An agency or freelancer</label>
+    </div>
+    <div class="err">Please pick one.</div>
+  </div>
+
+  <div class="q">
+    <span class="qt">One honest question about money.</span>
+    <span class="hint">This programme is free. Always. The only thing that ever costs anything is a domain in your own name — roughly ₹900 for a whole year, less than one session. Everything else we use is free.</span>
+    <div class="choices">
+      <label class="choice"><input type="radio" name="domain" value="Yes, that's fine" required><span class="dot"></span>That's fine</label>
+      <label class="choice"><input type="radio" name="domain" value="I'd like to see it first"><span class="dot"></span>I'd like to see it first, then decide</label>
+      <label class="choice"><input type="radio" name="domain" value="Not right now"><span class="dot"></span>Not right now</label>
+    </div>
+    <div class="err">Please pick one.</div>
+  </div>
+
+  <div class="q">
+    <label class="qt" for="wish">Finish this sentence: <em>"I wish someone would just show me how to…"</em></label>
+    <span class="hint">Whatever comes first. This is the question I read most carefully.</span>
+    <textarea id="wish" name="wish" placeholder="…" required></textarea>
+    <div class="err">One line is enough — please write something.</div>
+  </div>
+
+  <div class="q">
+    <span class="qt">Your certificate<span class="opt-tag">Optional</span></span>
+    <span class="hint">Your highest one. A photo is perfectly fine — or send it on WhatsApp later, it makes no difference to me.</span>
+    <label class="upload">
+      <input type="file" id="cert" name="certificate" accept="image/*,.pdf">
+      <span>＋&nbsp; Add a photo or PDF</span>
+    </label>
+    <div class="fname" id="fname"></div>
+    <div class="choices" style="margin-top:10px">
+      <label class="choice"><input type="checkbox" name="cert_later" value="Will send on WhatsApp"><span class="dot sq"></span>I'll send it on WhatsApp instead</label>
+    </div>
+  </div>
+
+  <div class="q">
+    <span class="qt">Two small commitments</span>
+    <div class="choices">
+      <label class="choice"><input type="checkbox" name="commit" value="Will attend 4 live sessions" required><span class="dot sq"></span>I'll show up for all four live sessions</label>
+      <label class="choice"><input type="checkbox" name="commit" value="Will do the 5-min nudges" required><span class="dot sq"></span>I'll do the small tasks — five minutes, every other day</label>
+    </div>
+    <div class="err">Both, please. They're the whole reason this works.</div>
+  </div>
+
+  <div class="q">
+    <span class="qt">When you're live, may I list you publicly?<span class="opt-tag">Optional</span></span>
+    <span class="hint">A page called <em>The Hundred</em> — your name, your city, a link to your site. It helps people find you, and it helps the next healer believe this is real.</span>
+    <div class="choices grid2">
+      <label class="choice"><input type="radio" name="listing" value="Yes"><span class="dot"></span>Yes, please</label>
+      <label class="choice"><input type="radio" name="listing" value="Ask me later"><span class="dot"></span>Ask me later</label>
+    </div>
+  </div>
+
+  <div class="q">
+    <label class="qt" for="anything">Anything else you'd like me to know?<span class="opt-tag">Optional</span></label>
+    <textarea id="anything" name="anything" placeholder=""></textarea>
+  </div>
+
+  <div class="nav">
+    <button type="button" class="btn btn-ghost" data-back>Back</button>
+    <button type="submit" class="btn btn-primary" id="submit">Send my application</button>
+  </div>
+</section>
+
+</form>
+
+<!-- ============ DONE ============ -->
+<section class="done" id="done">
+  <svg class="seal" viewBox="0 0 80 80" aria-hidden="true">
+    <circle cx="40" cy="40" r="37" fill="none" stroke="rgba(201,162,75,.3)" stroke-width="1"/>
+    <circle cx="40" cy="40" r="30" fill="none" stroke="rgba(201,162,75,.18)" stroke-width="1"/>
+    <path d="M24 48 Q34 46 41 36 T60 24" fill="none" stroke="#C9A24B" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="60" cy="24" r="4" fill="#EBD199"/>
+  </svg>
+  <h2>Received. <em>Thank you.</em></h2>
+  <p>You'll hear from me on WhatsApp with your batch and your dates.</p>
+  <p>Before then, one small thing — <b style="color:var(--gold-lt);font-weight:500">Google your own name</b>, and then Google <em>"pranic healer in your city"</em>. Screenshot both and keep them. We'll begin there.</p>
+  <div class="ded">Offered in the name of Master Choa Kok Sui.</div>
+</section>
+
+</main>
+
+<footer>
+  <p>Growth Arc · 100 Healers · Seva</p>
+</footer>
+
+</div>
+
+<script>
+/* ====== CONFIG ====== */
+const ENDPOINT = 'PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE';
+
+/* ====== YEAR DROPDOWNS ====== */
+const nowY = new Date().getFullYear();
+document.querySelectorAll('.yearsel').forEach(sel=>{
+  for(let y=nowY;y>=1987;y--){
+    const o=document.createElement('option');o.textContent=y;sel.appendChild(o);
+  }
+  const o=document.createElement('option');o.textContent="Before 1987";sel.appendChild(o);
+});
+
+/* ====== SELECT PLACEHOLDER COLOR ====== */
+document.querySelectorAll('select').forEach(s=>{
+  s.addEventListener('change',()=>s.classList.toggle('blank',!s.value));
+});
+
+/* ====== ARC PROGRESS ====== */
+const track=document.getElementById('track'), fill=document.getElementById('fill'), dot=document.getElementById('dot');
+const LEN=track.getTotalLength();
+fill.style.setProperty('--len',LEN);
+const STEPS=5;
+function drawArc(step){
+  const p=(step-1)/STEPS;          // filled fraction on arrival at a step
+  const frac=Math.max(.04,p);
+  fill.style.strokeDashoffset=LEN*(1-frac);
+  const pt=track.getPointAtLength(LEN*frac);
+  dot.setAttribute('cx',pt.x); dot.setAttribute('cy',pt.y);
+}
+const NAMES=['You','Your path','Your practice','Your presence','The practical'];
+
+/* ====== STEP NAV ====== */
+let cur=1;
+const steps=[...document.querySelectorAll('.step')];
+function show(n){
+  steps.forEach(s=>s.classList.toggle('on', +s.dataset.step===n));
+  document.getElementById('stepname').textContent=`Step ${n} of ${STEPS} · ${NAMES[n-1]}`;
+  drawArc(n);
+  cur=n;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function validate(n){
+  const sec=steps[n-1];
+  let ok=true, firstBad=null;
+  sec.querySelectorAll('.q').forEach(q=>{
+    const err=q.querySelector('.err');
+    if(!err) return;
+    let bad=false;
+    const radios=q.querySelectorAll('input[type=radio][required]');
+    const boxes=q.querySelectorAll('input[type=checkbox][required]');
+    const fields=q.querySelectorAll('input[type=text][required],input[type=email][required],input[type=tel][required],select[required],textarea[required]');
+
+    if(radios.length){
+      const nm=radios[0].name;
+      if(!sec.querySelector(`input[name="${nm}"]:checked`)) bad=true;
+    }
+    if(boxes.length){
+      // every required checkbox in this group must be ticked (the commitments)
+      boxes.forEach(b=>{ if(!b.checked) bad=true; });
+    }
+    fields.forEach(f=>{
+      if(f.offsetParent===null) return;      // hidden inside a closed reveal
+      if(!f.value.trim()) bad=true;
+      if(f.type==='email' && f.value && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(f.value)) bad=true;
+    });
+    err.classList.toggle('show',bad);
+    if(bad){ ok=false; if(!firstBad) firstBad=q; }
+  });
+  if(firstBad) firstBad.scrollIntoView({behavior:'smooth',block:'center'});
+  return ok;
+}
+
+document.querySelectorAll('[data-next]').forEach(b=>b.addEventListener('click',()=>{
+  if(validate(cur)) show(cur+1);
+}));
+document.querySelectorAll('[data-back]').forEach(b=>b.addEventListener('click',()=>show(cur-1)));
+
+/* ====== CONDITIONAL REVEALS ====== */
+document.querySelectorAll('input[data-reveal],input[data-reveal-off]').forEach(inp=>{
+  inp.addEventListener('change',()=>{
+    const on=inp.dataset.reveal, off=inp.dataset.revealOff;
+    if(on)  document.getElementById(on).classList.add('open');
+    if(off) document.getElementById(off).classList.remove('open');
+  });
+});
+
+/* ====== FILE NAME ====== */
+document.getElementById('cert').addEventListener('change',e=>{
+  const f=e.target.files[0], el=document.getElementById('fname');
+  if(f){ el.textContent='✓  '+f.name; el.classList.add('show'); }
+});
+
+/* ====== SUBMIT ====== */
+document.getElementById('app').addEventListener('submit', async e=>{
+  e.preventDefault();
+  if(!validate(5)) return;
+  const btn=document.getElementById('submit');
+  btn.disabled=true; btn.textContent='Sending…';
+
+  const fd=new FormData(e.target);
+  const data={};
+  for(const key of new Set([...fd.keys()])){
+    const all=fd.getAll(key).filter(v=>typeof v==='string' && v.length);
+    if(all.length) data[key]=all.join(' · ');
+  }
+
+  // certificate → base64 (optional)
+  const f=document.getElementById('cert').files[0];
+  if(f && f.size < 4*1024*1024){
+    data.certificate_name=f.name;
+    data.certificate_b64=await new Promise(r=>{
+      const rd=new FileReader();
+      rd.onload=()=>r(rd.result.split(',')[1]);
+      rd.readAsDataURL(f);
+    });
+  }
+
+  try{
+    await fetch(ENDPOINT,{
+      method:'POST', mode:'no-cors',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body:JSON.stringify(data)
+    });
+  }catch(err){ /* no-cors: opaque response, treat as sent */ }
+
+  document.getElementById('app').style.display='none';
+  document.querySelector('.progress').style.display='none';
+  document.querySelector('header.top').style.display='none';
+  document.getElementById('done').classList.add('on');
+  window.scrollTo({top:0,behavior:'smooth'});
+});
+
+drawArc(1);
+</script>
+</body>
+</html>
