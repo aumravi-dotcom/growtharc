@@ -10,122 +10,132 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Hanken+Grotesk:wght@300;400;500;600&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{
-  --navy:#0A1128;
-  --navy-2:#101B3A;
-  --navy-3:#16244A;
-  --gold:#C9A24B;
-  --gold-lt:#EBD199;
-  --gold-dim:rgba(201,162,75,.28);
+  /* ---- Growth Arc palette · navy brought forward ---- */
+  --navy-deep:#060C1D;      /* page floor  */
+  --navy:#0A1128;           /* brand navy  */
+  --navy-2:#0F1B3D;         /* panels      */
+  --navy-3:#16265A;         /* raised      */
+  --gold:#D7A93E;
+  --gold-lt:#EFD08C;
+  --gold-dim:rgba(215,169,62,.38);
   --parchment:#F6F0E2;
-  --parchment-dim:rgba(246,240,226,.62);
-  --parchment-faint:rgba(246,240,226,.38);
-  --line:rgba(201,162,75,.18);
+  --parchment-dim:rgba(246,240,226,.66);
+  --parchment-faint:rgba(246,240,226,.40);
+  --line:rgba(215,169,62,.27);
+  --line-blue:rgba(120,160,255,.16);
   --ok:#7FB58A;
   --serif:'Fraunces',Georgia,serif;
   --sans:'Hanken Grotesk',system-ui,sans-serif;
   --mono:'Spline Sans Mono',monospace;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;background:var(--navy-deep)}
 body{
-  background:var(--navy);
+  background:var(--navy-deep);
   color:var(--parchment);
   font-family:var(--sans);
-  font-size:17px;
-  line-height:1.6;
-  font-weight:300;
-  min-height:100vh;
-  overflow-x:hidden;
+  font-size:17px;line-height:1.6;font-weight:300;
+  min-height:100vh;overflow-x:hidden;
   background-image:
-    radial-gradient(1100px 620px at 50% -10%, rgba(201,162,75,.13), transparent 62%),
-    radial-gradient(760px 520px at 108% 108%, rgba(201,162,75,.07), transparent 60%);
+    radial-gradient(1200px 700px at 50% -12%, rgba(40,80,200,.30), transparent 62%),
+    radial-gradient(900px 560px at 105% 8%,  rgba(215,169,62,.15), transparent 60%),
+    radial-gradient(900px 700px at -10% 92%, rgba(30,60,160,.24), transparent 62%);
   background-attachment:fixed;
 }
 body::after{
-  content:"";position:fixed;inset:0;pointer-events:none;z-index:99;opacity:.045;
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:99;opacity:.05;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 .wrap{max-width:660px;margin:0 auto;padding:0 22px}
-.eyebrow{
-  font-family:var(--mono);font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;
-  color:var(--gold);font-weight:500;
-}
+.eyebrow{font-family:var(--mono);font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:500}
 
 /* ---------- HEADER ---------- */
-header.top{padding:46px 0 26px;text-align:center}
-.mark{display:flex;align-items:center;justify-content:center;gap:11px;margin-bottom:30px}
-.mark svg{width:30px;height:22px;overflow:visible}
-.mark span{font-family:var(--serif);font-size:16px;letter-spacing:.03em;font-weight:500}
-h1{
-  font-family:var(--serif);font-weight:400;
-  font-size:clamp(30px,7.4vw,46px);line-height:1.1;letter-spacing:-.02em;
-  margin:18px 0 14px;
+header.top{padding:44px 0 26px;text-align:center}
+.mark{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:30px}
+.mark svg{width:34px;height:24px;overflow:visible}
+.mark .wordmark{
+  font-family:var(--serif);font-size:19px;letter-spacing:.005em;font-weight:500;
+  color:var(--parchment);line-height:1;
 }
+.mark .wordmark em{font-style:normal;color:var(--gold-lt)}
+h1{font-family:var(--serif);font-weight:400;font-size:clamp(30px,7.4vw,46px);line-height:1.1;letter-spacing:-.02em;margin:18px 0 14px}
 h1 em{font-style:italic;color:var(--gold-lt)}
-.sub{color:var(--parchment-dim);font-size:16px;max-width:440px;margin:0 auto}
+.sub{color:var(--parchment-dim);font-size:16px;max-width:450px;margin:0 auto}
 
 /* ---------- ARC PROGRESS ---------- */
-.progress{position:sticky;top:0;z-index:40;padding:14px 0 12px;background:linear-gradient(to bottom,var(--navy) 62%,rgba(10,17,40,0));backdrop-filter:blur(6px)}
+.progress{
+  position:sticky;top:0;z-index:40;padding:14px 0 13px;
+  background:linear-gradient(to bottom,var(--navy-deep) 58%,rgba(6,12,29,.92) 82%,rgba(6,12,29,0));
+  backdrop-filter:blur(9px);
+}
 .arcbar{position:relative;height:44px;max-width:460px;margin:0 auto}
 .arcbar svg{width:100%;height:100%;overflow:visible;display:block}
-.arc-track{fill:none;stroke:rgba(201,162,75,.16);stroke-width:1.6;stroke-linecap:round}
-.arc-fill{fill:none;stroke:url(#pg);stroke-width:2.4;stroke-linecap:round;
+.arc-track{fill:none;stroke:rgba(140,175,255,.20);stroke-width:1.6;stroke-linecap:round}
+.arc-fill{fill:none;stroke:url(#pg);stroke-width:2.6;stroke-linecap:round;
   stroke-dasharray:var(--len);stroke-dashoffset:var(--len);
   transition:stroke-dashoffset .85s cubic-bezier(.4,0,.15,1)}
-.arc-dot{fill:var(--gold-lt);transition:transform .85s cubic-bezier(.4,0,.15,1);filter:drop-shadow(0 0 5px rgba(235,209,153,.65))}
+.arc-dot{fill:var(--gold-lt);transition:none;filter:drop-shadow(0 0 6px rgba(235,209,153,.7))}
 .arc-ends{display:flex;justify-content:space-between;max-width:460px;margin:2px auto 0}
 .arc-ends span{font-family:var(--mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--parchment-faint)}
 .stepname{text-align:center;margin-top:9px}
-.stepname .eyebrow{opacity:.9}
 
-/* ---------- CARD / STEPS ---------- */
+/* ---------- STEPS / PANELS ---------- */
 main{padding-bottom:70px}
 .step{display:none;animation:rise .5s cubic-bezier(.2,.7,.3,1) both}
 .step.on{display:block}
 @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 
-.step-head{margin:26px 0 8px}
+.panel{
+  background:linear-gradient(165deg, var(--navy-2) 0%, var(--navy) 62%, #0C1530 100%);
+  border:1px solid var(--line-blue);
+  border-radius:20px;
+  padding:30px 24px 34px;
+  margin-top:24px;
+  box-shadow:0 24px 60px -18px rgba(0,0,0,.72), inset 0 1px 0 rgba(150,185,255,.09);
+  position:relative;overflow:hidden;
+}
+.panel::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(215,169,62,.74),transparent);
+}
+.step-head{margin-bottom:6px}
 .step-head h2{font-family:var(--serif);font-weight:400;font-size:clamp(24px,5.6vw,31px);line-height:1.2;letter-spacing:-.01em}
 .step-head h2 em{font-style:italic;color:var(--gold-lt)}
 .step-note{color:var(--parchment-dim);font-size:15px;margin-top:11px}
 
 .reassure{
-  margin:20px 0 4px;padding:15px 17px;border-radius:12px;
-  background:rgba(201,162,75,.075);border:1px solid var(--gold-dim);
-  border-left:2.5px solid var(--gold);
+  margin:22px 0 4px;padding:16px 18px;border-radius:13px;
+  background:linear-gradient(135deg, rgba(30,70,190,.30), rgba(215,169,62,.12));
+  border:1px solid rgba(140,175,255,.24);border-left:2.5px solid var(--gold);
   font-size:14.5px;color:var(--parchment-dim);line-height:1.55;
 }
 .reassure b{color:var(--gold-lt);font-weight:500}
 
 /* ---------- FIELDS ---------- */
 .q{margin-top:30px}
-.q > label.qt, .qt{
-  display:block;font-size:16.5px;font-weight:400;color:var(--parchment);
-  margin-bottom:4px;line-height:1.4;
-}
+.qt{display:block;font-size:16.5px;font-weight:400;color:var(--parchment);margin-bottom:4px;line-height:1.4}
 .hint{display:block;font-size:13.5px;color:var(--parchment-faint);margin-bottom:12px;line-height:1.45}
 .opt-tag{font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--parchment-faint);margin-left:7px;vertical-align:1px}
 
 input[type=text],input[type=email],input[type=tel],input[type=url],select,textarea{
   width:100%;padding:15px 16px;font-family:var(--sans);font-size:16.5px;font-weight:300;
-  color:var(--parchment);background:rgba(255,255,255,.035);
-  border:1px solid var(--line);border-radius:11px;outline:none;
+  color:var(--parchment);background:rgba(8,16,40,.72);
+  border:1px solid rgba(140,175,255,.20);border-radius:11px;outline:none;
   transition:border-color .22s,background .22s,box-shadow .22s;
   -webkit-appearance:none;appearance:none;
 }
 textarea{min-height:104px;resize:vertical;line-height:1.55}
 input::placeholder,textarea::placeholder{color:rgba(246,240,226,.26)}
 input:focus,select:focus,textarea:focus{
-  border-color:var(--gold);background:rgba(201,162,75,.07);
-  box-shadow:0 0 0 3px rgba(201,162,75,.13);
+  border-color:var(--gold);background:rgba(20,36,86,.85);
+  box-shadow:0 0 0 3px rgba(215,169,62,.2);
 }
 select{
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23C9A24B' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23D7A93E' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
   background-repeat:no-repeat;background-position:right 16px center;padding-right:42px;cursor:pointer;
 }
 select option{background:var(--navy-2);color:var(--parchment)}
-select:invalid,select.blank{color:rgba(246,240,226,.26)}
-
+select.blank{color:rgba(246,240,226,.26)}
 .duo{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 
 /* choice chips */
@@ -133,105 +143,82 @@ select:invalid,select.blank{color:rgba(246,240,226,.26)}
 .choices.grid2{display:grid;grid-template-columns:1fr 1fr;gap:9px}
 .choice{
   position:relative;display:flex;align-items:center;gap:12px;
-  padding:14px 15px;border:1px solid var(--line);border-radius:11px;
-  background:rgba(255,255,255,.025);cursor:pointer;
+  padding:14px 15px;border:1px solid rgba(140,175,255,.18);border-radius:11px;
+  background:rgba(11,21,52,.75);cursor:pointer;
   transition:border-color .2s,background .2s,transform .12s;
   font-size:15.5px;line-height:1.35;
 }
 .choice:active{transform:scale(.985)}
 .choice input{position:absolute;opacity:0;width:0;height:0}
-.dot{
-  flex:0 0 19px;width:19px;height:19px;border-radius:50%;
-  border:1.5px solid rgba(201,162,75,.5);position:relative;transition:border-color .2s;
-}
+.dot{flex:0 0 19px;width:19px;height:19px;border-radius:50%;border:1.5px solid rgba(215,169,62,.68);position:relative;transition:border-color .2s}
 .dot.sq{border-radius:5px}
-.dot::after{
-  content:"";position:absolute;inset:3.5px;border-radius:50%;
-  background:var(--gold-lt);transform:scale(0);transition:transform .2s cubic-bezier(.3,1.5,.5,1);
-}
+.dot::after{content:"";position:absolute;inset:3.5px;border-radius:50%;background:var(--gold-lt);transform:scale(0);transition:transform .2s cubic-bezier(.3,1.5,.5,1)}
 .dot.sq::after{border-radius:2px;inset:3px}
-.choice:has(input:checked){border-color:var(--gold);background:rgba(201,162,75,.1)}
+.choice:has(input:checked){border-color:var(--gold);background:linear-gradient(135deg,rgba(30,70,190,.34),rgba(215,169,62,.18))}
 .choice:has(input:checked) .dot{border-color:var(--gold)}
 .choice:has(input:checked) .dot::after{transform:scale(1)}
-.choice:has(input:focus-visible){box-shadow:0 0 0 3px rgba(201,162,75,.18)}
+.choice:has(input:focus-visible){box-shadow:0 0 0 3px rgba(215,169,62,.27)}
 
-/* conditional reveal */
 .reveal{max-height:0;opacity:0;overflow:hidden;transition:max-height .4s ease,opacity .3s ease,margin .4s ease;margin-top:0}
-.reveal.open{max-height:220px;opacity:1;margin-top:10px}
+.reveal.open{max-height:200px;opacity:1;margin-top:10px}
 
-.err{color:#E9A2A2;font-size:13.5px;margin-top:9px;display:none;font-family:var(--sans)}
+.err{color:#F0A9A9;font-size:13.5px;margin-top:9px;display:none}
 .err.show{display:block}
 
-/* upload */
-.upload{
-  display:flex;align-items:center;justify-content:center;gap:10px;
-  padding:19px;border:1px dashed rgba(201,162,75,.42);border-radius:11px;
-  background:rgba(201,162,75,.045);cursor:pointer;font-size:15px;color:var(--gold-lt);
-  transition:background .2s,border-color .2s;
+/* declarations block */
+.declare{
+  margin-top:32px;padding:20px 18px;border-radius:14px;
+  background:rgba(6,13,33,.72);border:1px solid var(--line);
 }
-.upload:hover{background:rgba(201,162,75,.09);border-color:var(--gold)}
-.upload input{display:none}
-.fname{font-size:13.5px;color:var(--ok);margin-top:9px;display:none}
-.fname.show{display:block}
+.declare .qt{font-size:15.5px;margin-bottom:14px}
 
 /* ---------- NAV ---------- */
-.nav{display:flex;gap:11px;margin-top:40px;align-items:center}
-.btn{
-  font-family:var(--sans);font-size:16px;font-weight:500;letter-spacing:.01em;
-  padding:16px 30px;border-radius:100px;border:1px solid transparent;cursor:pointer;
-  transition:transform .14s,box-shadow .22s,background .22s;
-}
+.nav{display:flex;gap:11px;margin-top:36px;align-items:center}
+.btn{font-family:var(--sans);font-size:16px;font-weight:500;letter-spacing:.01em;padding:16px 30px;border-radius:100px;border:1px solid transparent;cursor:pointer;transition:transform .14s,box-shadow .22s,background .22s}
 .btn:active{transform:translateY(1px) scale(.99)}
-.btn-primary{
-  flex:1;background:linear-gradient(135deg,var(--gold) 0%,var(--gold-lt) 100%);
-  color:var(--navy);box-shadow:0 6px 26px rgba(201,162,75,.28);
-}
-.btn-primary:hover{box-shadow:0 8px 34px rgba(201,162,75,.4)}
-.btn-ghost{background:transparent;border-color:var(--line);color:var(--parchment-dim);padding:16px 22px}
+.btn-primary{flex:1;background:linear-gradient(135deg,var(--gold) 0%,var(--gold-lt) 100%);color:var(--navy);box-shadow:0 6px 28px rgba(215,169,62,.41)}
+.btn-primary:hover{box-shadow:0 8px 36px rgba(215,169,62,.59)}
+.btn-ghost{background:rgba(20,36,86,.55);border-color:rgba(140,175,255,.24);color:var(--parchment-dim);padding:16px 22px}
 .btn-ghost:hover{border-color:var(--gold);color:var(--gold-lt)}
 .btn[disabled]{opacity:.55;pointer-events:none}
 
 /* ---------- DONE ---------- */
-.done{display:none;text-align:center;padding:64px 0 90px}
+.done{display:none;text-align:center;padding:20px 0 90px}
 .done.on{display:block;animation:rise .6s cubic-bezier(.2,.7,.3,1) both}
-.done .seal{width:74px;height:74px;margin:0 auto 30px}
+.done .panel{padding:56px 26px 46px}
+.done .seal{width:76px;height:76px;margin:0 auto 30px}
 .done h2{font-family:var(--serif);font-weight:400;font-size:clamp(27px,6.4vw,36px);line-height:1.18;margin-bottom:16px}
 .done h2 em{font-style:italic;color:var(--gold-lt)}
 .done p{color:var(--parchment-dim);max-width:400px;margin:0 auto 14px;font-size:16px}
-.ded{
-  margin-top:44px;padding-top:26px;border-top:1px solid var(--line);
-  font-family:var(--serif);font-style:italic;font-size:15px;color:var(--parchment-faint);
-}
+.ded{margin-top:42px;padding-top:26px;border-top:1px solid var(--line);font-family:var(--serif);font-style:italic;font-size:15px;color:var(--parchment-faint)}
 
-footer{padding:34px 0 46px;text-align:center;border-top:1px solid var(--line);margin-top:20px}
+footer{padding:34px 0 46px;text-align:center;border-top:1px solid var(--line-blue);margin-top:20px}
 footer p{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--parchment-faint)}
 
 @media(max-width:420px){
   .choices.grid2{grid-template-columns:1fr}
   .duo{grid-template-columns:1fr}
   body{font-size:16px}
+  .panel{padding:26px 18px 30px;border-radius:17px}
 }
-@media(prefers-reduced-motion:reduce){
-  *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
-}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
 <body>
-
 <div class="wrap">
 
 <header class="top">
   <div class="mark">
-    <svg viewBox="0 0 40 28" aria-hidden="true">
-      <path d="M2 25 Q13 24 20 14 T38 4" fill="none" stroke="#C9A24B" stroke-width="1.8" stroke-linecap="round"/>
-      <circle cx="38" cy="4" r="3.2" fill="#EBD199"/>
-      <circle cx="38" cy="4" r="6.5" fill="none" stroke="rgba(201,162,75,.4)" stroke-width="1"/>
+    <svg viewBox="0 0 44 30" aria-hidden="true">
+      <path d="M3 27 Q14 26 22 15 T41 5" fill="none" stroke="#D7A93E" stroke-width="1.9" stroke-linecap="round"/>
+      <circle cx="41" cy="5" r="3.4" fill="#EFD08C"/>
+      <circle cx="41" cy="5" r="7" fill="none" stroke="rgba(215,169,62,.57)" stroke-width="1"/>
     </svg>
-    <span>Growth&nbsp;Arc</span>
+    <span class="wordmark">Growth <em>Arc</em></span>
   </div>
   <span class="eyebrow">100 Healers · Your application</span>
   <h1>A few questions,<br>so I know <em>where to start.</em></h1>
-  <p class="sub">Most of it is tapping. About four minutes. Nothing here is a test — I only need to see the ground before we build on it.</p>
+  <p class="sub">Most of it is tapping. About three minutes. Nothing here is a test — I only need to see the ground before we build on it.</p>
 </header>
 
 <div class="progress">
@@ -239,9 +226,9 @@ footer p{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transf
     <svg viewBox="0 0 460 44" preserveAspectRatio="none" aria-hidden="true">
       <defs>
         <linearGradient id="pg" x1="0" y1="1" x2="1" y2="0">
-          <stop offset="0%" stop-color="rgba(201,162,75,.4)"/>
-          <stop offset="60%" stop-color="#C9A24B"/>
-          <stop offset="100%" stop-color="#EBD199"/>
+          <stop offset="0%" stop-color="rgba(90,140,255,.55)"/>
+          <stop offset="55%" stop-color="#D7A93E"/>
+          <stop offset="100%" stop-color="#EFD08C"/>
         </linearGradient>
       </defs>
       <path id="track" class="arc-track" d="M8 38 Q140 36 230 22 T452 6"/>
@@ -256,8 +243,9 @@ footer p{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transf
 <main>
 <form id="app" novalidate>
 
-<!-- ============ STEP 1 · YOU ============ -->
+<!-- ===== STEP 1 · YOU ===== -->
 <section class="step on" data-step="1">
+ <div class="panel">
   <div class="step-head">
     <h2>First, <em>you.</em></h2>
     <p class="step-note">The easy part.</p>
@@ -317,13 +305,13 @@ footer p{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transf
     <div class="err">Please choose one.</div>
   </div>
 
-  <div class="nav">
-    <button type="button" class="btn btn-primary" data-next>Continue</button>
-  </div>
+  <div class="nav"><button type="button" class="btn btn-primary" data-next>Continue</button></div>
+ </div>
 </section>
 
-<!-- ============ STEP 2 · YOUR PATH ============ -->
+<!-- ===== STEP 2 · YOUR PATH ===== -->
 <section class="step" data-step="2">
+ <div class="panel">
   <div class="step-head">
     <h2>Your <em>path.</em></h2>
     <p class="step-note">So I understand the ground you're standing on.</p>
@@ -370,7 +358,6 @@ footer p{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transf
         <select name="arhatic_level" class="blank">
           <option value="" disabled selected>Which level? (optional)</option>
           <option>Preparatory</option>
-          <option>Preparatory + Not-So-Secret</option>
           <option>Arhatic Yoga Level 1</option>
           <option>Arhatic Yoga Level 2</option>
           <option>Arhatic Yoga Level 3</option>
@@ -386,35 +373,8 @@ footer p{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transf
     <div class="choices grid2">
       <label class="choice"><input type="radio" name="kriyashakti" value="Yes" required><span class="dot"></span>Yes</label>
       <label class="choice"><input type="radio" name="kriyashakti" value="No"><span class="dot"></span>No</label>
-      <label class="choice"><input type="radio" name="kriyashakti" value="Planning to"><span class="dot"></span>Planning to</label>
     </div>
     <div class="err">Please pick one.</div>
-  </div>
-
-  <div class="q">
-    <label class="qt" for="highest">Your highest level so far</label>
-    <select id="highest" name="highest" class="blank" required>
-      <option value="" disabled selected>Choose one</option>
-      <option>Basic Pranic Healing</option>
-      <option>Advanced Pranic Healing</option>
-      <option>Pranic Psychotherapy</option>
-      <option>Arhatic Yoga</option>
-      <option>Kriyashakti</option>
-    </select>
-    <div class="err">Please choose one.</div>
-  </div>
-
-  <div class="q">
-    <span class="qt">Any other courses?<span class="opt-tag">Optional</span></span>
-    <span class="hint">Tick anything you've done.</span>
-    <div class="choices">
-      <label class="choice"><input type="checkbox" name="other_courses" value="Pranic Crystal Healing"><span class="dot sq"></span>Pranic Crystal Healing</label>
-      <label class="choice"><input type="checkbox" name="other_courses" value="Pranic Face & Body Sculpting"><span class="dot sq"></span>Pranic Face &amp; Body Sculpting</label>
-      <label class="choice"><input type="checkbox" name="other_courses" value="Pranic Psychic Self-Defense"><span class="dot sq"></span>Pranic Psychic Self-Defense</label>
-      <label class="choice"><input type="checkbox" name="other_courses" value="Pranic Feng Shui"><span class="dot sq"></span>Pranic Feng Shui</label>
-      <label class="choice"><input type="checkbox" name="other_courses" value="Superbrain Yoga"><span class="dot sq"></span>Superbrain Yoga</label>
-      <label class="choice"><input type="checkbox" name="other_courses" value="Other"><span class="dot sq"></span>Something else</label>
-    </div>
   </div>
 
   <div class="q">
@@ -426,27 +386,16 @@ footer p{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transf
     <button type="button" class="btn btn-ghost" data-back>Back</button>
     <button type="button" class="btn btn-primary" data-next>Continue</button>
   </div>
+ </div>
 </section>
 
-<!-- ============ STEP 3 · YOUR PRACTICE ============ -->
+<!-- ===== STEP 3 · YOUR PRACTICE ===== -->
 <section class="step" data-step="3">
-  <div class="step-head">
-    <h2>Your practice <em>today.</em></h2>
-  </div>
+ <div class="panel">
+  <div class="step-head"><h2>Your practice <em>today.</em></h2></div>
 
   <div class="reassure">
     <b>There are no wrong answers from here on.</b> I'm not measuring anyone. Whatever you tick next only tells me where to begin — and honestly, the further behind you feel, the faster this tends to move.
-  </div>
-
-  <div class="q">
-    <span class="qt">Where do you heal?</span>
-    <span class="hint">Tick all that apply.</span>
-    <div class="choices">
-      <label class="choice"><input type="checkbox" name="where" value="From home"><span class="dot sq"></span>From my home</label>
-      <label class="choice"><input type="checkbox" name="where" value="At a centre"><span class="dot sq"></span>At a centre or clinic</label>
-      <label class="choice"><input type="checkbox" name="where" value="At clients' homes"><span class="dot sq"></span>I go to my clients</label>
-      <label class="choice"><input type="checkbox" name="where" value="Distance / online"><span class="dot sq"></span>Distance healing / online</label>
-    </div>
   </div>
 
   <div class="q">
@@ -486,26 +435,16 @@ footer p{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transf
     <div class="err">Please pick one.</div>
   </div>
 
-  <div class="q">
-    <span class="qt">How do people pay you?</span>
-    <span class="hint">Tick all that apply.</span>
-    <div class="choices">
-      <label class="choice"><input type="checkbox" name="payment" value="Cash"><span class="dot sq"></span>Cash</label>
-      <label class="choice"><input type="checkbox" name="payment" value="UPI / GPay / PhonePe"><span class="dot sq"></span>UPI — GPay, PhonePe</label>
-      <label class="choice"><input type="checkbox" name="payment" value="Bank transfer"><span class="dot sq"></span>Bank transfer</label>
-      <label class="choice"><input type="checkbox" name="payment" value="Online payment link"><span class="dot sq"></span>An online payment link</label>
-      <label class="choice"><input type="checkbox" name="payment" value="Donation / I don't charge"><span class="dot sq"></span>Donation, or I don't charge</label>
-    </div>
-  </div>
-
   <div class="nav">
     <button type="button" class="btn btn-ghost" data-back>Back</button>
     <button type="button" class="btn btn-primary" data-next>Continue</button>
   </div>
+ </div>
 </section>
 
-<!-- ============ STEP 4 · YOUR PRESENCE ============ -->
+<!-- ===== STEP 4 · YOUR PRESENCE ===== -->
 <section class="step" data-step="4">
+ <div class="panel">
   <div class="step-head">
     <h2>Your presence <em>online.</em></h2>
     <p class="step-note">Most healers tick "no" three times here. That's completely normal — and it's the whole reason this exists.</p>
@@ -539,9 +478,9 @@ footer p{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transf
   </div>
 
   <div class="q">
-    <label class="qt" for="insta">Your Instagram</label>
-    <span class="hint">Your healing account, if you have a separate one. Just the handle is fine.</span>
-    <input type="text" id="insta" name="instagram" placeholder="@yourhandle — or type: don't have one">
+    <label class="qt" for="insta">Your Instagram link</label>
+    <span class="hint">The link to your healing profile. Open Instagram → your profile → Share → Copy link.</span>
+    <input type="text" id="insta" name="instagram" placeholder="https://instagram.com/… — or type: don't have one">
   </div>
 
   <div class="q">
@@ -556,8 +495,8 @@ footer p{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transf
   </div>
 
   <div class="q">
-    <label class="qt" for="from_net">In a week, how many healings come from Instagram, Google or your website?</label>
-    <span class="hint">People who found you online, not people you already knew.</span>
+    <label class="qt" for="from_net">In a week, how many <em>new</em> healings come from Instagram, Google or your website?</label>
+    <span class="hint">New people who found you online — not clients you already knew.</span>
     <select id="from_net" name="from_net" class="blank" required>
       <option value="" disabled selected>Choose one</option>
       <option>None</option>
@@ -585,7 +524,7 @@ footer p{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transf
 
   <div class="q">
     <label class="qt" for="why_not">If you've tried — what do you think went wrong?<span class="opt-tag">Optional</span></label>
-    <span class="hint">Say it plainly. This is the most useful thing you can tell me.</span>
+    <span class="hint">Say it plainly. This is one of the most useful things you can tell me.</span>
     <textarea id="why_not" name="why_not" placeholder="Even one line helps."></textarea>
   </div>
 
@@ -620,10 +559,12 @@ footer p{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transf
     <button type="button" class="btn btn-ghost" data-back>Back</button>
     <button type="button" class="btn btn-primary" data-next>Continue</button>
   </div>
+ </div>
 </section>
 
-<!-- ============ STEP 5 · PRACTICALITIES ============ -->
+<!-- ===== STEP 5 · THE PRACTICAL ===== -->
 <section class="step" data-step="5">
+ <div class="panel">
   <div class="step-head">
     <h2>Last bit — <em>the practical.</em></h2>
     <p class="step-note">So the sessions actually suit your week.</p>
@@ -678,14 +619,10 @@ footer p{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transf
   </div>
 
   <div class="q">
-    <span class="qt">One honest question about money.</span>
-    <span class="hint">This programme is free. Always. The only thing that ever costs anything is a domain in your own name — roughly ₹900 for a whole year, less than one session. Everything else we use is free.</span>
-    <div class="choices">
-      <label class="choice"><input type="radio" name="domain" value="Yes, that's fine" required><span class="dot"></span>That's fine</label>
-      <label class="choice"><input type="radio" name="domain" value="I'd like to see it first"><span class="dot"></span>I'd like to see it first, then decide</label>
-      <label class="choice"><input type="radio" name="domain" value="Not right now"><span class="dot"></span>Not right now</label>
-    </div>
-    <div class="err">Please pick one.</div>
+    <label class="qt" for="whynow">Why do you think you need this course — and why now?</label>
+    <span class="hint">In your own words. There's no right answer, and short is fine.</span>
+    <textarea id="whynow" name="whynow" placeholder="What made you fill this form today?" required></textarea>
+    <div class="err">A line or two, please — this one matters.</div>
   </div>
 
   <div class="q">
@@ -695,26 +632,15 @@ footer p{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transf
     <div class="err">One line is enough — please write something.</div>
   </div>
 
-  <div class="q">
-    <span class="qt">Your certificate<span class="opt-tag">Optional</span></span>
-    <span class="hint">Your highest one. A photo is perfectly fine — or send it on WhatsApp later, it makes no difference to me.</span>
-    <label class="upload">
-      <input type="file" id="cert" name="certificate" accept="image/*,.pdf">
-      <span>＋&nbsp; Add a photo or PDF</span>
-    </label>
-    <div class="fname" id="fname"></div>
-    <div class="choices" style="margin-top:10px">
-      <label class="choice"><input type="checkbox" name="cert_later" value="Will send on WhatsApp"><span class="dot sq"></span>I'll send it on WhatsApp instead</label>
-    </div>
-  </div>
-
-  <div class="q">
-    <span class="qt">Two small commitments</span>
+  <div class="declare">
+    <span class="qt">Before you send it</span>
     <div class="choices">
-      <label class="choice"><input type="checkbox" name="commit" value="Will attend 4 live sessions" required><span class="dot sq"></span>I'll show up for all four live sessions</label>
-      <label class="choice"><input type="checkbox" name="commit" value="Will do the 5-min nudges" required><span class="dot sq"></span>I'll do the small tasks — five minutes, every other day</label>
+      <label class="choice"><input type="checkbox" name="declare" value="Will produce certificates when asked" required><span class="dot sq"></span>I will produce my certificates for the highest course I've done, when asked.</label>
+      <label class="choice"><input type="checkbox" name="declare" value="Information is correct" required><span class="dot sq"></span>Everything here is correct — I've filled this form carefully.</label>
+      <label class="choice"><input type="checkbox" name="declare" value="Will attend 4 live sessions" required><span class="dot sq"></span>I'll show up for all four live sessions.</label>
+      <label class="choice"><input type="checkbox" name="declare" value="Will do the 5-min nudges" required><span class="dot sq"></span>I'll do the small tasks — five minutes, every other day.</label>
     </div>
-    <div class="err">Both, please. They're the whole reason this works.</div>
+    <div class="err">All four, please. They're the whole reason this works.</div>
   </div>
 
   <div class="q">
@@ -735,158 +661,115 @@ footer p{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transf
     <button type="button" class="btn btn-ghost" data-back>Back</button>
     <button type="submit" class="btn btn-primary" id="submit">Send my application</button>
   </div>
+ </div>
 </section>
 
 </form>
 
-<!-- ============ DONE ============ -->
+<!-- ===== DONE ===== -->
 <section class="done" id="done">
+ <div class="panel">
   <svg class="seal" viewBox="0 0 80 80" aria-hidden="true">
-    <circle cx="40" cy="40" r="37" fill="none" stroke="rgba(201,162,75,.3)" stroke-width="1"/>
-    <circle cx="40" cy="40" r="30" fill="none" stroke="rgba(201,162,75,.18)" stroke-width="1"/>
-    <path d="M24 48 Q34 46 41 36 T60 24" fill="none" stroke="#C9A24B" stroke-width="2" stroke-linecap="round"/>
-    <circle cx="60" cy="24" r="4" fill="#EBD199"/>
+    <circle cx="40" cy="40" r="37" fill="none" stroke="rgba(140,175,255,.28)" stroke-width="1"/>
+    <circle cx="40" cy="40" r="30" fill="none" stroke="rgba(215,169,62,.3)" stroke-width="1"/>
+    <path d="M24 48 Q34 46 41 36 T60 24" fill="none" stroke="#D7A93E" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="60" cy="24" r="4" fill="#EFD08C"/>
   </svg>
   <h2>Received. <em>Thank you.</em></h2>
   <p>You'll hear from me on WhatsApp with your batch and your dates.</p>
   <p>Before then, one small thing — <b style="color:var(--gold-lt);font-weight:500">Google your own name</b>, and then Google <em>"pranic healer in your city"</em>. Screenshot both and keep them. We'll begin there.</p>
   <div class="ded">Offered in the name of Master Choa Kok Sui.</div>
+ </div>
 </section>
 
 </main>
 
-<footer>
-  <p>Growth Arc · 100 Healers · Seva</p>
-</footer>
-
+<footer><p>Growth Arc · 100 Healers · Seva</p></footer>
 </div>
 
 <script>
 /* ====== CONFIG ====== */
 const ENDPOINT = 'PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE';
 
-/* ====== YEAR DROPDOWNS ====== */
-const nowY = new Date().getFullYear();
+/* ====== YEARS ====== */
+const nowY=new Date().getFullYear();
 document.querySelectorAll('.yearsel').forEach(sel=>{
-  for(let y=nowY;y>=1987;y--){
-    const o=document.createElement('option');o.textContent=y;sel.appendChild(o);
-  }
+  for(let y=nowY;y>=1987;y--){const o=document.createElement('option');o.textContent=y;sel.appendChild(o);}
   const o=document.createElement('option');o.textContent="Before 1987";sel.appendChild(o);
 });
+document.querySelectorAll('select').forEach(s=>s.addEventListener('change',()=>s.classList.toggle('blank',!s.value)));
 
-/* ====== SELECT PLACEHOLDER COLOR ====== */
-document.querySelectorAll('select').forEach(s=>{
-  s.addEventListener('change',()=>s.classList.toggle('blank',!s.value));
-});
-
-/* ====== ARC PROGRESS ====== */
-const track=document.getElementById('track'), fill=document.getElementById('fill'), dot=document.getElementById('dot');
+/* ====== ARC ====== */
+const track=document.getElementById('track'),fill=document.getElementById('fill'),dot=document.getElementById('dot');
 const LEN=track.getTotalLength();
 fill.style.setProperty('--len',LEN);
-const STEPS=5;
+const STEPS=5, NAMES=['You','Your path','Your practice','Your presence','The practical'];
 function drawArc(step){
-  const p=(step-1)/STEPS;          // filled fraction on arrival at a step
-  const frac=Math.max(.04,p);
+  const frac=Math.max(.05,(step-1)/STEPS);
   fill.style.strokeDashoffset=LEN*(1-frac);
   const pt=track.getPointAtLength(LEN*frac);
   dot.setAttribute('cx',pt.x); dot.setAttribute('cy',pt.y);
 }
-const NAMES=['You','Your path','Your practice','Your presence','The practical'];
 
-/* ====== STEP NAV ====== */
+/* ====== NAV ====== */
 let cur=1;
 const steps=[...document.querySelectorAll('.step')];
 function show(n){
-  steps.forEach(s=>s.classList.toggle('on', +s.dataset.step===n));
+  steps.forEach(s=>s.classList.toggle('on',+s.dataset.step===n));
   document.getElementById('stepname').textContent=`Step ${n} of ${STEPS} · ${NAMES[n-1]}`;
-  drawArc(n);
-  cur=n;
+  drawArc(n); cur=n;
   window.scrollTo({top:0,behavior:'smooth'});
 }
-
 function validate(n){
-  const sec=steps[n-1];
-  let ok=true, firstBad=null;
-  sec.querySelectorAll('.q').forEach(q=>{
-    const err=q.querySelector('.err');
-    if(!err) return;
+  const sec=steps[n-1]; let ok=true,firstBad=null;
+  sec.querySelectorAll('.q, .declare').forEach(q=>{
+    const err=q.querySelector('.err'); if(!err) return;
     let bad=false;
     const radios=q.querySelectorAll('input[type=radio][required]');
     const boxes=q.querySelectorAll('input[type=checkbox][required]');
     const fields=q.querySelectorAll('input[type=text][required],input[type=email][required],input[type=tel][required],select[required],textarea[required]');
-
-    if(radios.length){
-      const nm=radios[0].name;
-      if(!sec.querySelector(`input[name="${nm}"]:checked`)) bad=true;
-    }
-    if(boxes.length){
-      // every required checkbox in this group must be ticked (the commitments)
-      boxes.forEach(b=>{ if(!b.checked) bad=true; });
-    }
+    if(radios.length && !sec.querySelector(`input[name="${radios[0].name}"]:checked`)) bad=true;
+    boxes.forEach(b=>{ if(!b.checked) bad=true; });
     fields.forEach(f=>{
-      if(f.offsetParent===null) return;      // hidden inside a closed reveal
+      if(f.offsetParent===null) return;
       if(!f.value.trim()) bad=true;
       if(f.type==='email' && f.value && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(f.value)) bad=true;
     });
     err.classList.toggle('show',bad);
-    if(bad){ ok=false; if(!firstBad) firstBad=q; }
+    if(bad){ok=false; if(!firstBad) firstBad=q;}
   });
   if(firstBad) firstBad.scrollIntoView({behavior:'smooth',block:'center'});
   return ok;
 }
-
-document.querySelectorAll('[data-next]').forEach(b=>b.addEventListener('click',()=>{
-  if(validate(cur)) show(cur+1);
-}));
+document.querySelectorAll('[data-next]').forEach(b=>b.addEventListener('click',()=>{if(validate(cur)) show(cur+1);}));
 document.querySelectorAll('[data-back]').forEach(b=>b.addEventListener('click',()=>show(cur-1)));
 
-/* ====== CONDITIONAL REVEALS ====== */
+/* ====== REVEALS ====== */
 document.querySelectorAll('input[data-reveal],input[data-reveal-off]').forEach(inp=>{
   inp.addEventListener('change',()=>{
     const on=inp.dataset.reveal, off=inp.dataset.revealOff;
-    if(on)  document.getElementById(on).classList.add('open');
+    if(on) document.getElementById(on).classList.add('open');
     if(off) document.getElementById(off).classList.remove('open');
   });
 });
 
-/* ====== FILE NAME ====== */
-document.getElementById('cert').addEventListener('change',e=>{
-  const f=e.target.files[0], el=document.getElementById('fname');
-  if(f){ el.textContent='✓  '+f.name; el.classList.add('show'); }
-});
-
 /* ====== SUBMIT ====== */
-document.getElementById('app').addEventListener('submit', async e=>{
+document.getElementById('app').addEventListener('submit',async e=>{
   e.preventDefault();
   if(!validate(5)) return;
   const btn=document.getElementById('submit');
   btn.disabled=true; btn.textContent='Sending…';
 
-  const fd=new FormData(e.target);
-  const data={};
+  const fd=new FormData(e.target), data={};
   for(const key of new Set([...fd.keys()])){
     const all=fd.getAll(key).filter(v=>typeof v==='string' && v.length);
     if(all.length) data[key]=all.join(' · ');
   }
-
-  // certificate → base64 (optional)
-  const f=document.getElementById('cert').files[0];
-  if(f && f.size < 4*1024*1024){
-    data.certificate_name=f.name;
-    data.certificate_b64=await new Promise(r=>{
-      const rd=new FileReader();
-      rd.onload=()=>r(rd.result.split(',')[1]);
-      rd.readAsDataURL(f);
-    });
-  }
-
   try{
-    await fetch(ENDPOINT,{
-      method:'POST', mode:'no-cors',
+    await fetch(ENDPOINT,{method:'POST',mode:'no-cors',
       headers:{'Content-Type':'text/plain;charset=utf-8'},
-      body:JSON.stringify(data)
-    });
-  }catch(err){ /* no-cors: opaque response, treat as sent */ }
+      body:JSON.stringify(data)});
+  }catch(err){}
 
   document.getElementById('app').style.display='none';
   document.querySelector('.progress').style.display='none';
@@ -894,7 +777,6 @@ document.getElementById('app').addEventListener('submit', async e=>{
   document.getElementById('done').classList.add('on');
   window.scrollTo({top:0,behavior:'smooth'});
 });
-
 drawArc(1);
 </script>
 </body>
