@@ -138,16 +138,6 @@
     background:linear-gradient(180deg,rgba(212,175,55,.16),rgba(212,175,55,.05));
     border-color:var(--gold);color:var(--gold-soft);min-width:150px;
   }
-  select{
-    font-family:'Jost',sans-serif;font-size:10px;letter-spacing:.2em;text-transform:uppercase;
-    color:var(--mute);background:transparent;border:none;border-bottom:1px solid rgba(234,230,218,.14);
-    padding:5px 2px;cursor:pointer;outline:none;
-  }
-  select option{background:var(--navy-2);color:var(--ink);letter-spacing:normal}
-  .opts{display:flex;justify-content:center;gap:22px;margin-top:18px}
-  .opt{text-align:center}
-  .opt span{display:block;font-size:8.5px;letter-spacing:.3em;text-transform:uppercase;color:rgba(234,230,218,.28);margin-bottom:3px}
-
   #notice{
     position:absolute;top:0;left:0;right:0;
     text-align:center;font-size:10px;letter-spacing:.18em;text-transform:uppercase;
@@ -204,26 +194,9 @@
 
     <div class="controls">
       <button id="btnMain">Begin</button>
-      <button id="btnReset">Reset</button>
+      <button id="btnReset">Restart</button>
     </div>
 
-    <div class="opts">
-      <label class="opt"><span>Rhythm</span>
-        <select id="selPattern">
-          <option value="6,3,6,3" selected>6 · 3 · 6 · 3</option>
-          <option value="6,0,6,0">6 · 0 · 6 · 0</option>
-          <option value="4,4,4,4">4 · 4 · 4 · 4</option>
-          <option value="9,3,9,3">9 · 3 · 9 · 3</option>
-        </select>
-      </label>
-      <label class="opt"><span>Sound</span>
-        <select id="selSound">
-          <option value="track" selected>Track + beeps</option>
-          <option value="beeps">Beeps only</option>
-          <option value="silent">Silent</option>
-        </select>
-      </label>
-    </div>
   </footer>
 </div>
 
@@ -255,14 +228,14 @@
   var elPhase=$('phase'), elBeat=$('beat'), elHint=$('hint'),
       elCycle=$('cycleNow'), elCycleTot=$('cycleTot'), elClock=$('clock'),
       elBar=$('barFill'), btnMain=$('btnMain'), btnReset=$('btnReset'),
-      selPattern=$('selPattern'), selSound=$('selSound'), notice=$('notice');
+      notice=$('notice');
 
   var RING_LEN = 2 * Math.PI * 94;
 
   /* ---------- state ---------- */
-  var pattern   = [6,3,6,3];
-  var cycleLen  = 18;
-  var totalCycles = 14;
+  var PATTERN     = [6,3,6,3];   // Pranic Breathing: inhale 6, hold 3, exhale 6, hold 3
+  var CYCLE_LEN   = 18;
+  var TOTAL_CYCLES = Math.floor(252 / 18);   // = 14
   var mode      = 'track';        // track | beeps | silent
   var running   = false;
   var trackOK   = true;           // does metronome.mp3 exist?
@@ -271,12 +244,7 @@
   var lastBeat  = -1;
   var raf = null, wakeLock = null, ac = null;
 
-  function readPattern(){
-    pattern = selPattern.value.split(',').map(Number);
-    cycleLen = pattern.reduce(function(a,b){return a+b;},0);
-    totalCycles = Math.floor(N_BEATS / cycleLen);
-    elCycleTot.textContent = totalCycles;
-  }
+  elCycleTot.textContent = TOTAL_CYCLES;
 
   /* ---------- synthesised beep: 440 Hz square, 120 ms ---------- */
   function audioCtx(){
@@ -330,25 +298,24 @@
     if(beatI >= N_BEATS){
       elPhase.textContent = 'Complete';
       elBeat.textContent  = '॥';
-      elHint.textContent  = totalCycles + ' cycles finished';
+      elHint.textContent  = TOTAL_CYCLES + ' cycles finished';
       setScale(MIN_S); setRing(1, 'url(#goldGrad)');
-      updateFooter(t, totalCycles);
+      updateFooter(t, TOTAL_CYCLES);
       if(mode !== 'track' || !trackOK) stop();
       return;
     }
 
     /* --- which phase --- */
-    var cycleIdx = Math.floor(beatI / cycleLen);
-    var inCycle  = beatF - cycleIdx * cycleLen;   // fractional, 0..cycleLen
+    var cycleIdx = Math.floor(beatI / CYCLE_LEN);
+    var inCycle  = beatF - cycleIdx * CYCLE_LEN;  // fractional, 0..18
     var acc = 0, pi = 0;
     for(var i = 0; i < 4; i++){
-      if(pattern[i] === 0) continue;
-      if(inCycle < acc + pattern[i]){ pi = i; break; }
-      acc += pattern[i];
+      if(inCycle < acc + PATTERN[i]){ pi = i; break; }
+      acc += PATTERN[i];
       pi = i;
     }
-    var within  = inCycle - acc;                  // 0..pattern[pi]
-    var prog    = pattern[pi] ? within / pattern[pi] : 1;
+    var within  = inCycle - acc;                  // 0..PATTERN[pi]
+    var prog    = within / PATTERN[pi];
     var count   = Math.floor(within) + 1;
 
     /* --- beep on new beat (non-track modes) --- */
@@ -373,7 +340,7 @@
     elBeat.textContent  = count;
     elHint.textContent  = HINTS[pi];
 
-    updateFooter(t, Math.min(cycleIdx + 1, totalCycles));
+    updateFooter(t, Math.min(cycleIdx + 1, TOTAL_CYCLES));
   }
 
   function setScale(s){ orb.style.transform = 'scale(' + s.toFixed(4) + ')'; }
@@ -404,12 +371,11 @@
 
   /* ---------- transport ---------- */
   function start(){
-    readPattern();
     running = true;
     btnMain.textContent = 'Pause';
     audioCtx();
     if(mode === 'track' && trackOK){
-      au.play().catch(function(){ trackOK = false; flash('Track blocked — using beeps'); mode = 'beeps'; selSound.value = 'beeps'; start(); });
+      au.play().catch(function(){ trackOK = false; flash('Track blocked — using beeps'); mode = 'beeps'; start(); });
     } else {
       clockT0 = performance.now();
     }
@@ -439,15 +405,7 @@
   }
 
   btnMain.addEventListener('click', function(){ running ? pause() : start(); });
-  btnReset.addEventListener('click', reset);
-  selPattern.addEventListener('change', function(){ readPattern(); });
-  selSound.addEventListener('change', function(){
-    var wasRunning = running;
-    if(running) pause();
-    mode = selSound.value;
-    reset();
-    if(wasRunning) start();
-  });
+  btnReset.addEventListener('click', function(){ reset(); start(); });
 
   document.addEventListener('keydown', function(e){
     if(e.code === 'Space'){ e.preventDefault(); running ? pause() : start(); }
@@ -457,10 +415,8 @@
   /* ---------- does the mp3 exist? ---------- */
   au.addEventListener('error', function(){
     trackOK = false;
-    if(selSound.value === 'track'){
-      mode = 'beeps'; selSound.value = 'beeps';
-      flash('metronome.mp3 not found — beeps only');
-    }
+    mode = 'beeps';
+    flash('metronome.mp3 not found — beeps only');
   });
   var flashT;
   function flash(msg){
@@ -469,7 +425,6 @@
   }
 
   /* ---------- init ---------- */
-  readPattern();
   reset();
   loop();
 })();
