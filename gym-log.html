@@ -3,70 +3,65 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<meta name="theme-color" content="#040A1C" />
-<title>Training Log</title>
+<meta name="theme-color" content="#143063" />
+<title>Gym Log</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-html,body{margin:0;padding:0;background:#02060F;}
+html{background:#0B1F47;}
 body{
-  min-height:100vh;
+  margin:0;padding:0;min-height:100vh;
   background:
-    radial-gradient(1100px 620px at 12% -8%, #23478F 0%, transparent 58%),
-    radial-gradient(900px 520px at 105% 2%, #123A86 0%, transparent 52%),
-    radial-gradient(700px 700px at 50% 112%, #0C2456 0%, transparent 60%),
-    linear-gradient(180deg,#081433 0%,#050D24 48%,#02060F 100%);
-  background-attachment:fixed;
+    radial-gradient(950px 520px at 12% 0%, rgba(104,163,255,.30), transparent 62%),
+    radial-gradient(820px 460px at 100% 10%, rgba(255,214,10,.09), transparent 58%),
+    radial-gradient(760px 620px at 50% 108%, rgba(72,128,226,.22), transparent 62%),
+    linear-gradient(180deg,#26539F 0%,#1E4489 18%,#1A3873 36%,#152D5F 56%,#10234B 76%,#0B1B39 100%);
+  background-attachment:fixed;background-repeat:no-repeat;
 }
 .app{
-  --ink:#F3F6FF; --dim:#94A3CC; --dim2:#6C7BA6;
-  --yellow:#FFD60A; --orange:#FF7A18;
-  --glass:linear-gradient(158deg,rgba(255,255,255,.085),rgba(255,255,255,.022));
-  --edge:rgba(255,255,255,.11);
-  --shadow:0 20px 44px -22px rgba(0,0,0,.9), inset 0 1px 0 rgba(255,255,255,.09);
+  --ink:#FFFFFF; --dim:#C6D3EF; --dim2:#93A8D4;
+  --yellow:#FFD60A; --dark:#0B1B39;
+  --glass:linear-gradient(158deg,rgba(255,255,255,.13),rgba(255,255,255,.05));
+  --edge:rgba(255,255,255,.17);
+  --shadow:0 22px 46px -24px rgba(0,0,0,.75), inset 0 1px 0 rgba(255,255,255,.14);
   color:var(--ink); font-family:'Sora',system-ui,sans-serif;
   max-width:1120px; margin:0 auto; padding:26px 16px 90px;
   -webkit-text-size-adjust:100%;
 }
 .mono{font-family:'IBM Plex Mono',monospace;}
-.grad{background:linear-gradient(100deg,var(--yellow),var(--orange));
-  -webkit-background-clip:text;background-clip:text;color:transparent;}
+.gold{color:var(--yellow);}
 
-/* ---------- header ---------- */
+/* header */
 .hdr{display:flex;align-items:center;gap:14px;margin-bottom:22px;}
-.mark{width:42px;height:42px;border-radius:13px;flex:0 0 auto;
-  background:linear-gradient(140deg,var(--yellow),var(--orange));
-  display:flex;align-items:center;justify-content:center;
-  font-weight:800;font-size:19px;color:#0A1330;
-  box-shadow:0 10px 26px -10px rgba(255,122,24,.75);}
+.mark{width:42px;height:42px;border-radius:13px;flex:0 0 auto;background:var(--yellow);
+  display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;
+  color:var(--dark);box-shadow:0 10px 26px -10px rgba(255,214,10,.8);}
 .hdr h1{margin:0;font-size:21px;font-weight:800;letter-spacing:-.02em;}
-.hdr p{margin:2px 0 0;font-size:10px;letter-spacing:.16em;color:var(--dim2);
+.hdr p{margin:3px 0 0;font-size:10px;letter-spacing:.16em;color:var(--dim2);
   text-transform:uppercase;font-family:'IBM Plex Mono',monospace;}
-.sync{margin-left:auto;display:flex;align-items:center;gap:7px;background:rgba(255,255,255,.06);
+.sync{margin-left:auto;display:flex;align-items:center;gap:7px;background:rgba(255,255,255,.10);
   border:1px solid var(--edge);border-radius:999px;padding:7px 13px;cursor:pointer;
   font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.1em;
-  color:var(--dim);text-transform:uppercase;white-space:nowrap;}
-.dot{width:7px;height:7px;border-radius:50%;background:#42506F;}
-.dot.ok{background:#3DDC97;box-shadow:0 0 9px #3DDC97;}
+  color:#FFFFFF;text-transform:uppercase;white-space:nowrap;}
+.dot{width:7px;height:7px;border-radius:50%;background:#7D8FB8;}
+.dot.ok{background:#4BE39B;box-shadow:0 0 9px #4BE39B;}
 .dot.busy{background:var(--yellow);animation:pulse 1s infinite;}
-.dot.bad{background:#FF5A5A;}
+.dot.bad{background:#FF6B6B;}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.2}}
 
-/* ---------- nav ---------- */
-.nav{display:flex;gap:5px;margin-bottom:20px;overflow-x:auto;padding-bottom:3px;
-  scrollbar-width:none;}
+/* nav */
+.nav{display:flex;gap:5px;margin-bottom:20px;overflow-x:auto;padding-bottom:3px;scrollbar-width:none;}
 .nav::-webkit-scrollbar{display:none;}
-.nav button{flex:0 0 auto;background:rgba(255,255,255,.05);border:1px solid var(--edge);
-  border-radius:999px;color:var(--dim);font-family:'Sora',sans-serif;font-size:12.5px;
+.nav button{flex:0 0 auto;background:rgba(255,255,255,.09);border:1px solid var(--edge);
+  border-radius:999px;color:#FFFFFF;font-family:'Sora',sans-serif;font-size:12.5px;
   font-weight:600;padding:9px 17px;cursor:pointer;transition:.18s;}
-.nav button:hover{color:var(--ink);}
-.nav button.on{background:linear-gradient(100deg,var(--yellow),var(--orange));
-  border-color:transparent;color:#0A1330;font-weight:700;
-  box-shadow:0 10px 24px -12px rgba(255,122,24,.9);}
+.nav button:hover{background:rgba(255,255,255,.16);}
+.nav button.on{background:var(--yellow);border-color:var(--yellow);color:var(--dark);
+  font-weight:700;box-shadow:0 10px 24px -12px rgba(255,214,10,.95);}
 
-/* ---------- cards ---------- */
+/* cards */
 .stack{display:flex;flex-direction:column;gap:13px;}
 .card{background:var(--glass);border:1px solid var(--edge);border-radius:20px;
   padding:18px;box-shadow:var(--shadow);backdrop-filter:blur(16px);}
@@ -75,125 +70,117 @@ body{
   text-transform:uppercase;color:var(--dim2);}
 .h2{font-size:14px;font-weight:700;margin:0 0 12px;letter-spacing:-.01em;}
 .note{font-size:11.5px;color:var(--dim);line-height:1.5;}
-.note.up{color:#3DDC97;} .note.down{color:var(--orange);}
 
-/* ---------- stat grid ---------- */
+/* stat grid */
 .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:11px;}
 @media(min-width:820px){.grid{grid-template-columns:repeat(4,1fr);}}
 .tile{background:var(--glass);border:1px solid var(--edge);border-radius:18px;
   padding:15px 15px 17px;box-shadow:var(--shadow);backdrop-filter:blur(16px);
-  display:flex;flex-direction:column;gap:7px;position:relative;overflow:hidden;}
-.tile.hero{grid-column:span 2;
-  background:linear-gradient(150deg,rgba(255,214,10,.14),rgba(255,122,24,.07) 45%,rgba(255,255,255,.03));
-  border-color:rgba(255,190,60,.26);}
-.big{font-size:clamp(30px,8vw,44px);font-weight:800;line-height:1;letter-spacing:-.035em;}
+  display:flex;flex-direction:column;gap:7px;overflow:hidden;}
+.tile.hero{grid-column:span 2;background:linear-gradient(150deg,rgba(255,214,10,.18),rgba(255,255,255,.06));
+  border-color:rgba(255,214,10,.34);}
+.big{font-size:clamp(28px,7.4vw,42px);font-weight:800;line-height:1;letter-spacing:-.035em;}
+.big.sm{font-size:clamp(22px,5.4vw,30px);}
 .big em{font-family:'IBM Plex Mono',monospace;font-style:normal;font-size:12px;
   color:var(--dim2);margin-left:6px;letter-spacing:0;font-weight:500;}
-.track{height:5px;border-radius:99px;background:rgba(255,255,255,.11);overflow:hidden;margin-top:3px;}
-.fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--yellow),var(--orange));
-  transition:width .6s cubic-bezier(.2,.8,.2,1);}
+.track{height:5px;border-radius:99px;background:rgba(255,255,255,.2);overflow:hidden;margin-top:3px;}
+.fill{height:100%;border-radius:99px;background:var(--yellow);transition:width .6s cubic-bezier(.2,.8,.2,1);}
 .pips{display:flex;gap:5px;margin-top:3px;}
-.pip{flex:1;height:5px;border-radius:99px;background:rgba(255,255,255,.11);}
-.pip.on{background:linear-gradient(90deg,var(--yellow),var(--orange));}
+.pip{flex:1;height:5px;border-radius:99px;background:rgba(255,255,255,.2);}
+.pip.on{background:var(--yellow);}
+.ellip{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 
-/* ---------- week strip ---------- */
+/* week strip */
 .week{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;}
-.wd{background:rgba(255,255,255,.04);border:1px solid var(--edge);border-radius:14px;
+.wd{background:rgba(255,255,255,.07);border:1px solid var(--edge);border-radius:14px;
   padding:11px 10px;text-align:center;}
-.wd.done{border-color:rgba(255,190,60,.4);background:rgba(255,214,10,.10);}
+.wd.done{border-color:rgba(255,214,10,.55);background:rgba(255,214,10,.14);}
 .wd b{display:block;font-size:12px;font-weight:700;margin:4px 0 2px;}
 .wd .tick{font-size:13px;color:var(--yellow);}
 
-/* ---------- pills / chips ---------- */
+/* pills */
 .pills{display:flex;gap:5px;flex-wrap:wrap;}
-.pill{background:rgba(255,255,255,.05);border:1px solid var(--edge);border-radius:999px;
-  color:var(--dim);font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.09em;
+.pill{background:rgba(255,255,255,.09);border:1px solid var(--edge);border-radius:999px;
+  color:#FFFFFF;font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.09em;
   padding:6px 12px;cursor:pointer;text-transform:uppercase;transition:.15s;}
-.pill:hover{color:var(--ink);}
-.pill.on{background:linear-gradient(100deg,var(--yellow),var(--orange));
-  border-color:transparent;color:#0A1330;font-weight:600;}
+.pill:hover{background:rgba(255,255,255,.16);}
+.pill.on{background:var(--yellow);border-color:var(--yellow);color:var(--dark);font-weight:700;}
 .panelhead{display:flex;justify-content:space-between;align-items:center;gap:12px;
   flex-wrap:wrap;margin-bottom:14px;}
 .panelhead .h2{margin:0;}
 
-/* ---------- buttons ---------- */
-.btn{background:linear-gradient(100deg,var(--yellow),var(--orange));border:none;border-radius:14px;
-  color:#0A1330;font-family:'Sora',sans-serif;font-weight:700;font-size:13.5px;padding:14px;
-  cursor:pointer;box-shadow:0 14px 30px -14px rgba(255,122,24,.9);transition:.15s;}
+/* buttons */
+.btn{background:var(--yellow);border:none;border-radius:14px;color:var(--dark);
+  font-family:'Sora',sans-serif;font-weight:700;font-size:13.5px;padding:14px;cursor:pointer;
+  box-shadow:0 14px 30px -14px rgba(255,214,10,.95);transition:.15s;}
 .btn:active{transform:scale(.985);}
-.btn:disabled{opacity:.32;box-shadow:none;cursor:not-allowed;}
+.btn:disabled{opacity:.35;box-shadow:none;cursor:not-allowed;}
 .btn.sm{padding:10px 18px;font-size:12px;border-radius:11px;}
 .btn.full{width:100%;}
-.ghost{background:rgba(255,255,255,.05);border:1px solid var(--edge);border-radius:13px;
-  color:var(--dim);font-family:'Sora',sans-serif;font-size:12.5px;font-weight:600;
+.ghost{background:rgba(255,255,255,.09);border:1px solid var(--edge);border-radius:13px;
+  color:#FFFFFF;font-family:'Sora',sans-serif;font-size:12.5px;font-weight:600;
   padding:12px 18px;cursor:pointer;transition:.15s;}
-.ghost:hover{border-color:rgba(255,190,60,.5);color:var(--yellow);}
+.ghost:hover{border-color:var(--yellow);color:var(--yellow);}
 .ghost.sm{padding:8px 13px;font-size:11.5px;border-radius:10px;}
 
-/* ---------- inputs ---------- */
-input,select{font-family:'IBM Plex Mono',monospace;background:rgba(255,255,255,.06);
-  border:1px solid var(--edge);border-radius:11px;color:var(--ink);font-size:14px;padding:11px 12px;}
-input:focus,select:focus{outline:none;border-color:var(--yellow);
-  box-shadow:0 0 0 3px rgba(255,214,10,.14);}
-select option{background:#0B1633;color:#F3F6FF;}
+/* inputs */
+input,select{font-family:'IBM Plex Mono',monospace;background:rgba(255,255,255,.11);
+  border:1px solid var(--edge);border-radius:11px;color:#FFFFFF;font-size:14px;padding:11px 12px;}
+input:focus,select:focus{outline:none;border-color:var(--yellow);box-shadow:0 0 0 3px rgba(255,214,10,.2);}
+select option{background:#14306A;color:#FFFFFF;}
 input::placeholder{color:var(--dim2);}
 .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
 .field{display:flex;flex-direction:column;gap:5px;flex:1;min-width:104px;}
-.field .cap{margin-left:2px;}
 
-/* ---------- session logger ---------- */
-.sessbar{background:linear-gradient(100deg,rgba(255,214,10,.2),rgba(255,122,24,.13));
-  border:1px solid rgba(255,190,60,.34);border-radius:18px;padding:15px 17px;
-  display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;}
+/* logger */
+.sessbar{background:rgba(255,214,10,.17);border:1px solid rgba(255,214,10,.42);
+  border-radius:18px;padding:15px 17px;display:flex;justify-content:space-between;
+  align-items:center;gap:12px;flex-wrap:wrap;}
 .live{font-size:19px;font-weight:800;letter-spacing:-.02em;margin-top:3px;}
 .live span{color:var(--dim2);margin:0 7px;font-weight:400;}
-.lifthead{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:3px;}
+.lifthead{display:flex;justify-content:space-between;align-items:baseline;gap:10px;}
 .lifthead b{font-size:14px;font-weight:700;}
 .tgt{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--yellow);white-space:nowrap;}
 .last{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim2);margin-top:7px;}
-.last i{font-style:normal;display:inline-block;background:rgba(255,255,255,.07);
-  border:1px solid var(--edge);border-radius:7px;padding:2px 7px;margin-right:5px;color:var(--dim);}
+.last i{font-style:normal;display:inline-block;background:rgba(255,255,255,.12);
+  border:1px solid var(--edge);border-radius:7px;padding:2px 7px;margin-right:5px;color:#FFF;}
 .sets{display:flex;flex-direction:column;gap:8px;margin-top:12px;}
 .set{display:flex;align-items:center;gap:7px;}
 .setno{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim2);width:13px;flex:0 0 auto;}
-.set input{width:78px;flex:0 0 auto;text-align:center;}
+.set input{width:76px;flex:0 0 auto;text-align:center;}
 .reps{display:flex;gap:5px;flex:1;}
-.rep{flex:1;background:rgba(255,255,255,.05);border:1px solid var(--edge);border-radius:10px;
-  color:var(--dim);font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:500;
-  padding:10px 0;cursor:pointer;transition:.14s;}
-.rep.on{background:linear-gradient(100deg,var(--yellow),var(--orange));
-  border-color:transparent;color:#0A1330;font-weight:700;}
+.rep{flex:1;background:rgba(255,255,255,.09);border:1px solid var(--edge);border-radius:10px;
+  color:#FFFFFF;font-family:'IBM Plex Mono',monospace;font-size:13px;padding:10px 0;cursor:pointer;transition:.14s;}
+.rep.on{background:var(--yellow);border-color:var(--yellow);color:var(--dark);font-weight:700;}
 .x{background:none;border:none;color:var(--dim2);font-size:19px;cursor:pointer;padding:0 4px;line-height:1;}
-.x:hover{color:var(--orange);}
-.addset{width:100%;margin-top:10px;background:none;border:1px dashed rgba(255,255,255,.18);
-  border-radius:11px;color:var(--dim2);font-family:'Sora',sans-serif;font-size:12px;
-  padding:9px;cursor:pointer;}
+.x:hover{color:var(--yellow);}
+.addset{width:100%;margin-top:10px;background:none;border:1px dashed rgba(255,255,255,.3);
+  border-radius:11px;color:var(--dim);font-family:'Sora',sans-serif;font-size:12px;padding:9px;cursor:pointer;}
 .addset:hover{border-color:var(--yellow);color:var(--yellow);}
 
-/* ---------- day cards ---------- */
+/* day cards */
 .days{display:grid;grid-template-columns:repeat(auto-fit,minmax(158px,1fr));gap:11px;}
 .day{background:var(--glass);border:1px solid var(--edge);border-radius:18px;padding:17px;
   text-align:left;cursor:pointer;color:var(--ink);font-family:'Sora',sans-serif;
   display:flex;flex-direction:column;gap:4px;transition:.18s;box-shadow:var(--shadow);}
-.day:hover{border-color:rgba(255,190,60,.5);transform:translateY(-3px);}
+.day:hover{border-color:var(--yellow);transform:translateY(-3px);}
 .day b{font-size:16px;font-weight:700;letter-spacing:-.01em;}
 .daytag{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.2em;
-  text-transform:uppercase;font-weight:600;}
+  text-transform:uppercase;font-weight:600;color:var(--yellow);}
 
-/* ---------- library picker ---------- */
+/* library */
 .lib{display:flex;flex-wrap:wrap;gap:7px;margin-top:11px;}
-.ex{background:rgba(255,255,255,.05);border:1px solid var(--edge);border-radius:11px;
-  color:var(--dim);font-family:'Sora',sans-serif;font-size:12px;padding:9px 13px;cursor:pointer;transition:.14s;}
-.ex:hover{color:var(--ink);border-color:rgba(255,190,60,.4);}
-.ex.on{background:rgba(255,214,10,.15);border-color:var(--yellow);color:var(--yellow);font-weight:600;}
+.ex{background:rgba(255,255,255,.09);border:1px solid var(--edge);border-radius:11px;
+  color:#FFFFFF;font-family:'Sora',sans-serif;font-size:12px;padding:9px 13px;cursor:pointer;transition:.14s;}
+.ex:hover{border-color:var(--yellow);}
+.ex.on{background:rgba(255,214,10,.2);border-color:var(--yellow);color:var(--yellow);font-weight:600;}
 .chosen{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;}
-.chip{background:linear-gradient(100deg,rgba(255,214,10,.22),rgba(255,122,24,.16));
-  border:1px solid rgba(255,190,60,.4);border-radius:999px;font-size:11.5px;
-  padding:6px 7px 6px 13px;display:flex;align-items:center;gap:5px;}
+.chip{background:rgba(255,214,10,.2);border:1px solid rgba(255,214,10,.5);border-radius:999px;
+  font-size:11.5px;padding:6px 7px 6px 13px;display:flex;align-items:center;gap:5px;}
 
-/* ---------- lists ---------- */
+/* lists */
 .entry{display:flex;align-items:center;gap:11px;padding:11px 0;
-  border-bottom:1px solid rgba(255,255,255,.07);font-size:12.5px;}
+  border-bottom:1px solid rgba(255,255,255,.12);font-size:12.5px;}
 .entry:last-child{border-bottom:none;}
 .entry .main{flex:1;min-width:0;}
 .entry .main b{font-weight:600;font-size:13px;}
@@ -202,18 +189,23 @@ input::placeholder{color:var(--dim2);}
 .histhead{width:100%;background:none;border:none;color:var(--ink);padding:15px 17px;
   display:flex;justify-content:space-between;align-items:center;gap:10px;cursor:pointer;
   text-align:left;font-family:'Sora',sans-serif;}
-.histhead:hover{background:rgba(255,255,255,.04);}
-.histbody{padding:0 17px 17px;border-top:1px solid rgba(255,255,255,.07);}
+.histhead:hover{background:rgba(255,255,255,.07);}
+.histbody{padding:0 17px 17px;border-top:1px solid rgba(255,255,255,.12);}
 .histlift{display:flex;justify-content:space-between;gap:12px;padding:9px 0;
-  border-bottom:1px solid rgba(255,255,255,.06);font-size:12px;}
+  border-bottom:1px solid rgba(255,255,255,.1);font-size:12px;}
 .histlift span:last-child{color:var(--dim2);font-family:'IBM Plex Mono',monospace;
   font-size:10.5px;white-space:nowrap;}
 .empty{display:flex;align-items:center;justify-content:center;color:var(--dim2);
-  font-size:12px;text-align:center;padding:56px 20px;}
-.err{background:rgba(255,90,90,.12);border:1px solid rgba(255,90,90,.34);border-radius:13px;
-  color:#FFB4B4;font-size:12px;padding:11px 14px;margin-bottom:13px;}
+  font-size:12px;text-align:center;padding:52px 20px;}
+.err{background:rgba(255,107,107,.16);border:1px solid rgba(255,107,107,.42);border-radius:13px;
+  color:#FFD8D8;font-size:12px;padding:11px 14px;margin-bottom:13px;line-height:1.5;}
 .loading{min-height:70vh;display:flex;align-items:center;justify-content:center;
-  font-family:'IBM Plex Mono',monospace;letter-spacing:.3em;color:#5A6890;font-size:11px;}
+  font-family:'IBM Plex Mono',monospace;letter-spacing:.3em;color:#A9BCE4;font-size:11px;}
+.scroll{overflow-x:auto;overflow-y:hidden;scrollbar-width:thin;}
+.scroll::-webkit-scrollbar{height:6px;}
+.scroll::-webkit-scrollbar-thumb{background:rgba(255,255,255,.25);border-radius:99px;}
+.hint{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--dim2);margin-top:8px;}
 </style>
 </head>
 <body>
@@ -226,19 +218,15 @@ input::placeholder{color:var(--dim2);}
 <script type="text/babel" data-type="module">
 const { useState, useEffect, useMemo, useRef, useCallback } = React;
 
-/* ================================================================== */
-/*  SYNC CONFIG — fill in after deploying Code.gs                      */
-/* ================================================================== */
+/* ================= SYNC CONFIG ================= */
 const SYNC_URL    = 'https://script.google.com/macros/s/AKfycbxBNDgnM3yuliGcl5LDwql2a18-MVEZRSJ-F7S5ZwSZppcZ1xULClulEh5mep0DuZwq/exec';
-const SYNC_SECRET = 'sync';
+const SYNC_SECRET = 'SYNC';
 const SYNC_ON = SYNC_URL.indexOf('script.google.com') !== -1;
 
-const KEY="traininglog-v2", GOAL_KG=78, START_KG=72;
+const KEY="gymlog-v2", GOAL_KG=78, START_KG=72;
 const REPS=[8,10,12];
 
-/* ================================================================== */
-/*  EXERCISE LIBRARY — custom sessions can only draw from this         */
-/* ================================================================== */
+/* ================= LIBRARY ================= */
 const LIBRARY={
   "Chest":["Barbell Bench Press","Incline DB Press","Machine Chest Press","Cable Fly","Weighted Dip"],
   "Back":["Pull-up / Lat Pulldown","Chest-Supported Row","Barbell Row","Seated Cable Row","Straight-Arm Pulldown"],
@@ -250,119 +238,100 @@ const LIBRARY={
   "Calves":["Standing Calf Raise","Seated Calf Raise","Leg Press Calf Raise"],
   "Core":["Cable Crunch","Hanging Leg Raise","Ab Wheel Rollout","Decline Sit-up","Russian Twist"]
 };
-const ARM_SET={};
-LIBRARY.Biceps.concat(LIBRARY.Triceps).forEach(n=>{ARM_SET[n]=1;});
+const UPPER=["Chest","Back","Shoulders","Biceps","Triceps","Core"];
+const PART={};
+Object.keys(LIBRARY).forEach(g=>LIBRARY[g].forEach(n=>{PART[n]=UPPER.indexOf(g)>=0?"upper":"lower";}));
 
-/* ================================================================== */
-/*  THE SCHEDULE — arm-shaping emphasis                                */
-/* ================================================================== */
+/* ================= SCHEDULE ================= */
 const TEMPLATES={
   upperA:{label:"Upper A",sub:"Push · Shoulders · Triceps",day:"Mon",lifts:[
-    {name:"Seated DB Shoulder Press",target:"4 × 8"},
-    {name:"Incline DB Press",target:"3 × 10"},
-    {name:"Cable Lateral Raise",target:"4 × 12"},
-    {name:"Close-Grip Bench Press",target:"3 × 8"},
-    {name:"Overhead Rope Extension",target:"3 × 10"},
-    {name:"Rope Pushdown",target:"3 × 12"}]},
+    {name:"Seated DB Shoulder Press",target:"4 × 8"},{name:"Incline DB Press",target:"3 × 10"},
+    {name:"Cable Lateral Raise",target:"4 × 12"},{name:"Close-Grip Bench Press",target:"3 × 8"},
+    {name:"Overhead Rope Extension",target:"3 × 10"},{name:"Rope Pushdown",target:"3 × 12"}]},
   lowerA:{label:"Lower A",sub:"Quads · Calves · Core",day:"Tue",lifts:[
-    {name:"Back Squat",target:"4 × 8"},
-    {name:"Bulgarian Split Squat",target:"3 × 10"},
-    {name:"Leg Press",target:"3 × 12"},
-    {name:"Leg Extension",target:"3 × 12"},
-    {name:"Standing Calf Raise",target:"4 × 12"},
-    {name:"Cable Crunch",target:"3 × 12"}]},
+    {name:"Back Squat",target:"4 × 8"},{name:"Bulgarian Split Squat",target:"3 × 10"},
+    {name:"Leg Press",target:"3 × 12"},{name:"Leg Extension",target:"3 × 12"},
+    {name:"Standing Calf Raise",target:"4 × 12"},{name:"Cable Crunch",target:"3 × 12"}]},
   upperB:{label:"Upper B",sub:"Pull · Back · Biceps",day:"Thu",lifts:[
-    {name:"Pull-up / Lat Pulldown",target:"4 × 8"},
-    {name:"Chest-Supported Row",target:"4 × 10"},
-    {name:"Face Pull",target:"3 × 12"},
-    {name:"Incline DB Curl",target:"4 × 10"},
-    {name:"Preacher Curl",target:"3 × 10"},
-    {name:"Hammer Curl",target:"3 × 12"}]},
+    {name:"Pull-up / Lat Pulldown",target:"4 × 8"},{name:"Chest-Supported Row",target:"4 × 10"},
+    {name:"Face Pull",target:"3 × 12"},{name:"Incline DB Curl",target:"4 × 10"},
+    {name:"Preacher Curl",target:"3 × 10"},{name:"Hammer Curl",target:"3 × 12"}]},
   lowerB:{label:"Lower B",sub:"Glutes · Hams · Arms",day:"Fri",lifts:[
-    {name:"Romanian Deadlift",target:"4 × 8"},
-    {name:"Hip Thrust",target:"4 × 10"},
-    {name:"Seated Leg Curl",target:"3 × 12"},
-    {name:"Walking Lunge",target:"3 × 10"},
-    {name:"EZ-Bar Curl",target:"3 × 10"},
-    {name:"Skull Crusher",target:"3 × 10"},
+    {name:"Romanian Deadlift",target:"4 × 8"},{name:"Hip Thrust",target:"4 × 10"},
+    {name:"Seated Leg Curl",target:"3 × 12"},{name:"Walking Lunge",target:"3 × 10"},
+    {name:"EZ-Bar Curl",target:"3 × 10"},{name:"Skull Crusher",target:"3 × 10"},
     {name:"Hanging Leg Raise",target:"3 × 12"}]}
 };
+const CARDIO_TYPES=["Incline Walk","Run"];
+const PLANK_TYPES=["Forearm Plank","Swiss Ball Plank","Weighted Plank"];
 
-const CARDIO_TYPES=["Walk","Incline Walk","Run","Intervals"];
-const PLANK_TYPES=["Forearm Plank","High Plank","Side Plank (L)","Side Plank (R)","Weighted Plank"];
-
-/* ---------------- helpers ---------------- */
+/* ================= HELPERS ================= */
 const todayISO=()=>new Date().toISOString().slice(0,10);
 function mondayOf(s){const d=new Date(s+"T00:00:00");d.setDate(d.getDate()-((d.getDay()+6)%7));return d.toISOString().slice(0,10);}
 function shiftWeeks(m,n){const d=new Date(m+"T00:00:00");d.setDate(d.getDate()+n*7);return d.toISOString().slice(0,10);}
 const vol=s=>s.lifts.reduce((a,l)=>a+l.sets.reduce((b,x)=>b+(+x.w||0)*(+x.r||0),0),0);
-const armVol=s=>s.lifts.reduce((a,l)=>a+(ARM_SET[l.name]?l.sets.reduce((b,x)=>b+(+x.w||0)*(+x.r||0),0):0),0);
+const liftVol=l=>l.sets.reduce((b,x)=>b+(+x.w||0)*(+x.r||0),0);
 const nSets=s=>s.lifts.reduce((a,l)=>a+l.sets.filter(x=>+x.r>0).length,0);
 const e1rm=(w,r)=>(+w||0)*(1+(+r||0)/30);
 const fmt=n=>n>=1000?(n/1000).toFixed(1).replace(/\.0$/,"")+"k":Math.round(n);
 const shortDate=iso=>new Date(iso+"T00:00:00").toLocaleDateString("en-GB",{day:"numeric",month:"short"});
 const mmss=s=>Math.floor(s/60)+":"+String(Math.round(s%60)).padStart(2,"0");
+const thisMonth=()=>todayISO().slice(0,7);
+const monthName=()=>new Date().toLocaleDateString("en-GB",{month:"long"});
 
-/* ---------------- charts ---------------- */
-const W=700,H=290,PL=54,PR=16,PT=18,PB=36;
-const GRID="rgba(255,255,255,.09)", LAB="#6C7BA6";
-function Grid({min,max,fmtY}){
-  const r=[];
-  for(let i=0;i<=4;i++){
-    const v=min+((max-min)*i)/4;
-    const y=H-PB-((v-min)/(max-min||1))*(H-PT-PB);
-    r.push(<g key={i}>
-      <line x1={PL} x2={W-PR} y1={y} y2={y} stroke={GRID}/>
-      <text x={PL-9} y={y+4} textAnchor="end" fill={LAB} fontSize="11" fontFamily="'IBM Plex Mono',monospace">{fmtY(v)}</text>
-    </g>);}
-  return <g>{r}</g>;
-}
-function XLab({data,every}){
-  const st=(W-PL-PR)/data.length;
-  return <g>{data.map((d,i)=>i%every===0?
-    <text key={i} x={PL+st*(i+.5)} y={H-PB+21} textAnchor="middle" fill={LAB}
-      fontSize="11" fontFamily="'IBM Plex Mono',monospace">{d.label}</text>:null)}</g>;
-}
-function Bars({data,unit}){
-  const max=Math.max(1,...data.map(d=>d.v))*1.12;
-  const st=(W-PL-PR)/data.length, bw=Math.min(36,st*.55);
-  return (<svg viewBox={`0 0 ${W} ${H}`} width="100%" style={{display:"block"}}>
-    <defs><linearGradient id="bg1" x1="0" y1="1" x2="0" y2="0">
-      <stop offset="0%" stopColor="#FF7A18"/><stop offset="100%" stopColor="#FFD60A"/>
-    </linearGradient></defs>
-    <Grid min={0} max={max} fmtY={fmt}/>
-    {data.map((d,i)=>{const h=(d.v/max)*(H-PT-PB);
-      return <rect key={i} x={PL+st*(i+.5)-bw/2} y={H-PB-h} width={bw} height={Math.max(0,h)}
-        rx="4" fill="url(#bg1)" opacity={d.v?1:.18}>
-        <title>{d.label}: {Math.round(d.v).toLocaleString()} {unit}</title></rect>;})}
-    <XLab data={data} every={2}/>
-  </svg>);
-}
-function Lines({data,unit,pad=1}){
-  const vs=data.map(d=>d.v), min=Math.min(...vs)-pad, max=Math.max(...vs)+pad;
+/* ================= PLOT (scrollable) ================= */
+const H=280,PL=52,PR=18,PT=18,PB=36,STEP=56;
+function Plot({data,kind="line",unit,pad=1}){
+  const box=useRef(null);
+  useEffect(()=>{if(box.current)box.current.scrollLeft=box.current.scrollWidth;},[data]);
+  if(!data||data.length<1) return <div className="empty">Nothing logged yet.</div>;
+  const W=Math.max(660,data.length*STEP+PL+PR);
+  const vs=data.map(d=>d.v);
+  const min=kind==="bar"?0:Math.min(...vs)-pad;
+  const max=(kind==="bar"?Math.max(1,...vs)*1.12:Math.max(...vs)+pad);
   const st=(W-PL-PR)/data.length;
   const px=i=>PL+st*(i+.5), py=v=>H-PB-((v-min)/((max-min)||1))*(H-PT-PB);
-  const pts=data.map((d,i)=>`${px(i)},${py(d.v)}`).join(" ");
-  const area=`${PL+st*.5},${H-PB} ${pts} ${PL+st*(data.length-.5)},${H-PB}`;
-  return (<svg viewBox={`0 0 ${W} ${H}`} width="100%" style={{display:"block"}}>
-    <defs>
-      <linearGradient id="lg1" x1="0" y1="0" x2="1" y2="0">
-        <stop offset="0%" stopColor="#FFD60A"/><stop offset="100%" stopColor="#FF7A18"/></linearGradient>
-      <linearGradient id="ag1" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stopColor="#FFD60A" stopOpacity=".26"/>
-        <stop offset="100%" stopColor="#FF7A18" stopOpacity="0"/></linearGradient>
-    </defs>
-    <Grid min={min} max={max} fmtY={v=>v.toFixed(1)}/>
-    <polygon points={area} fill="url(#ag1)"/>
-    <polyline points={pts} fill="none" stroke="url(#lg1)" strokeWidth="3.2"
-      strokeLinejoin="round" strokeLinecap="round"/>
-    {data.map((d,i)=><circle key={i} cx={px(i)} cy={py(d.v)} r="4" fill="#FFD60A">
-      <title>{d.label}: {d.v} {unit}</title></circle>)}
-    <XLab data={data} every={Math.max(1,Math.ceil(data.length/7))}/>
-  </svg>);
+  const grid=[];
+  for(let i=0;i<=4;i++){
+    const v=min+((max-min)*i)/4, y=py(v);
+    grid.push(<g key={i}>
+      <line x1={PL} x2={W-PR} y1={y} y2={y} stroke="rgba(255,255,255,.16)"/>
+      <text x={PL-9} y={y+4} textAnchor="end" fill="#93A8D4" fontSize="11"
+        fontFamily="'IBM Plex Mono',monospace">{kind==="bar"?fmt(v):v.toFixed(1)}</text></g>);
+  }
+  const every=Math.max(1,Math.ceil(data.length/Math.floor((W-PL-PR)/68)));
+  const labels=data.map((d,i)=>i%every===0?
+    <text key={i} x={px(i)} y={H-PB+21} textAnchor="middle" fill="#93A8D4" fontSize="11"
+      fontFamily="'IBM Plex Mono',monospace">{d.label}</text>:null);
+  const pts=data.map((d,i)=>px(i)+","+py(d.v)).join(" ");
+  const bw=Math.min(34,st*.55);
+  return (<>
+    <div className="scroll" ref={box}>
+      <svg width={W} height={H} viewBox={"0 0 "+W+" "+H} style={{display:"block"}}>
+        <defs><linearGradient id="ag" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#FFD60A" stopOpacity=".3"/>
+          <stop offset="100%" stopColor="#FFD60A" stopOpacity="0"/></linearGradient></defs>
+        {grid}
+        {kind==="bar"
+          ? data.map((d,i)=>{const h=((d.v-min)/((max-min)||1))*(H-PT-PB);
+              return <rect key={i} x={px(i)-bw/2} y={H-PB-h} width={bw} height={Math.max(0,h)}
+                rx="4" fill="#FFD60A" opacity={d.v?1:.2}>
+                <title>{d.label}: {d.v} {unit}</title></rect>;})
+          : <>
+              <polygon points={PL+st*.5+","+(H-PB)+" "+pts+" "+(PL+st*(data.length-.5))+","+(H-PB)} fill="url(#ag)"/>
+              <polyline points={pts} fill="none" stroke="#FFD60A" strokeWidth="3.2"
+                strokeLinejoin="round" strokeLinecap="round"/>
+              {data.map((d,i)=><circle key={i} cx={px(i)} cy={py(d.v)} r="4.2" fill="#FFD60A">
+                <title>{d.label}: {d.v} {unit}</title></circle>)}
+            </>}
+        {labels}
+      </svg>
+    </div>
+    {data.length>10 && <div className="hint">← scroll for older data</div>}
+  </>);
 }
 
-/* ---------------- merge ---------------- */
+/* ================= MERGE ================= */
 function byId(a,b,del,pre){
   const o={};
   (a||[]).concat(b||[]).forEach(x=>{
@@ -379,17 +348,15 @@ function mergeState(a,b){
     if(del["w:"+w.date])return;
     const c=wd[w.date];
     if(!c||(w.savedAt||0)>(c.savedAt||0))wd[w.date]=w;});
-  return {
-    sessions:byId(a.sessions,b.sessions,del,""),
+  return {sessions:byId(a.sessions,b.sessions,del,""),
     cardio:byId(a.cardio,b.cardio,del,"c:"),
     planks:byId(a.planks,b.planks,del,"p:"),
     weights:Object.values(wd).sort((p,q)=>p.date.localeCompare(q.date)),
-    deleted:Object.keys(del)
-  };
+    deleted:Object.keys(del)};
 }
 const BLANK={sessions:[],weights:[],cardio:[],planks:[],deleted:[]};
 
-/* ================================================================== */
+/* ================= APP ================= */
 function App(){
   const [tab,setTab]=useState("home");
   const [data,setData]=useState(BLANK);
@@ -397,15 +364,14 @@ function App(){
   const [err,setErr]=useState(null);
   const [sync,setSync]=useState(SYNC_ON?"idle":"off");
   const [lastSync,setLastSync]=useState(null);
-  const hyd=useRef(false), timer=useRef(null), pushed=useRef("");
+  const hyd=useRef(false), timer=useRef(null), pushed=useRef(""), okAt=useRef(0), busy=useRef(false);
 
   const {sessions,weights,cardio,planks}=data;
 
   useEffect(()=>{
     try{const raw=localStorage.getItem(KEY);
       if(raw){const d=JSON.parse(raw);
-        setData({...BLANK,...d,deleted:d.deleted||[]});
-        setDraft(d.draft||null);}
+        setData({...BLANK,...d,deleted:d.deleted||[]});setDraft(d.draft||null);}
     }catch(e){}
     hyd.current=true;
   },[]);
@@ -416,42 +382,64 @@ function App(){
     catch(e){setErr("Couldn't save locally — browser storage is blocked or full.");}
   },[data,draft]);
 
-  const doSync=useCallback(async(state)=>{
-    if(!SYNC_ON)return;
-    setSync("busy");
+  /* one attempt, with timeout */
+  const attempt=async(state)=>{
+    const ctl=new AbortController();
+    const t=setTimeout(()=>ctl.abort(),25000);
     try{
-      const res=await fetch(SYNC_URL,{method:"POST",redirect:"follow",
+      const res=await fetch(SYNC_URL,{method:"POST",redirect:"follow",signal:ctl.signal,
         headers:{"Content-Type":"text/plain;charset=utf-8"},
         body:JSON.stringify({action:"sync",secret:SYNC_SECRET,state})});
-      const out=await res.json();
-      if(!out.ok)throw new Error(out.error||"sync failed");
-      const merged=mergeState(out.state,{});
-      pushed.current=JSON.stringify(merged);
-      setData(d=>JSON.stringify(mergeState(d,{}))===pushed.current?d:merged);
-      setSync("ok"); setLastSync(new Date()); setErr(null);
-    }catch(e){
-      setSync("bad");
-      setErr("Sync failed — your data is safe on this device. Tap the status pill to retry.");
+      if(!res.ok)throw new Error("HTTP "+res.status);
+      const txt=await res.text();
+      let out; try{out=JSON.parse(txt);}
+      catch(e){throw new Error(txt.indexOf("<")===0
+        ? "Google returned a login page — the deployment is not set to \"Anyone\""
+        : "unreadable response");}
+      if(!out.ok)throw new Error(out.error||"server rejected");
+      return out.state;
+    } finally { clearTimeout(t); }
+  };
+
+  /* retries with backoff */
+  const doSync=useCallback(async(state)=>{
+    if(!SYNC_ON||busy.current)return;
+    busy.current=true; setSync("busy");
+    let lastErr=null;
+    for(let i=0;i<3;i++){
+      try{
+        const remote=await attempt(state);
+        const merged=mergeState(remote,{});
+        pushed.current=JSON.stringify(merged);
+        setData(d=>JSON.stringify(mergeState(d,{}))===pushed.current?d:merged);
+        setSync("ok"); setLastSync(new Date()); okAt.current=Date.now();
+        setErr(null); busy.current=false; return;
+      }catch(e){
+        lastErr=e;
+        if(i<2)await new Promise(r=>setTimeout(r,1200*(i+1)));
+      }
     }
+    setSync("bad"); busy.current=false;
+    setErr("Sync failed after 3 tries ("+(lastErr&&lastErr.message)+"). Your data is safe on this device — tap the pill to retry.");
   },[]);
 
   useEffect(()=>{
     if(!hyd.current||!SYNC_ON)return;
     if(JSON.stringify(mergeState(data,{}))===pushed.current)return;
     clearTimeout(timer.current);
-    timer.current=setTimeout(()=>doSync(data),1500);
+    timer.current=setTimeout(()=>doSync(data),2500);
     return()=>clearTimeout(timer.current);
   },[data,doSync]);
 
   useEffect(()=>{
     if(!SYNC_ON)return;
-    const t=setTimeout(()=>doSync(JSON.parse(localStorage.getItem(KEY)||"{}")),400);
-    const f=()=>{if(document.visibilityState==="visible")doSync(JSON.parse(localStorage.getItem(KEY)||"{}"));};
+    const load=()=>JSON.parse(localStorage.getItem(KEY)||"{}");
+    const t=setTimeout(()=>doSync(load()),500);
+    const f=()=>{if(document.visibilityState==="visible"&&Date.now()-okAt.current>60000)doSync(load());};
     document.addEventListener("visibilitychange",f);
     return()=>{clearTimeout(t);document.removeEventListener("visibilitychange",f);};
   },[]);
 
-  /* mutations */
   const addSession=s=>setData(d=>({...d,sessions:[...d.sessions,{...s,savedAt:Date.now()}]}));
   const delSession=id=>setData(d=>({...d,sessions:d.sessions.filter(x=>x.id!==id),
     deleted:[...new Set([...d.deleted,String(id)])]}));
@@ -468,22 +456,26 @@ function App(){
     deleted:[...new Set([...d.deleted,"p:"+id])]}));
   const replaceAll=st=>setData(d=>mergeState(d,st));
 
-  /* stats */
   const stats=useMemo(()=>{
-    const tw=mondayOf(todayISO()), lw=shiftWeeks(tw,-1);
+    const tw=mondayOf(todayISO()), mo=thisMonth();
     const cur=sessions.filter(s=>mondayOf(s.date)===tw);
-    const prev=sessions.filter(s=>mondayOf(s.date)===lw);
-    const cv=cur.reduce((a,s)=>a+vol(s),0), pv=prev.reduce((a,s)=>a+vol(s),0);
     const sw=[...weights].sort((a,b)=>a.date.localeCompare(b.date));
     const latest=sw.length?+sw[sw.length-1].kg:START_KG;
-    const cardioMin=cardio.filter(c=>mondayOf(c.date)===tw).reduce((a,c)=>a+(+c.minutes||0),0);
-    const bestPlank=planks.length?Math.max(...planks.map(p=>+p.seconds||0)):0;
-    const doneKeys={}; cur.forEach(s=>{doneKeys[s.key]=1;});
+    const runs=cardio.filter(c=>c.type==="Run");
+    const runMonth=runs.filter(c=>c.date.slice(0,7)===mo).reduce((a,c)=>a+(+c.km||0),0);
+    const runMins=runs.filter(c=>c.date.slice(0,7)===mo).reduce((a,c)=>a+(+c.minutes||0),0);
+    const longest=runs.reduce((a,c)=>Math.max(a,+c.km||0),0);
+    const bestPlank=planks.reduce((a,p)=>Math.max(a,+p.seconds||0),0);
+    let up={v:0,n:"—"}, lo={v:0,n:"—"};
+    sessions.forEach(s=>s.lifts.forEach(l=>{
+      const v=liftVol(l); if(!v)return;
+      const t=PART[l.name]==="lower"?"lower":"upper";
+      if(t==="upper"&&v>up.v)up={v,n:l.name};
+      if(t==="lower"&&v>lo.v)lo={v,n:l.name};}));
+    const done={}; cur.forEach(s=>{done[s.key]=1;});
     return {weight:latest,toGo:Math.max(0,GOAL_KG-latest),
       pct:Math.min(100,Math.max(0,((latest-START_KG)/(GOAL_KG-START_KG))*100)),
-      volume:cv,delta:pv>0?((cv-pv)/pv)*100:null,
-      arms:cur.reduce((a,s)=>a+armVol(s),0),
-      sessionsWeek:cur.length,cardioMin,bestPlank,doneKeys,total:sessions.length};
+      sessionsWeek:cur.length,runMonth,runMins,longest,bestPlank,up,lo,done,total:sessions.length};
   },[sessions,weights,cardio,planks]);
 
   const label={off:"Local only",idle:"Not synced",busy:"Syncing",
@@ -493,18 +485,17 @@ function App(){
   return (
     <div className="app">
       <div className="hdr">
-        <div className="mark">TL</div>
+        <div className="mark">GL</div>
         <div>
-          <h1>Training <span className="grad">Log</span></h1>
-          <p>72 → 78 KG · {stats.total} SESSIONS</p>
+          <h1>Gym <span className="gold">Log</span></h1>
+          <p>{stats.total} SESSIONS LOGGED</p>
         </div>
         <button className="sync" onClick={()=>doSync(data)}>
-          <span className={"dot "+({busy:"busy",ok:"ok",bad:"bad"}[sync]||"")}/>{label}
-        </button>
+          <span className={"dot "+({busy:"busy",ok:"ok",bad:"bad"}[sync]||"")}/>{label}</button>
       </div>
 
       <div className="nav">
-        {[["home","Home"],["train","Train"],["cardio","Cardio"],
+        {[["home","Home"],["train","Train"],["progress","Progress"],["cardio","Cardio"],
           ["plank","Plank"],["body","Body"],["hist","History"]].map(([k,v])=>(
           <button key={k} className={tab===k?"on":""} onClick={()=>setTab(k)}>{v}</button>))}
       </div>
@@ -515,33 +506,23 @@ function App(){
         cardio={cardio} planks={planks} go={setTab}/>}
       {tab==="train" && <Train draft={draft} setDraft={setDraft} sessions={sessions}
         onSave={s=>{addSession(s);setDraft(null);setTab("home");}}/>}
+      {tab==="progress" && <Progress sessions={sessions} cardio={cardio} planks={planks} weights={weights}/>}
       {tab==="cardio" && <Cardio cardio={cardio} add={addCardio} del={delCardio}/>}
       {tab==="plank" && <Plank planks={planks} add={addPlank} del={delPlank}/>}
       {tab==="body" && <Body weights={weights} add={addWeight} del={delWeight}/>}
-      {tab==="hist" && <History sessions={sessions} del={delSession}
-        data={data} replaceAll={replaceAll}/>}
+      {tab==="hist" && <History sessions={sessions} del={delSession} data={data} replaceAll={replaceAll}/>}
     </div>);
 }
 
-/* ================================================================== */
-/*  HOME                                                               */
-/* ================================================================== */
+/* ================= HOME ================= */
 function Home({stats,sessions,weights,cardio,planks,go}){
-  const [chart,setChart]=useState("volume");
+  const [chart,setChart]=useState("weight");
   const [lift,setLift]=useState("");
-  const weeks=useMemo(()=>{
-    const wk=mondayOf(todayISO());
-    return Array.from({length:10},(_,i)=>shiftWeeks(wk,i-9));
-  },[]);
 
-  const volData=weeks.map(m=>({label:shortDate(m),
-    v:sessions.filter(s=>mondayOf(s.date)===m).reduce((a,s)=>a+vol(s),0)}));
-  const armData=weeks.map(m=>({label:shortDate(m),
-    v:sessions.filter(s=>mondayOf(s.date)===m).reduce((a,s)=>a+armVol(s),0)}));
-  const cardioData=weeks.map(m=>({label:shortDate(m),
-    v:cardio.filter(c=>mondayOf(c.date)===m).reduce((a,c)=>a+(+c.minutes||0),0)}));
-  const wData=[...weights].sort((a,b)=>a.date.localeCompare(b.date)).slice(-30)
-    .map(w=>({label:shortDate(w.date),v:+w.kg}));
+  const wData=[...weights].sort((a,b)=>a.date.localeCompare(b.date)).map(w=>({label:shortDate(w.date),v:+w.kg}));
+  const plankData=[...planks].sort((a,b)=>a.date.localeCompare(b.date)).map(p=>({label:shortDate(p.date),v:+p.seconds}));
+  const runData=cardio.filter(c=>c.type==="Run").sort((a,b)=>a.date.localeCompare(b.date))
+    .map(c=>({label:shortDate(c.date),v:+c.km||0}));
 
   const liftNames=useMemo(()=>{
     const s={};
@@ -569,31 +550,35 @@ function Home({stats,sessions,weights,cardio,planks,go}){
             : "Target of "+GOAL_KG+" kg reached"}</span>
         </div>
         <div className="tile">
-          <span className="cap">Volume · week</span>
-          <div className="big">{fmt(stats.volume)}<em>kg</em></div>
-          <span className={"note "+(stats.delta==null?"":stats.delta>=0?"up":"down")}>
-            {stats.delta==null?"no prior week":(stats.delta>=0?"▲ ":"▼ ")+Math.abs(stats.delta).toFixed(0)+"% vs last week"}</span>
-        </div>
-        <div className="tile">
-          <span className="cap">Arm volume · week</span>
-          <div className="big grad">{fmt(stats.arms)}<em>kg</em></div>
-          <span className="note">biceps + triceps</span>
-        </div>
-        <div className="tile">
           <span className="cap">Sessions</span>
           <div className="big">{stats.sessionsWeek}<em>/ 4</em></div>
           <div className="pips">{[0,1,2,3].map(i=>
             <span key={i} className={"pip"+(i<stats.sessionsWeek?" on":"")}/>)}</div>
         </div>
         <div className="tile">
-          <span className="cap">Cardio · week</span>
-          <div className="big">{stats.cardioMin}<em>min</em></div>
-          <span className="note">target 50 min</span>
+          <span className="cap">Total run · {monthName()}</span>
+          <div className="big">{stats.runMonth.toFixed(1)}<em>km</em></div>
+          <span className="note">{stats.runMins} minutes</span>
+        </div>
+        <div className="tile">
+          <span className="cap">Longest run</span>
+          <div className="big">{stats.longest?stats.longest.toFixed(1):"—"}<em>km</em></div>
+          <span className="note">all time</span>
         </div>
         <div className="tile">
           <span className="cap">Best plank</span>
           <div className="big">{stats.bestPlank?mmss(stats.bestPlank):"—"}</div>
           <span className="note">all time</span>
+        </div>
+        <div className="tile">
+          <span className="cap">Top upper-body lift</span>
+          <div className="big sm gold">{fmt(stats.up.v)}<em>kg</em></div>
+          <span className="note ellip">{stats.up.n}</span>
+        </div>
+        <div className="tile">
+          <span className="cap">Top lower-body lift</span>
+          <div className="big sm gold">{fmt(stats.lo.v)}<em>kg</em></div>
+          <span className="note ellip">{stats.lo.n}</span>
         </div>
       </div>
 
@@ -601,11 +586,9 @@ function Home({stats,sessions,weights,cardio,planks,go}){
         <h2 className="h2">This week</h2>
         <div className="week">
           {Object.entries(TEMPLATES).map(([k,t])=>(
-            <div key={k} className={"wd"+(stats.doneKeys[k]?" done":"")}>
-              <span className="cap">{t.day}</span>
-              <b>{t.label}</b>
-              <span className="tick">{stats.doneKeys[k]?"✓":"·"}</span>
-            </div>))}
+            <div key={k} className={"wd"+(stats.done[k]?" done":"")}>
+              <span className="cap">{t.day}</span><b>{t.label}</b>
+              <span className="tick">{stats.done[k]?"✓":"·"}</span></div>))}
         </div>
       </div>
 
@@ -613,8 +596,7 @@ function Home({stats,sessions,weights,cardio,planks,go}){
         <div className="panelhead">
           <h2 className="h2">Progress</h2>
           <div className="pills">
-            {[["volume","Volume"],["arms","Arms"],["weight","Weight"],
-              ["strength","Strength"],["cardio","Cardio"]].map(([k,v])=>(
+            {[["weight","Weight"],["strength","Strength"],["planks","Planks"],["run","Run"]].map(([k,v])=>(
               <button key={k} className={"pill"+(chart===k?" on":"")} onClick={()=>setChart(k)}>{v}</button>))}
           </div>
         </div>
@@ -622,13 +604,14 @@ function Home({stats,sessions,weights,cardio,planks,go}){
           <select style={{width:"100%",maxWidth:290,marginBottom:12,fontSize:12}}
             value={chosen} onChange={e=>setLift(e.target.value)}>
             {liftNames.map(n=><option key={n} value={n}>{n}</option>)}</select>}
-        {chart==="volume" && <Bars data={volData} unit="kg"/>}
-        {chart==="arms" && <Bars data={armData} unit="kg"/>}
-        {chart==="cardio" && <Bars data={cardioData} unit="min"/>}
-        {chart==="weight" && (wData.length>1?<Lines data={wData} unit="kg"/>
+        {chart==="weight" && (wData.length>1?<Plot data={wData} unit="kg"/>
           :<div className="empty">Log your weight a few times to see the trend.</div>)}
-        {chart==="strength" && (strData.length>1?<Lines data={strData} unit="kg" pad={3}/>
+        {chart==="strength" && (strData.length>1?<Plot data={strData} unit="kg" pad={3}/>
           :<div className="empty">Log the same lift twice to track estimated 1RM.</div>)}
+        {chart==="planks" && (plankData.length?<Plot data={plankData} kind="bar" unit="sec"/>
+          :<div className="empty">No planks logged yet.</div>)}
+        {chart==="run" && (runData.length?<Plot data={runData} kind="bar" unit="km"/>
+          :<div className="empty">No runs logged yet.</div>)}
       </div>
 
       {sessions.length===0 &&
@@ -636,22 +619,21 @@ function Home({stats,sessions,weights,cardio,planks,go}){
     </div>);
 }
 
-/* ================================================================== */
-/*  TRAIN                                                              */
-/* ================================================================== */
+/* ================= TRAIN ================= */
 function Train({draft,setDraft,sessions,onSave}){
   const [building,setBuilding]=useState(false);
   const [group,setGroup]=useState("Biceps");
   const [picked,setPicked]=useState([]);
+  const [adding,setAdding]=useState(false);
+  const [addGroup,setAddGroup]=useState("Biceps");
 
-  const startTemplate=k=>setDraft({id:Date.now(),date:todayISO(),key:k,
-    label:TEMPLATES[k].label,
+  const startTemplate=k=>setDraft({id:Date.now(),date:todayISO(),key:k,label:TEMPLATES[k].label,
     lifts:TEMPLATES[k].lifts.map(l=>({name:l.name,target:l.target,sets:[{w:"",r:""}]}))});
   const startCustom=()=>{
     if(!picked.length)return;
     setDraft({id:Date.now(),date:todayISO(),key:"custom",label:"Custom",
       lifts:picked.map(n=>({name:n,target:"—",sets:[{w:"",r:""}]}))});
-    setPicked([]); setBuilding(false);
+    setPicked([]);setBuilding(false);
   };
   const toggle=n=>setPicked(p=>p.includes(n)?p.filter(x=>x!==n):[...p,n]);
 
@@ -669,21 +651,16 @@ function Train({draft,setDraft,sessions,onSave}){
       <div className="days">
         {Object.entries(TEMPLATES).map(([k,t])=>(
           <button key={k} className="day" onClick={()=>startTemplate(k)}>
-            <span className="daytag grad">{t.day}</span>
-            <b>{t.label}</b>
-            <span className="note">{t.sub}</span>
-          </button>))}
+            <span className="daytag">{t.day}</span><b>{t.label}</b>
+            <span className="note">{t.sub}</span></button>))}
       </div>
-
       <div className="card">
         <div className="panelhead">
           <h2 className="h2">Build your own</h2>
           <button className="ghost sm" onClick={()=>setBuilding(b=>!b)}>
             {building?"Close":"Open builder"}</button>
         </div>
-        <p className="note">Pick from the approved exercise list. Everything here earns its place
-          in the programme — nothing outside it.</p>
-
+        <p className="note">Pick from the approved exercise list — nothing outside it.</p>
         {building && <>
           <div className="pills" style={{marginTop:14}}>
             {Object.keys(LIBRARY).map(g=>(
@@ -695,13 +672,10 @@ function Train({draft,setDraft,sessions,onSave}){
                 {picked.includes(n)?"✓ ":"+ "}{n}</button>))}
           </div>
           {picked.length>0 && <>
-            <div className="chosen">
-              {picked.map(n=><span key={n} className="chip">{n}
-                <button className="x" onClick={()=>toggle(n)}>×</button></span>)}
-            </div>
+            <div className="chosen">{picked.map(n=><span key={n} className="chip">{n}
+              <button className="x" onClick={()=>toggle(n)}>×</button></span>)}</div>
             <button className="btn full" style={{marginTop:14}} onClick={startCustom}>
-              Start session · {picked.length} exercises</button>
-          </>}
+              Start session · {picked.length} exercises</button></>}
         </>}
       </div>
     </div>);
@@ -714,16 +688,20 @@ function Train({draft,setDraft,sessions,onSave}){
     return {...l,sets:[...l.sets,{w:p.w,r:p.r}]};})}));
   const delSet=(li,si)=>setDraft(d=>({...d,lifts:d.lifts.map((l,i)=>
     i!==li?l:{...l,sets:l.sets.filter((_,j)=>j!==si)})}));
+  const addLift=n=>{
+    setDraft(d=>d.lifts.some(l=>l.name===n)?d
+      :{...d,lifts:[...d.lifts,{name:n,target:"—",sets:[{w:"",r:""}]}]});
+    setAdding(false);
+  };
+  const delLift=n=>setDraft(d=>({...d,lifts:d.lifts.filter(l=>l.name!==n)}));
 
   const v=vol(draft), n=nSets(draft);
 
   return (
     <div className="stack">
       <div className="sessbar">
-        <div>
-          <span className="cap">{draft.label}</span>
-          <div className="live">{n} sets<span>·</span>{fmt(v)} kg</div>
-        </div>
+        <div><span className="cap">{draft.label}</span>
+          <div className="live">{n} sets<span>·</span>{fmt(v)} kg</div></div>
         <input type="date" value={draft.date} style={{fontSize:12}}
           onChange={e=>setDraft(d=>({...d,date:e.target.value}))}/>
       </div>
@@ -732,7 +710,10 @@ function Train({draft,setDraft,sessions,onSave}){
         const last=lastFor(l.name);
         return (
           <div key={l.name} className="card">
-            <div className="lifthead"><b>{l.name}</b><span className="tgt">{l.target}</span></div>
+            <div className="lifthead"><b>{l.name}</b>
+              <span className="row" style={{gap:8,flexWrap:"nowrap"}}>
+                <span className="tgt">{l.target}</span>
+                <button className="x" onClick={()=>delLift(l.name)}>×</button></span></div>
             {last && <div className="last">Last {last.date}: {last.sets.map((s,i)=>
               <i key={i}>{s.w}×{s.r}</i>)}</div>}
             <div className="sets">
@@ -741,11 +722,9 @@ function Train({draft,setDraft,sessions,onSave}){
                   <span className="setno">{si+1}</span>
                   <input type="number" inputMode="decimal" placeholder="kg" value={s.w}
                     onChange={e=>upd(li,si,"w",e.target.value)}/>
-                  <div className="reps">
-                    {REPS.map(r=>(
-                      <button key={r} className={"rep"+(+s.r===r?" on":"")}
-                        onClick={()=>upd(li,si,"r",+s.r===r?"":r)}>{r}</button>))}
-                  </div>
+                  <div className="reps">{REPS.map(r=>(
+                    <button key={r} className={"rep"+(+s.r===r?" on":"")}
+                      onClick={()=>upd(li,si,"r",+s.r===r?"":r)}>{r}</button>))}</div>
                   <button className="x" onClick={()=>delSet(li,si)}>×</button>
                 </div>))}
             </div>
@@ -753,25 +732,134 @@ function Train({draft,setDraft,sessions,onSave}){
           </div>);
       })}
 
+      <div className="card">
+        <div className="panelhead">
+          <h2 className="h2">Add an exercise to today</h2>
+          <button className="ghost sm" onClick={()=>setAdding(a=>!a)}>{adding?"Close":"Add"}</button>
+        </div>
+        {adding && <>
+          <div className="pills">
+            {Object.keys(LIBRARY).map(g=>(
+              <button key={g} className={"pill"+(addGroup===g?" on":"")}
+                onClick={()=>setAddGroup(g)}>{g}</button>))}
+          </div>
+          <div className="lib">
+            {LIBRARY[addGroup].map(n=>{
+              const already=draft.lifts.some(l=>l.name===n);
+              return <button key={n} className={"ex"+(already?" on":"")} disabled={already}
+                onClick={()=>addLift(n)}>{already?"✓ ":"+ "}{n}</button>;})}
+          </div>
+        </>}
+        {!adding && <p className="note">Slot in extra work without leaving the session.</p>}
+      </div>
+
       <div className="row">
         <button className="ghost" onClick={()=>setDraft(null)}>Discard</button>
         <button className="btn" style={{flex:1}} disabled={n===0}
           onClick={()=>onSave({...draft,lifts:draft.lifts.map(l=>
-            ({...l,sets:l.sets.filter(s=>+s.w>0&&+s.r>0)}))})}>Finish session</button>
+            ({...l,sets:l.sets.filter(s=>+s.w>0&&+s.r>0)})).filter(l=>l.sets.length)})}>
+          Finish session</button>
       </div>
     </div>);
 }
 
-/* ================================================================== */
-/*  CARDIO                                                             */
-/* ================================================================== */
+/* ================= PROGRESS ================= */
+function Progress({sessions,cardio,planks,weights}){
+  const GROUPS=Object.keys(LIBRARY).concat(["Cardio","Plank","Bodyweight"]);
+  const [group,setGroup]=useState("Biceps");
+  const [item,setItem]=useState("Incline DB Curl");
+  const [metric,setMetric]=useState("e1rm");
+  const [win,setWin]=useState(30);
+
+  const items=group==="Cardio"?CARDIO_TYPES
+    :group==="Plank"?PLANK_TYPES
+    :group==="Bodyweight"?["Bodyweight"]:LIBRARY[group];
+
+  const pick=g=>{setGroup(g);
+    const l=g==="Cardio"?CARDIO_TYPES:g==="Plank"?PLANK_TYPES
+      :g==="Bodyweight"?["Bodyweight"]:LIBRARY[g];
+    setItem(l[0]);};
+
+  const cutoff=useMemo(()=>{
+    if(win===0)return "0000-00-00";
+    const d=new Date(); d.setDate(d.getDate()-win);
+    return d.toISOString().slice(0,10);
+  },[win]);
+
+  const {data,unit,kind,blurb}=useMemo(()=>{
+    if(group==="Bodyweight"){
+      return {unit:"kg",kind:"line",blurb:"Weekly trend matters, not single days.",
+        data:[...weights].filter(w=>w.date>=cutoff).sort((a,b)=>a.date.localeCompare(b.date))
+          .map(w=>({label:shortDate(w.date),v:+w.kg}))};
+    }
+    if(group==="Cardio"){
+      const rows=cardio.filter(c=>c.type===item&&c.date>=cutoff)
+        .sort((a,b)=>a.date.localeCompare(b.date));
+      return {unit:metric==="e1rm"?"km":"min",kind:"bar",
+        blurb:"Switch the metric to compare distance against time.",
+        data:rows.map(c=>({label:shortDate(c.date),v:metric==="e1rm"?(+c.km||0):(+c.minutes||0)}))};
+    }
+    if(group==="Plank"){
+      const rows=planks.filter(p=>p.variation===item&&p.date>=cutoff)
+        .sort((a,b)=>a.date.localeCompare(b.date));
+      return {unit:"sec",kind:"bar",blurb:"Add load rather than chasing longer holds.",
+        data:rows.map(p=>({label:shortDate(p.date),v:+p.seconds||0}))};
+    }
+    const rows=[...sessions].filter(s=>s.date>=cutoff).sort((a,b)=>a.date.localeCompare(b.date))
+      .map(s=>{
+        const l=s.lifts.find(x=>x.name===item); if(!l)return null;
+        const v=metric==="e1rm"?Math.max(0,...l.sets.map(x=>e1rm(x.w,x.r))):liftVol(l);
+        return v>0?{label:shortDate(s.date),v:+v.toFixed(1)}:null;}).filter(Boolean);
+    return {unit:"kg",kind:metric==="e1rm"?"line":"bar",
+      blurb:metric==="e1rm"
+        ? "Estimated 1RM — the cleanest read on whether you are getting stronger."
+        : "Total volume for this exercise each session.",
+      data:rows};
+  },[group,item,metric,cutoff,sessions,cardio,planks,weights]);
+
+  return (
+    <div className="stack">
+      <div className="card">
+        <h2 className="h2">Pick what to track</h2>
+        <div className="pills">
+          {GROUPS.map(g=>(
+            <button key={g} className={"pill"+(group===g?" on":"")} onClick={()=>pick(g)}>{g}</button>))}
+        </div>
+        {items.length>1 &&
+          <div className="lib">
+            {items.map(n=>(
+              <button key={n} className={"ex"+(item===n?" on":"")} onClick={()=>setItem(n)}>{n}</button>))}
+          </div>}
+      </div>
+
+      <div className="card">
+        <div className="panelhead">
+          <h2 className="h2">{group==="Bodyweight"?"Bodyweight":item}</h2>
+          <div className="pills">
+            {[[30,"1 month"],[90,"3 months"],[0,"All"]].map(([w,l])=>(
+              <button key={w} className={"pill"+(win===w?" on":"")} onClick={()=>setWin(w)}>{l}</button>))}
+          </div>
+        </div>
+        {group!=="Bodyweight" && group!=="Plank" &&
+          <div className="pills" style={{marginBottom:14}}>
+            <button className={"pill"+(metric==="e1rm"?" on":"")} onClick={()=>setMetric("e1rm")}>
+              {group==="Cardio"?"Distance":"Est. 1RM"}</button>
+            <button className={"pill"+(metric==="vol"?" on":"")} onClick={()=>setMetric("vol")}>
+              {group==="Cardio"?"Minutes":"Volume"}</button>
+          </div>}
+        {data.length?<Plot data={data} kind={kind} unit={unit} pad={3}/>
+          :<div className="empty">Nothing logged for this in the selected period.</div>}
+        <p className="note" style={{marginTop:10}}>{blurb}</p>
+      </div>
+    </div>);
+}
+
+/* ================= CARDIO ================= */
 function Cardio({cardio,add,del}){
   const [date,setDate]=useState(todayISO());
-  const [type,setType]=useState("Incline Walk");
-  const [minutes,setMinutes]=useState("");
-  const [km,setKm]=useState("");
-  const [incline,setIncline]=useState("");
-  const [speed,setSpeed]=useState("");
+  const [type,setType]=useState("Run");
+  const [minutes,setMinutes]=useState(""), [km,setKm]=useState("");
+  const [incline,setIncline]=useState(""), [speed,setSpeed]=useState("");
 
   const save=()=>{
     if(!(+minutes>0))return;
@@ -779,15 +867,15 @@ function Cardio({cardio,add,del}){
     setMinutes("");setKm("");setIncline("");setSpeed("");
   };
   const list=[...cardio].sort((a,b)=>b.date.localeCompare(a.date));
-  const tw=mondayOf(todayISO());
-  const weekMin=cardio.filter(c=>mondayOf(c.date)===tw).reduce((a,c)=>a+(+c.minutes||0),0);
+  const mo=thisMonth();
+  const runKm=cardio.filter(c=>c.type==="Run"&&c.date.slice(0,7)===mo).reduce((a,c)=>a+(+c.km||0),0);
 
   return (
     <div className="stack">
       <div className="card">
         <div className="panelhead">
           <h2 className="h2">Log treadmill session</h2>
-          <span className="cap">{weekMin} min this week</span>
+          <span className="cap">{runKm.toFixed(1)} km run in {monthName()}</span>
         </div>
         <div className="pills" style={{marginBottom:14}}>
           {CARDIO_TYPES.map(t=>(
@@ -808,7 +896,7 @@ function Cardio({cardio,add,del}){
             <input type="number" inputMode="decimal" placeholder="8" value={incline}
               onChange={e=>setIncline(e.target.value)}/></div>
           <div className="field"><span className="cap">Speed km/h</span>
-            <input type="number" inputMode="decimal" placeholder="5.5" value={speed}
+            <input type="number" inputMode="decimal" placeholder="9.0" value={speed}
               onChange={e=>setSpeed(e.target.value)}/></div>
         </div>
         <button className="btn full" style={{marginTop:14}} disabled={!(+minutes>0)} onClick={save}>
@@ -822,12 +910,9 @@ function Cardio({cardio,add,del}){
         {!list.length && <p className="note">Nothing logged yet.</p>}
         {list.slice(0,25).map(c=>(
           <div key={c.id} className="entry">
-            <div className="main">
-              <b>{c.type}</b>
-              <div className="meta">{shortDate(c.date)}
-                {c.km?" · "+c.km+" km":""}{c.incline?" · "+c.incline+"%":""}
-                {c.speed?" · "+c.speed+" km/h":""}</div>
-            </div>
+            <div className="main"><b>{c.type}</b>
+              <div className="meta">{shortDate(c.date)}{c.km?" · "+c.km+" km":""}
+                {c.incline?" · "+c.incline+"%":""}{c.speed?" · "+c.speed+" km/h":""}</div></div>
             <span className="val">{c.minutes} min</span>
             <button className="x" onClick={()=>del(c.id)}>×</button>
           </div>))}
@@ -835,33 +920,22 @@ function Cardio({cardio,add,del}){
     </div>);
 }
 
-/* ================================================================== */
-/*  PLANK                                                              */
-/* ================================================================== */
+/* ================= PLANK ================= */
 function Plank({planks,add,del}){
   const [date,setDate]=useState(todayISO());
   const [variation,setVariation]=useState("Forearm Plank");
-  const [sec,setSec]=useState("");
-  const [running,setRunning]=useState(false);
-  const [elapsed,setElapsed]=useState(0);
+  const [sec,setSec]=useState(""), [running,setRunning]=useState(false), [elapsed,setElapsed]=useState(0);
   const t=useRef(null);
 
   useEffect(()=>{
-    if(running){t.current=setInterval(()=>setElapsed(e=>e+1),1000);}
+    if(running)t.current=setInterval(()=>setElapsed(e=>e+1),1000);
     else clearInterval(t.current);
     return()=>clearInterval(t.current);
   },[running]);
 
-  const stop=()=>{setRunning(false);setSec(String(elapsed));};
-  const save=()=>{
-    if(!(+sec>0))return;
-    add({date,variation,seconds:+sec});
-    setSec("");setElapsed(0);
-  };
-
+  const save=()=>{if(!(+sec>0))return;add({date,variation,seconds:+sec});setSec("");setElapsed(0);};
   const list=[...planks].sort((a,b)=>b.date.localeCompare(a.date));
-  const best=planks.filter(p=>p.variation===variation)
-    .reduce((a,p)=>Math.max(a,+p.seconds||0),0);
+  const best=planks.filter(p=>p.variation===variation).reduce((a,p)=>Math.max(a,+p.seconds||0),0);
 
   return (
     <div className="stack">
@@ -875,17 +949,16 @@ function Plank({planks,add,del}){
             <button key={p} className={"pill"+(variation===p?" on":"")}
               onClick={()=>setVariation(p)}>{p}</button>))}
         </div>
-
         <div style={{textAlign:"center",padding:"8px 0 18px"}}>
-          <div className="big grad" style={{fontSize:52}}>{mmss(elapsed)}</div>
+          <div className="big gold" style={{fontSize:52}}>{mmss(elapsed)}</div>
           <div className="row" style={{justifyContent:"center",marginTop:14}}>
             <button className="btn sm" onClick={()=>setRunning(r=>!r)}>
               {running?"Pause":elapsed?"Resume":"Start timer"}</button>
-            <button className="ghost sm" onClick={stop} disabled={!elapsed}>Use time</button>
+            <button className="ghost sm" onClick={()=>{setRunning(false);setSec(String(elapsed));}}
+              disabled={!elapsed}>Use time</button>
             <button className="ghost sm" onClick={()=>{setRunning(false);setElapsed(0);}}>Reset</button>
           </div>
         </div>
-
         <div className="row">
           <div className="field"><span className="cap">Date</span>
             <input type="date" value={date} onChange={e=>setDate(e.target.value)} style={{fontSize:12}}/></div>
@@ -896,7 +969,7 @@ function Plank({planks,add,del}){
         <button className="btn full" style={{marginTop:14}} disabled={!(+sec>0)} onClick={save}>
           Save plank</button>
         <p className="note" style={{marginTop:12}}>Past about 90 seconds, extra time stops building
-          anything. Add weight on your back or switch to a harder variation instead.</p>
+          anything. Add weight or move to the Swiss ball instead.</p>
       </div>
 
       <div className="card">
@@ -904,10 +977,8 @@ function Plank({planks,add,del}){
         {!list.length && <p className="note">Nothing logged yet.</p>}
         {list.slice(0,25).map(p=>(
           <div key={p.id} className="entry">
-            <div className="main">
-              <b>{p.variation}</b>
-              <div className="meta">{shortDate(p.date)}</div>
-            </div>
+            <div className="main"><b>{p.variation}</b>
+              <div className="meta">{shortDate(p.date)}</div></div>
             <span className="val">{mmss(p.seconds)}</span>
             <button className="x" onClick={()=>del(p.id)}>×</button>
           </div>))}
@@ -915,16 +986,14 @@ function Plank({planks,add,del}){
     </div>);
 }
 
-/* ================================================================== */
-/*  BODY                                                               */
-/* ================================================================== */
+/* ================= BODY ================= */
 function Body({weights,add,del}){
-  const [kg,setKg]=useState(""); const [date,setDate]=useState(todayISO());
+  const [kg,setKg]=useState(""), [date,setDate]=useState(todayISO());
   const sorted=[...weights].sort((a,b)=>b.date.localeCompare(a.date));
   const weekly=useMemo(()=>{
     const b={};
     weights.forEach(w=>{const m=mondayOf(w.date);(b[m]=b[m]||[]).push(+w.kg);});
-    return Object.keys(b).sort().slice(-8).map(m=>({label:shortDate(m),
+    return Object.keys(b).sort().map(m=>({label:shortDate(m),
       v:+(b[m].reduce((x,y)=>x+y,0)/b[m].length).toFixed(1)}));
   },[weights]);
   const save=()=>{if(!(+kg>0))return;add(date,kg);setKg("");};
@@ -948,8 +1017,9 @@ function Body({weights,add,del}){
       {weekly.length>1 &&
         <div className="card">
           <h2 className="h2">Weekly average</h2>
-          <Lines data={weekly} unit="kg"/>
-          <p className="note">Target pace: 0.7–1.0 kg per month. Faster than that is mostly fat.</p>
+          <Plot data={weekly} unit="kg"/>
+          <p className="note" style={{marginTop:10}}>Target pace: 0.7–1.0 kg per month.
+            Faster than that is mostly fat.</p>
         </div>}
 
       <div className="card">
@@ -965,9 +1035,7 @@ function Body({weights,add,del}){
     </div>);
 }
 
-/* ================================================================== */
-/*  HISTORY                                                            */
-/* ================================================================== */
+/* ================= HISTORY ================= */
 function History({sessions,del,data,replaceAll}){
   const [open,setOpen]=useState(null);
   const sorted=[...sessions].sort((a,b)=>b.date.localeCompare(a.date));
@@ -976,7 +1044,7 @@ function History({sessions,del,data,replaceAll}){
     const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
     const a=document.createElement("a");
     a.href=URL.createObjectURL(blob);
-    a.download="training-log-"+todayISO()+".json"; a.click();
+    a.download="gym-log-"+todayISO()+".json"; a.click();
     URL.revokeObjectURL(a.href);
   };
   const importData=e=>{
@@ -986,31 +1054,31 @@ function History({sessions,del,data,replaceAll}){
     r.readAsText(f); e.target.value="";
   };
 
+  const backup=(
+    <div className="card">
+      <h2 className="h2">Backup</h2>
+      <p className="note">{SYNC_ON
+        ? "Synced to your Google Sheet. Export anyway if you want an offline copy."
+        : "Data lives in this browser only. Export regularly to keep a copy."}</p>
+      <div className="row" style={{marginTop:13}}>
+        <button className="ghost sm" onClick={exportData}>Export JSON</button>
+        <label className="ghost sm" style={{display:"inline-block"}}>Import JSON
+          <input type="file" accept="application/json" style={{display:"none"}} onChange={importData}/></label>
+      </div>
+    </div>);
+
+  if(!sorted.length) return <div className="stack">
+    <div className="card"><p className="note">No sessions logged yet.</p></div>{backup}</div>;
+
   return (
     <div className="stack">
-      <div className="card">
-        <h2 className="h2">Backup</h2>
-        <p className="note">{SYNC_ON
-          ? "Synced to your Google Sheet. Export anyway if you want an offline copy."
-          : "Data lives in this browser only. Export regularly to keep a copy."}</p>
-        <div className="row" style={{marginTop:13}}>
-          <button className="ghost sm" onClick={exportData}>Export JSON</button>
-          <label className="ghost sm" style={{display:"inline-block"}}>Import JSON
-            <input type="file" accept="application/json" style={{display:"none"}} onChange={importData}/></label>
-        </div>
-      </div>
-
-      {!sorted.length && <div className="card"><p className="note">No sessions logged yet.</p></div>}
-
       {sorted.map(s=>(
         <div key={s.id} className="card flat">
           <button className="histhead" onClick={()=>setOpen(open===s.id?null:s.id)}>
-            <div>
-              <b style={{fontSize:14}}>{s.label||(TEMPLATES[s.key]||{}).label||"Session"}</b>
-              <div className="meta" style={{fontFamily:"'IBM Plex Mono',monospace",
-                fontSize:10.5,color:"#6C7BA6",marginTop:3}}>{shortDate(s.date)}</div>
-            </div>
-            <div className="mono" style={{fontSize:11,color:"#94A3CC"}}>
+            <div><b style={{fontSize:14}}>{s.label||(TEMPLATES[s.key]||{}).label||"Session"}</b>
+              <div className="mono" style={{fontSize:10.5,color:"#93A8D4",marginTop:3}}>
+                {shortDate(s.date)}</div></div>
+            <div className="mono" style={{fontSize:11,color:"#C6D3EF"}}>
               {nSets(s)} sets · {fmt(vol(s))} kg</div>
           </button>
           {open===s.id &&
@@ -1018,12 +1086,12 @@ function History({sessions,del,data,replaceAll}){
               {s.lifts.filter(l=>l.sets.length).map(l=>(
                 <div key={l.name} className="histlift">
                   <span>{l.name}</span>
-                  <span>{l.sets.map(x=>x.w+"×"+x.r).join("  ")}</span>
-                </div>))}
+                  <span>{l.sets.map(x=>x.w+"×"+x.r).join("  ")}</span></div>))}
               <button className="ghost sm" style={{marginTop:13}} onClick={()=>del(s.id)}>
                 Delete session</button>
             </div>}
         </div>))}
+      {backup}
     </div>);
 }
 
