@@ -262,7 +262,8 @@ const TEMPLATES={
     {name:"EZ-Bar Curl",target:"3 × 10"},{name:"Skull Crusher",target:"3 × 10"},
     {name:"Hanging Leg Raise",target:"3 × 12"}]}
 };
-const CARDIO_TYPES=["Incline Walk","Run"];
+const CARDIO_TYPES=["Incline Walk","Treadmill Run","Outdoor Run"];
+const isRun=t=>String(t).indexOf("Run")>=0;
 const PLANK_TYPES=["Forearm Plank","Swiss Ball Plank","Weighted Plank"];
 
 /* ================= HELPERS ================= */
@@ -276,6 +277,7 @@ const e1rm=(w,r)=>(+w||0)*(1+(+r||0)/30);
 const fmt=n=>n>=1000?(n/1000).toFixed(1).replace(/\.0$/,"")+"k":Math.round(n);
 const shortDate=iso=>new Date(iso+"T00:00:00").toLocaleDateString("en-GB",{day:"numeric",month:"short"});
 const mmss=s=>Math.floor(s/60)+":"+String(Math.round(s%60)).padStart(2,"0");
+const pace=(min,km)=>(!min||!km)?"":(Math.floor(min/km)+":"+String(Math.round((min/km%1)*60)).padStart(2,"0")+" /km");
 const thisMonth=()=>todayISO().slice(0,7);
 const monthName=()=>new Date().toLocaleDateString("en-GB",{month:"long"});
 
@@ -371,7 +373,9 @@ function App(){
   useEffect(()=>{
     try{const raw=localStorage.getItem(KEY);
       if(raw){const d=JSON.parse(raw);
-        setData({...BLANK,...d,deleted:d.deleted||[]});setDraft(d.draft||null);}
+        const cd=(d.cardio||[]).map(c=>c.type==="Run"?{...c,type:"Treadmill Run"}
+          :c.type==="Walk"?{...c,type:"Incline Walk"}:c);
+        setData({...BLANK,...d,cardio:cd,deleted:d.deleted||[]});setDraft(d.draft||null);}
     }catch(e){}
     hyd.current=true;
   },[]);
@@ -461,7 +465,7 @@ function App(){
     const cur=sessions.filter(s=>mondayOf(s.date)===tw);
     const sw=[...weights].sort((a,b)=>a.date.localeCompare(b.date));
     const latest=sw.length?+sw[sw.length-1].kg:START_KG;
-    const runs=cardio.filter(c=>c.type==="Run");
+    const runs=cardio.filter(c=>isRun(c.type));
     const runMonth=runs.filter(c=>c.date.slice(0,7)===mo).reduce((a,c)=>a+(+c.km||0),0);
     const runMins=runs.filter(c=>c.date.slice(0,7)===mo).reduce((a,c)=>a+(+c.minutes||0),0);
     const longest=runs.reduce((a,c)=>Math.max(a,+c.km||0),0);
@@ -495,8 +499,8 @@ function App(){
       </div>
 
       <div className="nav">
-        {[["home","Home"],["train","Train"],["progress","Progress"],["cardio","Cardio"],
-          ["plank","Plank"],["body","Body"],["hist","History"]].map(([k,v])=>(
+        {[["home","Home"],["train","Train"],["cardio","Cardio"],["plank","Plank"],
+          ["body","Body"],["hist","History"],["progress","Progress"]].map(([k,v])=>(
           <button key={k} className={tab===k?"on":""} onClick={()=>setTab(k)}>{v}</button>))}
       </div>
 
@@ -506,11 +510,11 @@ function App(){
         cardio={cardio} planks={planks} go={setTab}/>}
       {tab==="train" && <Train draft={draft} setDraft={setDraft} sessions={sessions}
         onSave={s=>{addSession(s);setDraft(null);setTab("home");}}/>}
-      {tab==="progress" && <Progress sessions={sessions} cardio={cardio} planks={planks} weights={weights}/>}
       {tab==="cardio" && <Cardio cardio={cardio} add={addCardio} del={delCardio}/>}
       {tab==="plank" && <Plank planks={planks} add={addPlank} del={delPlank}/>}
       {tab==="body" && <Body weights={weights} add={addWeight} del={delWeight}/>}
       {tab==="hist" && <History sessions={sessions} del={delSession} data={data} replaceAll={replaceAll}/>}
+      {tab==="progress" && <Progress sessions={sessions} cardio={cardio} planks={planks} weights={weights}/>}
     </div>);
 }
 
@@ -521,7 +525,7 @@ function Home({stats,sessions,weights,cardio,planks,go}){
 
   const wData=[...weights].sort((a,b)=>a.date.localeCompare(b.date)).map(w=>({label:shortDate(w.date),v:+w.kg}));
   const plankData=[...planks].sort((a,b)=>a.date.localeCompare(b.date)).map(p=>({label:shortDate(p.date),v:+p.seconds}));
-  const runData=cardio.filter(c=>c.type==="Run").sort((a,b)=>a.date.localeCompare(b.date))
+  const runData=cardio.filter(c=>isRun(c.type)).sort((a,b)=>a.date.localeCompare(b.date))
     .map(c=>({label:shortDate(c.date),v:+c.km||0}));
 
   const liftNames=useMemo(()=>{
@@ -802,7 +806,7 @@ function Progress({sessions,cardio,planks,weights}){
     if(group==="Plank"){
       const rows=planks.filter(p=>p.variation===item&&p.date>=cutoff)
         .sort((a,b)=>a.date.localeCompare(b.date));
-      return {unit:"sec",kind:"bar",blurb:"Add load rather than chasing longer holds.",
+      return {unit:"sec",kind:"bar",blurb:"Hold time for every plank you have logged.",
         data:rows.map(p=>({label:shortDate(p.date),v:+p.seconds||0}))};
     }
     const rows=[...sessions].filter(s=>s.date>=cutoff).sort((a,b)=>a.date.localeCompare(b.date))
@@ -857,18 +861,20 @@ function Progress({sessions,cardio,planks,weights}){
 /* ================= CARDIO ================= */
 function Cardio({cardio,add,del}){
   const [date,setDate]=useState(todayISO());
-  const [type,setType]=useState("Run");
+  const [type,setType]=useState("Treadmill Run");
   const [minutes,setMinutes]=useState(""), [km,setKm]=useState("");
   const [incline,setIncline]=useState(""), [speed,setSpeed]=useState("");
 
   const save=()=>{
     if(!(+minutes>0))return;
-    add({date,type,minutes:+minutes,km:+km||0,incline:+incline||0,speed:+speed||0});
+    add({date,type,minutes:+minutes,km:+km||0,
+      incline:type==="Incline Walk"?(+incline||0):0,
+      speed:type==="Outdoor Run"?0:(+speed||0)});
     setMinutes("");setKm("");setIncline("");setSpeed("");
   };
   const list=[...cardio].sort((a,b)=>b.date.localeCompare(a.date));
   const mo=thisMonth();
-  const runKm=cardio.filter(c=>c.type==="Run"&&c.date.slice(0,7)===mo).reduce((a,c)=>a+(+c.km||0),0);
+  const runKm=cardio.filter(c=>isRun(c.type)&&c.date.slice(0,7)===mo).reduce((a,c)=>a+(+c.km||0),0);
 
   return (
     <div className="stack">
@@ -891,14 +897,16 @@ function Cardio({cardio,add,del}){
             <input type="number" inputMode="decimal" placeholder="3.0" value={km}
               onChange={e=>setKm(e.target.value)}/></div>
         </div>
-        <div className="row" style={{marginTop:9}}>
-          <div className="field"><span className="cap">Incline %</span>
-            <input type="number" inputMode="decimal" placeholder="8" value={incline}
-              onChange={e=>setIncline(e.target.value)}/></div>
-          <div className="field"><span className="cap">Speed km/h</span>
-            <input type="number" inputMode="decimal" placeholder="9.0" value={speed}
-              onChange={e=>setSpeed(e.target.value)}/></div>
-        </div>
+        {type!=="Outdoor Run" &&
+          <div className="row" style={{marginTop:9}}>
+            {type==="Incline Walk" &&
+              <div className="field"><span className="cap">Incline %</span>
+                <input type="number" inputMode="decimal" placeholder="8" value={incline}
+                  onChange={e=>setIncline(e.target.value)}/></div>}
+            <div className="field"><span className="cap">Speed km/h</span>
+              <input type="number" inputMode="decimal" placeholder={type==="Incline Walk"?"5.5":"9.0"}
+                value={speed} onChange={e=>setSpeed(e.target.value)}/></div>
+          </div>}
         <button className="btn full" style={{marginTop:14}} disabled={!(+minutes>0)} onClick={save}>
           Save session</button>
         <p className="note" style={{marginTop:12}}>Two sessions of 25 minutes a week is the target —
@@ -912,7 +920,8 @@ function Cardio({cardio,add,del}){
           <div key={c.id} className="entry">
             <div className="main"><b>{c.type}</b>
               <div className="meta">{shortDate(c.date)}{c.km?" · "+c.km+" km":""}
-                {c.incline?" · "+c.incline+"%":""}{c.speed?" · "+c.speed+" km/h":""}</div></div>
+                {c.incline?" · "+c.incline+"%":""}{c.speed?" · "+c.speed+" km/h":""}
+                {isRun(c.type)&&c.km?" · "+pace(c.minutes,c.km):""}</div></div>
             <span className="val">{c.minutes} min</span>
             <button className="x" onClick={()=>del(c.id)}>×</button>
           </div>))}
@@ -924,7 +933,9 @@ function Cardio({cardio,add,del}){
 function Plank({planks,add,del}){
   const [date,setDate]=useState(todayISO());
   const [variation,setVariation]=useState("Forearm Plank");
-  const [sec,setSec]=useState(""), [running,setRunning]=useState(false), [elapsed,setElapsed]=useState(0);
+  const [mins,setMins]=useState(""), [sec,setSec]=useState("");
+  const [running,setRunning]=useState(false), [elapsed,setElapsed]=useState(0);
+  const total=(+mins||0)*60+(+sec||0);
   const t=useRef(null);
 
   useEffect(()=>{
@@ -933,7 +944,8 @@ function Plank({planks,add,del}){
     return()=>clearInterval(t.current);
   },[running]);
 
-  const save=()=>{if(!(+sec>0))return;add({date,variation,seconds:+sec});setSec("");setElapsed(0);};
+  const save=()=>{if(!(total>0))return;add({date,variation,seconds:total});
+    setMins("");setSec("");setElapsed(0);};
   const list=[...planks].sort((a,b)=>b.date.localeCompare(a.date));
   const best=planks.filter(p=>p.variation===variation).reduce((a,p)=>Math.max(a,+p.seconds||0),0);
 
@@ -954,22 +966,24 @@ function Plank({planks,add,del}){
           <div className="row" style={{justifyContent:"center",marginTop:14}}>
             <button className="btn sm" onClick={()=>setRunning(r=>!r)}>
               {running?"Pause":elapsed?"Resume":"Start timer"}</button>
-            <button className="ghost sm" onClick={()=>{setRunning(false);setSec(String(elapsed));}}
-              disabled={!elapsed}>Use time</button>
+            <button className="ghost sm" disabled={!elapsed}
+              onClick={()=>{setRunning(false);setMins(String(Math.floor(elapsed/60)));
+                setSec(String(elapsed%60));}}>Use time</button>
             <button className="ghost sm" onClick={()=>{setRunning(false);setElapsed(0);}}>Reset</button>
           </div>
         </div>
         <div className="row">
           <div className="field"><span className="cap">Date</span>
             <input type="date" value={date} onChange={e=>setDate(e.target.value)} style={{fontSize:12}}/></div>
+          <div className="field"><span className="cap">Minutes</span>
+            <input type="number" inputMode="numeric" placeholder="1" value={mins}
+              onChange={e=>setMins(e.target.value)}/></div>
           <div className="field"><span className="cap">Seconds</span>
-            <input type="number" inputMode="numeric" placeholder="60" value={sec}
+            <input type="number" inputMode="numeric" placeholder="30" value={sec}
               onChange={e=>setSec(e.target.value)}/></div>
         </div>
-        <button className="btn full" style={{marginTop:14}} disabled={!(+sec>0)} onClick={save}>
-          Save plank</button>
-        <p className="note" style={{marginTop:12}}>Past about 90 seconds, extra time stops building
-          anything. Add weight or move to the Swiss ball instead.</p>
+        <button className="btn full" style={{marginTop:14}} disabled={!(total>0)} onClick={save}>
+          Save plank{total>0?" · "+mmss(total):""}</button>
       </div>
 
       <div className="card">
