@@ -27,6 +27,12 @@ html,body{margin:0;padding:0;background:#0B0B0C;}
 .tl-bar{width:5px;align-self:stretch;min-height:52px;background:var(--accent);}
 .tl-title{font-family:'Archivo Black',sans-serif;font-size:clamp(26px,6vw,42px);line-height:.92;letter-spacing:-.02em;margin:0;}
 .tl-sub{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.14em;color:var(--dim);margin:8px 0 0;}
+.tl-synced{margin-left:auto;display:flex;align-items:center;gap:7px;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.14em;color:var(--dim);text-transform:uppercase;background:none;border:none;cursor:pointer;padding:4px 0;white-space:nowrap;}
+.tl-dot{width:7px;height:7px;border-radius:50%;background:#4A4A50;}
+.tl-dot.ok{background:var(--green);}
+.tl-dot.busy{background:var(--accent);animation:tlpulse 1s infinite;}
+.tl-dot.bad{background:#E0443E;}
+@keyframes tlpulse{0%,100%{opacity:1}50%{opacity:.25}}
 
 .tl-nav{display:flex;gap:2px;max-width:1100px;margin:0 auto 20px;border-bottom:1px solid var(--line);overflow-x:auto;}
 .tl-tab{background:none;border:none;color:var(--dim);font-family:'Barlow',sans-serif;font-size:13px;font-weight:600;letter-spacing:.04em;padding:10px 14px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;}
@@ -131,7 +137,15 @@ html,body{margin:0;padding:0;background:#0B0B0C;}
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
 <script type="text/babel" data-type="module">
-const { useState, useEffect, useMemo, useRef } = React;
+const { useState, useEffect, useMemo, useRef, useCallback } = React;
+
+/* ================================================================== */
+/*  SYNC CONFIG — fill these two in after deploying Code.gs            */
+/* ================================================================== */
+const SYNC_URL    = 'PASTE_YOUR_APPS_SCRIPT_EXEC_URL_HERE';
+const SYNC_SECRET = 'CHANGE-THIS-TO-SOMETHING-RANDOM';
+/* Must match SECRET in Code.gs exactly. Leave SYNC_URL as-is to run offline. */
+const SYNC_ON = SYNC_URL.indexOf('script.google.com') !== -1;
 
 /* ---------------- TEMPLATES ---------------- */
 const TEMPLATES = {
@@ -185,80 +199,157 @@ function Grid({min,max,ticks=4,fmtY}){
   for(let i=0;i<=ticks;i++){
     const v=min+((max-min)*i)/ticks;
     const y=H-PB-((v-min)/(max-min||1))*(H-PT-PB);
-    rows.push(
-      <g key={i}>
-        <line x1={PL} x2={W-PR} y1={y} y2={y} stroke="#232326" strokeWidth="1"/>
-        <text x={PL-8} y={y+4} textAnchor="end" fill="#6C6C72" fontSize="11" fontFamily="'IBM Plex Mono',monospace">{fmtY(v)}</text>
-      </g>);
+    rows.push(<g key={i}>
+      <line x1={PL} x2={W-PR} y1={y} y2={y} stroke="#232326" strokeWidth="1"/>
+      <text x={PL-8} y={y+4} textAnchor="end" fill="#6C6C72" fontSize="11" fontFamily="'IBM Plex Mono',monospace">{fmtY(v)}</text>
+    </g>);
   }
   return <g>{rows}</g>;
 }
-
 function XLabels({data,every}){
-  const n=data.length, step=(W-PL-PR)/n;
+  const step=(W-PL-PR)/data.length;
   return <g>{data.map((d,i)=> i%every===0 ?
     <text key={i} x={PL+step*(i+.5)} y={H-PB+20} textAnchor="middle" fill="#6C6C72"
       fontSize="11" fontFamily="'IBM Plex Mono',monospace">{d.label}</text> : null)}</g>;
 }
-
 function BarChart({data,unit}){
   const max=Math.max(1,...data.map(d=>d.v))*1.1;
-  const n=data.length, step=(W-PL-PR)/n, bw=Math.min(38,step*0.6);
-  return (
-    <svg viewBox={`0 0 ${W} ${H}`} width="100%" style={{display:"block"}}>
-      <Grid min={0} max={max} fmtY={fmt}/>
-      {data.map((d,i)=>{
-        const h=(d.v/max)*(H-PT-PB);
-        const x=PL+step*(i+.5)-bw/2;
-        return <rect key={i} x={x} y={H-PB-h} width={bw} height={Math.max(0,h)} fill="#FF5A1F">
-          <title>{d.label}: {Math.round(d.v).toLocaleString()} {unit}</title></rect>;
-      })}
-      <XLabels data={data} every={2}/>
-    </svg>);
+  const step=(W-PL-PR)/data.length, bw=Math.min(38,step*0.6);
+  return (<svg viewBox={`0 0 ${W} ${H}`} width="100%" style={{display:"block"}}>
+    <Grid min={0} max={max} fmtY={fmt}/>
+    {data.map((d,i)=>{const h=(d.v/max)*(H-PT-PB);
+      return <rect key={i} x={PL+step*(i+.5)-bw/2} y={H-PB-h} width={bw} height={Math.max(0,h)} fill="#FF5A1F">
+        <title>{d.label}: {Math.round(d.v).toLocaleString()} {unit}</title></rect>;})}
+    <XLabels data={data} every={2}/>
+  </svg>);
 }
-
 function LineChartSVG({data,color,unit,pad=1}){
   const vals=data.map(d=>d.v);
   const min=Math.min(...vals)-pad, max=Math.max(...vals)+pad;
-  const n=data.length, step=(W-PL-PR)/n;
-  const px=i=>PL+step*(i+.5);
-  const py=v=>H-PB-((v-min)/((max-min)||1))*(H-PT-PB);
-  const pts=data.map((d,i)=>`${px(i)},${py(d.v)}`).join(" ");
-  return (
-    <svg viewBox={`0 0 ${W} ${H}`} width="100%" style={{display:"block"}}>
-      <Grid min={min} max={max} fmtY={v=>v.toFixed(1)}/>
-      <polyline points={pts} fill="none" stroke={color} strokeWidth="3" strokeLinejoin="round" strokeLinecap="round"/>
-      {data.map((d,i)=>(
-        <circle key={i} cx={px(i)} cy={py(d.v)} r="4" fill={color}>
-          <title>{d.label}: {d.v} {unit}</title></circle>))}
-      <XLabels data={data} every={Math.max(1,Math.ceil(n/7))}/>
-    </svg>);
+  const step=(W-PL-PR)/data.length;
+  const px=i=>PL+step*(i+.5), py=v=>H-PB-((v-min)/((max-min)||1))*(H-PT-PB);
+  return (<svg viewBox={`0 0 ${W} ${H}`} width="100%" style={{display:"block"}}>
+    <Grid min={min} max={max} fmtY={v=>v.toFixed(1)}/>
+    <polyline points={data.map((d,i)=>`${px(i)},${py(d.v)}`).join(" ")} fill="none"
+      stroke={color} strokeWidth="3" strokeLinejoin="round" strokeLinecap="round"/>
+    {data.map((d,i)=><circle key={i} cx={px(i)} cy={py(d.v)} r="4" fill={color}>
+      <title>{d.label}: {d.v} {unit}</title></circle>)}
+    <XLabels data={data} every={Math.max(1,Math.ceil(data.length/7))}/>
+  </svg>);
+}
+
+/* ---------------- MERGE (mirrors the server) ---------------- */
+function mergeState(a,b){
+  const del={};
+  (a.deleted||[]).concat(b.deleted||[]).forEach(k=>{del[k]=1;});
+  const byId={};
+  (a.sessions||[]).concat(b.sessions||[]).forEach(s=>{
+    if(del[String(s.id)])return;
+    const c=byId[s.id];
+    if(!c||(s.savedAt||0)>(c.savedAt||0))byId[s.id]=s;});
+  const byDate={};
+  (a.weights||[]).concat(b.weights||[]).forEach(w=>{
+    if(del["w:"+w.date])return;
+    const c=byDate[w.date];
+    if(!c||(w.savedAt||0)>(c.savedAt||0))byDate[w.date]=w;});
+  return {
+    sessions:Object.values(byId).sort((x,y)=>String(x.date).localeCompare(String(y.date))),
+    weights:Object.values(byDate).sort((x,y)=>String(x.date).localeCompare(String(y.date))),
+    deleted:Object.keys(del)
+  };
 }
 
 /* ---------------- ROOT ---------------- */
 function App(){
   const [tab,setTab]=useState("dash");
-  const [sessions,setSessions]=useState([]);
-  const [weights,setWeights]=useState([]);
+  const [data,setData]=useState({sessions:[],weights:[],deleted:[]});
   const [draft,setDraft]=useState(null);
   const [err,setErr]=useState(null);
+  const [sync,setSync]=useState(SYNC_ON?"idle":"off");
+  const [lastSync,setLastSync]=useState(null);
   const hydrated=useRef(false);
+  const timer=useRef(null);
+  const pushed=useRef("");
 
+  const {sessions,weights}=data;
+
+  /* --- load from this device --- */
   useEffect(()=>{
     try{
       const raw=localStorage.getItem(KEY);
       if(raw){const d=JSON.parse(raw);
-        setSessions(d.sessions||[]); setWeights(d.weights||[]); setDraft(d.draft||null);}
+        setData({sessions:d.sessions||[],weights:d.weights||[],deleted:d.deleted||[]});
+        setDraft(d.draft||null);}
     }catch(e){}
     hydrated.current=true;
   },[]);
 
+  /* --- persist to this device --- */
   useEffect(()=>{
     if(!hydrated.current)return;
-    try{ localStorage.setItem(KEY,JSON.stringify({sessions,weights,draft})); setErr(null); }
-    catch(e){ setErr("Couldn't save — browser storage is blocked or full."); }
-  },[sessions,weights,draft]);
+    try{ localStorage.setItem(KEY,JSON.stringify({...data,draft})); }
+    catch(e){ setErr("Couldn't save locally — browser storage is blocked or full."); }
+  },[data,draft]);
 
+  /* --- push + pull in one round trip --- */
+  const doSync=useCallback(async(state)=>{
+    if(!SYNC_ON)return;
+    setSync("busy");
+    try{
+      const res=await fetch(SYNC_URL,{
+        method:"POST", redirect:"follow",
+        headers:{"Content-Type":"text/plain;charset=utf-8"},
+        body:JSON.stringify({action:"sync",secret:SYNC_SECRET,state})
+      });
+      const out=await res.json();
+      if(!out.ok)throw new Error(out.error||"sync failed");
+      const merged=mergeState(out.state,{});
+      pushed.current=JSON.stringify(merged);
+      setData(d=>{
+        const local=JSON.stringify(mergeState(d,{}));
+        return local===pushed.current?d:merged;
+      });
+      setSync("ok");
+      setLastSync(new Date());
+      setErr(null);
+    }catch(e){
+      setSync("bad");
+      setErr("Sync failed — your data is safe on this device. Tap the status dot to retry.");
+    }
+  },[]);
+
+  /* --- sync on open, on change (debounced), and on返回 to the tab --- */
+  useEffect(()=>{
+    if(!hydrated.current||!SYNC_ON)return;
+    const snap=JSON.stringify(mergeState(data,{}));
+    if(snap===pushed.current)return;
+    clearTimeout(timer.current);
+    timer.current=setTimeout(()=>doSync(data),1500);
+    return()=>clearTimeout(timer.current);
+  },[data,doSync]);
+
+  useEffect(()=>{
+    if(!SYNC_ON)return;
+    const t=setTimeout(()=>doSync(JSON.parse(localStorage.getItem(KEY)||"{}")),400);
+    const onFocus=()=>{ if(document.visibilityState==="visible") doSync(data); };
+    document.addEventListener("visibilitychange",onFocus);
+    return()=>{clearTimeout(t);document.removeEventListener("visibilitychange",onFocus);};
+  },[]);
+
+  /* --- mutations --- */
+  const addSession=s=>setData(d=>({...d,sessions:[...d.sessions,{...s,savedAt:Date.now()}]}));
+  const delSession=id=>setData(d=>({...d,
+    sessions:d.sessions.filter(x=>x.id!==id),
+    deleted:[...new Set([...d.deleted,String(id)])]}));
+  const addWeight=(date,kg)=>setData(d=>({...d,
+    weights:[...d.weights.filter(w=>w.date!==date),{date,kg:+kg,savedAt:Date.now()}],
+    deleted:d.deleted.filter(k=>k!=="w:"+date)}));
+  const delWeight=date=>setData(d=>({...d,
+    weights:d.weights.filter(w=>w.date!==date),
+    deleted:[...new Set([...d.deleted,"w:"+date])]}));
+  const replaceAll=st=>setData(d=>mergeState(d,st));
+
+  /* --- stats --- */
   const stats=useMemo(()=>{
     const tw=mondayOf(todayISO()), lw=shiftWeeks(tw,-1);
     const inWeek=w=>sessions.filter(s=>mondayOf(s.date)===w);
@@ -267,23 +358,26 @@ function App(){
     const pv=prev.reduce((a,s)=>a+sessionVolume(s),0);
     const sorted=[...weights].sort((a,b)=>a.date.localeCompare(b.date));
     const latest=sorted.length?+sorted[sorted.length-1].kg:START_KG;
-    const c=new Date(); c.setDate(c.getDate()-30);
+    const c=new Date();c.setDate(c.getDate()-30);
     const cut=c.toISOString().slice(0,10);
     const before={},after={};
     [...sessions].sort((a,b)=>a.date.localeCompare(b.date)).forEach(s=>
       s.lifts.forEach(l=>l.sets.forEach(x=>{
         if(!(+x.w>0&&+x.r>0))return;
-        const v=e1rm(x.w,x.r);
         const t=s.date<cut?before:after;
-        t[l.name]=Math.max(t[l.name]||0,v);
-      })));
+        t[l.name]=Math.max(t[l.name]||0,e1rm(x.w,x.r));})));
     const prs=Object.keys(after).filter(k=>after[k]>(before[k]||0)).length;
     return {weight:latest,toGo:Math.max(0,GOAL_KG-latest),
       pct:Math.min(100,Math.max(0,((latest-START_KG)/(GOAL_KG-START_KG))*100)),
-      volume:cv, delta: pv>0?((cv-pv)/pv)*100:null,
-      sessionsWeek:cur.length, setsWeek:cur.reduce((a,s)=>a+sessionSets(s),0),
-      prs, total:sessions.length};
+      volume:cv,delta:pv>0?((cv-pv)/pv)*100:null,
+      sessionsWeek:cur.length,setsWeek:cur.reduce((a,s)=>a+sessionSets(s),0),
+      prs,total:sessions.length};
   },[sessions,weights]);
+
+  const syncLabel={off:"Local only",idle:"Not synced",busy:"Syncing",ok:lastSync?
+    "Synced "+lastSync.toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"}):"Synced",
+    bad:"Sync failed"}[sync];
+  const dotClass={off:"",idle:"",busy:"busy",ok:"ok",bad:"bad"}[sync];
 
   return (
     <div className="tl-root">
@@ -293,6 +387,9 @@ function App(){
           <h1 className="tl-title">TRAINING LOG</h1>
           <p className="tl-sub">72 → 78 KG · UPPER/LOWER × 2 · {stats.total} SESSIONS BANKED</p>
         </div>
+        <button className="tl-synced" onClick={()=>doSync(data)} title="Sync now">
+          <span className={"tl-dot "+dotClass}/>{syncLabel}
+        </button>
       </header>
 
       <nav className="tl-nav">
@@ -305,10 +402,10 @@ function App(){
       <main className="tl-main">
         {tab==="dash" && <Dashboard stats={stats} sessions={sessions} weights={weights} onLog={()=>setTab("log")}/>}
         {tab==="log" && <Logger draft={draft} setDraft={setDraft} sessions={sessions}
-          onSave={s=>{setSessions(p=>[...p,s]);setDraft(null);setTab("dash");}}/>}
-        {tab==="weight" && <WeightTab weights={weights} setWeights={setWeights}/>}
-        {tab==="hist" && <History sessions={sessions} setSessions={setSessions}
-          weights={weights} setWeights={setWeights}/>}
+          onSave={s=>{addSession(s);setDraft(null);setTab("dash");}}/>}
+        {tab==="weight" && <WeightTab weights={weights} addWeight={addWeight} delWeight={delWeight}/>}
+        {tab==="hist" && <History sessions={sessions} delSession={delSession}
+          data={data} replaceAll={replaceAll}/>}
       </main>
     </div>);
 }
@@ -323,8 +420,7 @@ function Dashboard({stats,sessions,weights,onLog}){
     return Array.from({length:10},(_,i)=>{
       const m=shiftWeeks(wk,i-9);
       return {label:shortDate(m),
-        v:sessions.filter(s=>mondayOf(s.date)===m).reduce((a,s)=>a+sessionVolume(s),0)};
-    });
+        v:sessions.filter(s=>mondayOf(s.date)===m).reduce((a,s)=>a+sessionVolume(s),0)};});
   },[sessions]);
 
   const weightData=useMemo(()=>[...weights].sort((a,b)=>a.date.localeCompare(b.date))
@@ -333,7 +429,7 @@ function Dashboard({stats,sessions,weights,onLog}){
   const liftNames=useMemo(()=>{
     const seen={};
     sessions.forEach(s=>s.lifts.forEach(l=>{
-      if(l.sets.some(x=>+x.w>0)) seen[l.name]=(seen[l.name]||0)+1;}));
+      if(l.sets.some(x=>+x.w>0))seen[l.name]=(seen[l.name]||0)+1;}));
     return Object.keys(seen).sort((a,b)=>seen[b]-seen[a]);
   },[sessions]);
   const chosen=lift||liftNames[0]||"";
@@ -362,8 +458,7 @@ function Dashboard({stats,sessions,weights,onLog}){
           <span className="tl-cap">Volume this week</span>
           <div className="tl-big">{fmt(stats.volume)}<em>kg</em></div>
           <span className={"tl-note "+(stats.delta==null?"":stats.delta>=0?"up":"down")}>
-            {stats.delta==null?"no prior week":(stats.delta>=0?"▲ ":"▼ ")+Math.abs(stats.delta).toFixed(0)+"% vs last week"}
-          </span>
+            {stats.delta==null?"no prior week":(stats.delta>=0?"▲ ":"▼ ")+Math.abs(stats.delta).toFixed(0)+"% vs last week"}</span>
         </div>
         <div className="tl-tile">
           <span className="tl-cap">Sessions</span>
@@ -391,12 +486,9 @@ function Dashboard({stats,sessions,weights,onLog}){
               <button key={k} className={"tl-pill"+(chart===k?" on":"")} onClick={()=>setChart(k)}>{v}</button>))}
           </div>
         </div>
-
         {chart==="strength" && liftNames.length>0 &&
           <select className="tl-select" value={chosen} onChange={e=>setLift(e.target.value)}>
-            {liftNames.map(n=><option key={n} value={n}>{n}</option>)}
-          </select>}
-
+            {liftNames.map(n=><option key={n} value={n}>{n}</option>)}</select>}
         {chart==="volume" && <BarChart data={volumeData} unit="kg"/>}
         {chart==="weight" && (weightData.length>1
           ? <LineChartSVG data={weightData} color="#FF5A1F" unit="kg"/>
@@ -491,7 +583,7 @@ function Logger({draft,setDraft,sessions,onSave}){
 }
 
 /* ---------------- BODYWEIGHT ---------------- */
-function WeightTab({weights,setWeights}){
+function WeightTab({weights,addWeight,delWeight}){
   const [kg,setKg]=useState(""); const [date,setDate]=useState(todayISO());
   const sorted=[...weights].sort((a,b)=>b.date.localeCompare(a.date));
 
@@ -502,8 +594,7 @@ function WeightTab({weights,setWeights}){
       v:+(b[m].reduce((x,y)=>x+y,0)/b[m].length).toFixed(1)}));
   },[weights]);
 
-  const add=()=>{ if(!(+kg>0))return;
-    setWeights(p=>[...p.filter(w=>w.date!==date),{date,kg:+kg}]); setKg(""); };
+  const add=()=>{ if(!(+kg>0))return; addWeight(date,kg); setKg(""); };
 
   return (
     <div className="tl-stack">
@@ -533,33 +624,29 @@ function WeightTab({weights,setWeights}){
           <div key={w.date} className="tl-entry">
             <span className="mono">{shortDate(w.date)}</span>
             <strong className="mono">{(+w.kg).toFixed(1)} kg</strong>
-            <button className="tl-del" onClick={()=>setWeights(p=>p.filter(x=>x.date!==w.date))}>×</button>
+            <button className="tl-del" onClick={()=>delWeight(w.date)}>×</button>
           </div>))}
       </div>
     </div>);
 }
 
 /* ---------------- HISTORY + BACKUP ---------------- */
-function History({sessions,setSessions,weights,setWeights}){
+function History({sessions,delSession,data,replaceAll}){
   const [open,setOpen]=useState(null);
   const sorted=[...sessions].sort((a,b)=>b.date.localeCompare(a.date));
 
   const exportData=()=>{
-    const blob=new Blob([JSON.stringify({sessions,weights},null,2)],{type:"application/json"});
+    const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
     const a=document.createElement("a");
     a.href=URL.createObjectURL(blob);
     a.download="training-log-"+todayISO()+".json";
     a.click(); URL.revokeObjectURL(a.href);
   };
-
   const importData=e=>{
     const f=e.target.files[0]; if(!f)return;
     const r=new FileReader();
-    r.onload=()=>{ try{
-      const d=JSON.parse(r.result);
-      if(d.sessions)setSessions(d.sessions);
-      if(d.weights)setWeights(d.weights);
-    }catch(err){ alert("That file couldn't be read."); } };
+    r.onload=()=>{ try{ replaceAll(JSON.parse(r.result)); }
+      catch(err){ alert("That file couldn't be read."); } };
     r.readAsText(f); e.target.value="";
   };
 
@@ -567,8 +654,9 @@ function History({sessions,setSessions,weights,setWeights}){
     <div className="tl-stack">
       <div className="tl-panel">
         <h2 className="tl-h2">Backup</h2>
-        <p className="tl-note">Data lives in this browser only. Export regularly, and import
-          the file to move your history to another device.</p>
+        <p className="tl-note">{SYNC_ON
+          ? "Synced to your Google Sheet. Export anyway if you want an offline copy."
+          : "Data lives in this browser only. Export regularly to keep a copy."}</p>
         <div className="tl-datatools">
           <button className="tl-ghost" onClick={exportData}>Export JSON</button>
           <label className="tl-ghost" style={{display:"inline-block"}}>
@@ -596,8 +684,7 @@ function History({sessions,setSessions,weights,setWeights}){
                   <span>{l.name}</span>
                   <span className="mono">{l.sets.map(x=>x.w+"×"+x.r).join("  ")}</span>
                 </div>))}
-              <button className="tl-discard sm" onClick={()=>setSessions(p=>p.filter(x=>x.id!==s.id))}>
-                Delete session</button>
+              <button className="tl-discard sm" onClick={()=>delSession(s.id)}>Delete session</button>
             </div>}
         </div>))}
     </div>);
