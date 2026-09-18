@@ -1,0 +1,1153 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0a0918">
+<title>Arhatic Practice Log</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0a0918; --ink2:#120d26; --ink3:#1a1033;
+  --gold:#e0b25c; --gold-soft:#f3d79a; --gold-dim:rgba(224,178,92,.16);
+  --violet:#8f74e0; --rose:#d98a8a; --jade:#79c2a8;
+  --text:#f2ece1; --muted:#a79bbd; --faint:#6f6486;
+  --card:rgba(255,255,255,.045); --card2:rgba(255,255,255,.028);
+  --line:rgba(224,178,92,.13); --line2:rgba(255,255,255,.07);
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --sans:'Jost',-apple-system,'Segoe UI',sans-serif;
+  --r:18px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  font-family:var(--sans);color:var(--text);min-height:100vh;
+  background:
+    radial-gradient(900px 600px at 15% -8%,rgba(143,116,224,.22),transparent 60%),
+    radial-gradient(700px 500px at 95% 5%,rgba(224,178,92,.13),transparent 55%),
+    radial-gradient(800px 700px at 50% 108%,rgba(143,116,224,.14),transparent 60%),
+    linear-gradient(180deg,#0a0918 0%,#140d29 45%,#0d0a1c 100%);
+  background-attachment:fixed;
+  font-weight:400;letter-spacing:.01em;
+}
+body:before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+#root{position:relative;z-index:1}
+.wrap{max-width:760px;margin:0 auto;padding:0 16px 120px}
+
+/* ---------- header ---------- */
+.topbar{position:sticky;top:0;z-index:30;backdrop-filter:blur(18px);
+  background:linear-gradient(180deg,rgba(10,9,24,.92),rgba(10,9,24,.62));
+  border-bottom:1px solid var(--line2)}
+.topinner{max-width:760px;margin:0 auto;padding:14px 16px 12px}
+.brandrow{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{font-family:var(--serif);font-size:22px;font-weight:600;letter-spacing:.06em;line-height:1}
+.brand span{color:var(--gold)}
+.brandsub{font-size:9.5px;letter-spacing:.34em;text-transform:uppercase;color:var(--faint);margin-top:5px}
+.syncdot{display:flex;align-items:center;gap:7px;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--muted);background:var(--card);border:1px solid var(--line2);border-radius:999px;padding:7px 12px;cursor:pointer}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--faint)}
+.dot.ok{background:var(--jade);box-shadow:0 0 8px rgba(121,194,168,.8)}
+.dot.busy{background:var(--gold);animation:pulse 1s infinite}
+.dot.err{background:var(--rose)}
+@keyframes pulse{50%{opacity:.25}}
+.datenav{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:12px}
+.datenav button{background:transparent;border:1px solid var(--line2);color:var(--muted);width:34px;height:34px;
+  border-radius:10px;font-size:15px;cursor:pointer;display:grid;place-items:center}
+.datenav button:active{background:var(--card)}
+.datepill{flex:1;text-align:center;font-family:var(--serif);font-size:19px;letter-spacing:.04em;
+  padding:6px 10px;border-radius:12px;cursor:pointer;position:relative}
+.datepill input{position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer}
+.datepill em{display:block;font-style:normal;font-family:var(--sans);font-size:9.5px;letter-spacing:.26em;
+  text-transform:uppercase;color:var(--gold);margin-top:2px}
+
+/* ---------- cards ---------- */
+.card{background:var(--card);border:1px solid var(--line2);border-radius:var(--r);padding:18px;margin-top:14px;
+  backdrop-filter:blur(8px);animation:rise .45s cubic-bezier(.2,.7,.3,1) both}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}}
+.card.gold{border-color:var(--line);background:linear-gradient(160deg,rgba(224,178,92,.07),rgba(255,255,255,.028))}
+.chead{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:14px}
+.ctitle{font-family:var(--serif);font-size:20px;font-weight:600;letter-spacing:.03em}
+.cnum{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);white-space:nowrap}
+.cmeta{font-size:11.5px;color:var(--muted);letter-spacing:.06em}
+.pillar-tag{font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--faint);display:block;margin-bottom:3px}
+.sublabel{font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--faint);margin:16px 0 9px;display:flex;
+  align-items:center;justify-content:space-between;gap:8px}
+.sublabel:first-of-type{margin-top:0}
+.hr{height:1px;background:var(--line2);margin:16px -18px}
+
+/* ---------- toggles ---------- */
+.chips{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.chip{display:flex;align-items:center;gap:9px;padding:11px 13px;border-radius:13px;cursor:pointer;
+  background:var(--card2);border:1px solid var(--line2);color:var(--text);font-family:var(--sans);
+  font-size:13.5px;text-align:left;transition:.18s;line-height:1.25}
+.chip:active{transform:scale(.98)}
+.chip.on{background:linear-gradient(140deg,rgba(224,178,92,.17),rgba(224,178,92,.06));border-color:rgba(224,178,92,.45)}
+.tick{width:17px;height:17px;border-radius:6px;border:1.5px solid var(--faint);flex:none;display:grid;place-items:center;
+  font-size:10px;color:var(--ink);transition:.18s}
+.chip.on .tick{background:var(--gold);border-color:var(--gold);color:#22160a;font-weight:700}
+.allbtn{background:transparent;border:1px solid var(--line);color:var(--gold);font-family:var(--sans);
+  font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;padding:5px 11px;border-radius:999px;cursor:pointer}
+.allbtn:active{background:var(--gold-dim)}
+
+/* virtue rows */
+.vrow{display:flex;align-items:center;gap:11px;padding:12px 2px;border-bottom:1px solid var(--line2);cursor:pointer}
+.vrow:last-child{border-bottom:0}
+.vname{flex:1;font-size:14px;line-height:1.3}
+.vname small{display:block;color:var(--faint);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;margin-top:3px}
+.vstreak{font-size:10.5px;color:var(--gold);letter-spacing:.1em;white-space:nowrap}
+.tri{width:22px;height:22px;flex:none}
+.tri path{fill:none;stroke:var(--faint);stroke-width:2.5;transition:.2s}
+.vrow.on .tri path{stroke:var(--gold);fill:rgba(224,178,92,.22)}
+
+/* meditation minutes */
+.minrow{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line2)}
+.minrow:last-child{border-bottom:0}
+.minrow .nm{flex:1;font-size:13.5px}
+.step{display:flex;align-items:center;gap:0;border:1px solid var(--line2);border-radius:10px;overflow:hidden}
+.step button{width:32px;height:32px;background:transparent;border:0;color:var(--gold);font-size:16px;cursor:pointer}
+.step input{width:46px;height:32px;background:transparent;border:0;border-left:1px solid var(--line2);
+  border-right:1px solid var(--line2);color:var(--text);text-align:center;font-family:var(--sans);font-size:14px}
+.step span{font-size:10px;color:var(--faint);padding:0 9px;letter-spacing:.14em}
+
+/* forms */
+.field{margin-bottom:11px}
+.field label{display:block;font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--faint);margin-bottom:6px}
+input,select,textarea{width:100%;background:rgba(0,0,0,.24);border:1px solid var(--line2);border-radius:12px;
+  padding:12px 13px;color:var(--text);font-family:var(--sans);font-size:14.5px;outline:none}
+input:focus,select:focus,textarea:focus{border-color:rgba(224,178,92,.45)}
+select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--gold) 50%),linear-gradient(135deg,var(--gold) 50%,transparent 50%);
+  background-position:calc(100% - 18px) 21px,calc(100% - 13px) 21px;background-size:5px 5px;background-repeat:no-repeat}
+select option{background:#171030}
+textarea{resize:vertical;min-height:62px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.btn{width:100%;padding:13px;border-radius:13px;border:0;cursor:pointer;font-family:var(--sans);
+  font-size:12px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;
+  background:linear-gradient(120deg,var(--gold),#c99a44);color:#20150a}
+.btn:active{opacity:.85}
+.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--gold)}
+.btn.slim{padding:10px;font-size:10.5px}
+.btn.danger{background:transparent;border:1px solid rgba(217,138,138,.4);color:var(--rose)}
+.btnrow{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px}
+
+/* entries */
+.entry{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--line2)}
+.entry:last-child{border-bottom:0}
+.entry .ebody{flex:1;min-width:0}
+.entry .etitle{font-size:14px;line-height:1.35}
+.entry .esub{font-size:11.5px;color:var(--muted);margin-top:3px;letter-spacing:.04em}
+.entry .eamt{font-family:var(--serif);font-size:18px;color:var(--gold);white-space:nowrap}
+.del{background:transparent;border:0;color:var(--faint);font-size:16px;cursor:pointer;padding:2px 4px;line-height:1}
+.empty{color:var(--faint);font-size:13px;text-align:center;padding:18px 0;font-style:italic;font-family:var(--serif);font-size:16px}
+
+/* dashboard */
+.ring{display:flex;align-items:center;gap:20px}
+.ringtxt{flex:1}
+.bignum{font-family:var(--serif);font-size:44px;line-height:1;color:var(--gold-soft)}
+.bignum small{font-size:16px;color:var(--muted)}
+.statgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(104px,1fr));gap:9px;margin-top:4px}
+.stat{background:var(--card2);border:1px solid var(--line2);border-radius:14px;padding:13px 12px}
+.stat b{display:block;font-family:var(--serif);font-size:25px;font-weight:600;color:var(--gold-soft);line-height:1.1}
+.stat i{display:block;font-style:normal;font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);margin-top:5px}
+.chart{display:flex;align-items:flex-end;gap:2px;height:130px;padding-top:6px}
+.bcol{flex:1;height:100%;display:flex;align-items:flex-end;border-radius:4px 4px 0 0;overflow:hidden}
+.bar{width:100%;border-radius:4px 4px 2px 2px;min-height:2px;transition:.3s}
+.axis{display:flex;justify-content:space-between;font-size:9.5px;color:var(--faint);letter-spacing:.1em;margin-top:8px}
+.hbar{margin:11px 0}
+.hbar .hl{display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:6px;gap:10px}
+.hbar .hl b{color:var(--gold);font-weight:500;font-size:11.5px;white-space:nowrap}
+.track{height:7px;background:rgba(255,255,255,.06);border-radius:99px;overflow:hidden}
+.fill{height:100%;border-radius:99px;background:linear-gradient(90deg,rgba(224,178,92,.55),var(--gold))}
+.heat{display:grid;grid-auto-flow:column;grid-template-rows:repeat(7,1fr);gap:3px}
+.hcell{width:100%;aspect-ratio:1;border-radius:3px;background:rgba(255,255,255,.05)}
+.range{display:flex;gap:6px}
+.range button{background:transparent;border:1px solid var(--line2);color:var(--muted);font-size:10px;
+  letter-spacing:.14em;padding:5px 10px;border-radius:999px;cursor:pointer;font-family:var(--sans)}
+.range button.on{border-color:var(--gold);color:var(--gold);background:var(--gold-dim)}
+.legend{display:flex;align-items:center;gap:6px;font-size:9.5px;color:var(--faint);letter-spacing:.14em;
+  text-transform:uppercase;justify-content:flex-end;margin-top:9px}
+.lsq{width:9px;height:9px;border-radius:2px}
+
+/* books */
+.book{display:flex;align-items:center;gap:11px;padding:11px 2px;border-bottom:1px solid var(--line2);cursor:pointer}
+.book:last-child{border-bottom:0}
+.book .bt{flex:1;font-size:13.5px;line-height:1.35}
+.book.done .bt{color:var(--muted);text-decoration:line-through;text-decoration-color:rgba(224,178,92,.45)}
+.book .bm{font-size:10.5px;color:var(--gold);letter-spacing:.1em;white-space:nowrap}
+.sutra{padding-left:16px;border-left:1px solid var(--line2);margin-left:6px}
+
+/* nav */
+.nav{position:fixed;left:0;right:0;bottom:0;z-index:40;backdrop-filter:blur(20px);
+  background:linear-gradient(0deg,rgba(9,8,20,.97),rgba(9,8,20,.82));border-top:1px solid var(--line2);
+  padding-bottom:env(safe-area-inset-bottom)}
+.navinner{max-width:760px;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr)}
+.navbtn{background:transparent;border:0;padding:11px 4px 13px;color:var(--faint);cursor:pointer;
+  font-family:var(--sans);font-size:9px;letter-spacing:.16em;text-transform:uppercase;display:grid;gap:5px;justify-items:center;
+  border-top:2px solid transparent;margin-top:-1px}
+.navbtn svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.navbtn.on{color:var(--gold);border-top-color:var(--gold)}
+.toast{position:fixed;bottom:86px;left:50%;transform:translateX(-50%);background:rgba(20,14,38,.96);
+  border:1px solid var(--line);color:var(--gold-soft);padding:11px 18px;border-radius:999px;font-size:12.5px;
+  letter-spacing:.06em;z-index:60;animation:rise .3s both}
+.note{font-size:11.5px;color:var(--muted);line-height:1.6}
+.link{color:var(--gold);text-decoration:none;border-bottom:1px solid var(--gold-dim)}
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+<script type="text/babel" data-presets="react">
+/* =======================================================================
+   SYNC CONFIG  —  fill these two in after deploying Code.gs
+   ======================================================================= */
+const SYNC_URL    = "";   // paste your Apps Script /exec URL here
+const SYNC_SECRET = "";   // must match SECRET in Code.gs, character for character
+/* ===================================================================== */
+
+const SYNC_ON = !!(SYNC_URL && SYNC_SECRET);
+const KEY = "arhatic-log-v1";
+const { useState, useEffect, useMemo, useRef, useCallback } = React;
+
+/* ------------------------- practice definitions ------------------------ */
+const RITUALS = {
+  morning: [
+    { k:"sharanagathi", label:"Sharanagathi" },
+    { k:"iam",          label:"I AM Affirmation" },
+    { k:"selfheal",     label:"Self-Healing Affirmation" },
+    { k:"cost",         label:"Cost Affirmation" },
+  ],
+  night: [
+    { k:"sharanagathi", label:"Sharanagathi" },
+    { k:"iam",          label:"I AM Affirmation" },
+    { k:"selfheal",     label:"Self-Healing Affirmation" },
+    { k:"cost",         label:"Cost Affirmation" },
+    { k:"cord",         label:"Cord Cutting" },
+  ],
+};
+
+const VIRTUES = [
+  { k:"lk",  name:"Loving Kindness",    full:"Loving Kindness & Non-Injury",
+    url:"https://www.thepranichealers.com/pages/en/our-system/loving-kindness-and-non-injury" },
+  { k:"gen", name:"Generosity",         full:"Generosity & Non-Stealing",
+    url:"https://www.thepranichealers.com/pages/en/our-system/generosity-non-stealing" },
+  { k:"ap",  name:"Accurate Perception", full:"Accurate Perception & Correct Expression",
+    url:"https://www.thepranichealers.com/pages/en/our-system/accurate-perception-correct-expression-non-falsehood" },
+  { k:"ca",  name:"Constancy of Aim",   full:"Constancy of Aim & Effort, Non-Laziness",
+    url:"https://www.thepranichealers.com/pages/en/our-system/constancy-of-aim-effort-and-non-laziness" },
+  { k:"mod", name:"Moderation",         full:"Moderation & Non-Excessiveness",
+    url:"https://www.thepranichealers.com/pages/en/our-system/moderation-non-excessiveness" },
+];
+
+const MEDS = [
+  { k:"thm-basic", label:"THM – Basic",  def:20 },
+  { k:"thm-adv",   label:"THM – Adv",    def:30 },
+  { k:"thm-psy",   label:"THM – Psy",    def:30 },
+  { k:"thm-omph",  label:"THM – OMPH",   def:30 },
+  { k:"soul",      label:"Soul",              def:20 },
+  { k:"dhyaan",    label:"Dhyaan",            def:20 },
+  { k:"kundalini", label:"Kundalini",         def:30 },
+  { k:"lords",     label:"Lord's Prayer",     def:20 },
+];
+
+const BOOKS_GMCKS = [
+  "The Existence of God is Self-Evident",
+  "Achieving Oneness with the Higher Soul",
+  "The Origin of Modern Pranic Healing and Arhatic Yoga",
+  "Miracles Through Pranic Healing",
+  "Advanced Pranic Healing",
+  "Pranic Psychotherapy",
+  "Pranic Crystal Healing",
+  "Practical Psychic Self-Defence for Home and Office",
+  "Universal and Kabbalistic Meditations on the Lord's Prayer",
+  "Spiritual Essence of Man",
+  "Inner Teachings of Hinduism Revealed",
+  "Om Mani Padme Hum",
+  "Inner Teachings of Christianity Revealed",
+  "Superbrain Yoga",
+];
+const BOOKS_SUTRAS = [
+  "Golden Lotus Sutras — Beyond the Mind. On Meditation",
+  "Golden Lotus Sutras — Inspired Action. On Teaching",
+  "Golden Lotus Sutras — Experiencing Being. On Life",
+  "Golden Lotus Sutras — Compassionate Objectivity. On Character Building",
+  "Golden Lotus Sutras — Creative Transformation. On Spiritual Practice",
+  "Golden Lotus Sutras — Achieve the Impossible. On Spiritual Business Management",
+  "Golden Lotus Sutras — Possible Miracles. On Pranic Healing",
+];
+const BOOKS_OTHER = [
+  "Autobiography of a Yogi — Paramahamsa Yogananda",
+  "Basic Theosophy — Geoffrey Hodson",
+  "First Principles of Theosophy — C. Jinarajadasa",
+  "The Spirits Book — Allan Kardec",
+  "The Etheric Double — Arthur E. Powell",
+  "The Astral Body — Arthur E. Powell",
+  "The Mental Body — Arthur E. Powell",
+  "The Causal Body — Arthur E. Powell",
+  "The I Ching — Richard Wilhelm",
+  "Books by Holy Master DK through Alice Bailey",
+];
+const LIBRARY = [
+  { cat:"Master Choa Kok Sui", books:BOOKS_GMCKS },
+  { cat:"Golden Lotus Sutras", books:BOOKS_SUTRAS },
+  { cat:"Other Authors",       books:BOOKS_OTHER },
+];
+const ALL_BOOKS = LIBRARY.flatMap(g => g.books.map(b => ({ title:b, cat:g.cat })));
+const catOf = t => (ALL_BOOKS.find(b => b.title === t) || {}).cat || "Other";
+
+/* ------------------------------- helpers ------------------------------- */
+const pad = n => String(n).padStart(2,"0");
+const iso = d => d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+const todayISO = () => iso(new Date());
+const parseISO = s => { const p = String(s).split("-").map(Number); return new Date(p[0],p[1]-1,p[2]); };
+const addDays = (s,n) => { const d = parseISO(s); d.setDate(d.getDate()+n); return iso(d); };
+const fmtDay  = s => parseISO(s).toLocaleDateString(undefined,{weekday:"long",day:"numeric",month:"long"});
+const fmtShort= s => parseISO(s).toLocaleDateString(undefined,{day:"numeric",month:"short"});
+const monthKey= s => s.slice(0,7);
+const fmtMonth= m => { const d = parseISO(m+"-01"); return d.toLocaleDateString(undefined,{month:"short",year:"2-digit"}); };
+const uid = () => Math.random().toString(36).slice(2,9)+Date.now().toString(36).slice(-4);
+const inr = n => "₹" + Number(n||0).toLocaleString("en-IN");
+const clamp = (n,a,b) => Math.max(a,Math.min(b,n));
+
+const BLANK = { days:{}, services:{}, tithes:{}, books:{}, deleted:{}, v:1 };
+const emptyDay = () => ({ rituals:{morning:{},night:{}}, virtues:{}, vnotes:{}, meds:{}, study:[], updatedAt:0 });
+const getDay = (st,d) => st.days[d] || emptyDay();
+
+function loadLocal(){
+  try { return Object.assign({}, BLANK, JSON.parse(localStorage.getItem(KEY)||"{}")); }
+  catch(e){ return Object.assign({}, BLANK); }
+}
+
+function mergeState(a,b){
+  a = Object.assign({}, BLANK, a||{}); b = Object.assign({}, BLANK, b||{});
+  const out = { days:{}, services:{}, tithes:{}, books:{}, deleted:Object.assign({},a.deleted,b.deleted), v:1 };
+  const newer = (x,y) => !x ? y : !y ? x : ((y.updatedAt||0) > (x.updatedAt||0) ? y : x);
+  new Set([].concat(Object.keys(a.days),Object.keys(b.days))).forEach(d => { out.days[d] = newer(a.days[d],b.days[d]); });
+  ["services","tithes","books"].forEach(coll => {
+    new Set([].concat(Object.keys(a[coll]),Object.keys(b[coll]))).forEach(id => {
+      if (out.deleted[id]) return;
+      out[coll][id] = newer(a[coll][id], b[coll][id]);
+    });
+  });
+  return out;
+}
+
+/* day scoring — the four daily pillars (service & tithing are periodic) */
+function dayStats(d){
+  const m = RITUALS.morning.filter(r => d.rituals.morning[r.k]).length;
+  const n = RITUALS.night.filter(r => d.rituals.night[r.k]).length;
+  const v = VIRTUES.filter(x => d.virtues[x.k]).length;
+  const medKeys = Object.keys(d.meds||{});
+  const medMin  = medKeys.reduce((a,k) => a + (Number(d.meds[k])||0), 0);
+  const study   = d.study||[];
+  const studyMin= study.reduce((a,x) => a + (Number(x.min)||0), 0);
+  const devotion = (m+n) / (RITUALS.morning.length + RITUALS.night.length);
+  const purif    = v / VIRTUES.length;
+  const medS     = medKeys.length ? 1 : 0;
+  const stS      = study.length ? 1 : 0;
+  return { m, n, v, medKeys, medMin, studyMin, devotion, purif, medS, stS,
+           score:(devotion+purif+medS+stS)/4 };
+}
+function streakOf(days,pred){
+  let s = 0, d = todayISO();
+  if (!pred(days[d]||emptyDay())) d = addDays(d,-1);
+  while (pred(days[d]||emptyDay())) { s++; d = addDays(d,-1); if (s > 3650) break; }
+  return s;
+}
+function bestStreak(days,pred){
+  const keys = Object.keys(days).sort();
+  if (!keys.length) return 0;
+  let best = 0, run = 0, cur = keys[0];
+  const end = todayISO();
+  while (cur <= end) {
+    if (pred(days[cur]||emptyDay())) { run++; best = Math.max(best,run); } else run = 0;
+    cur = addDays(cur,1);
+  }
+  return best;
+}
+const lastNDates = n => { const out = []; for (let i=n-1;i>=0;i--) out.push(addDays(todayISO(),-i)); return out; };
+
+/* ------------------------------ UI atoms ------------------------------- */
+function Ring({ pct, size=96 }){
+  const r = (size/2) - 7, c = 2*Math.PI*r;
+  return (
+    <svg width={size} height={size} style={{flex:"none"}}>
+      <circle cx={size/2} cy={size/2} r={r} stroke="rgba(255,255,255,.08)" strokeWidth="7" fill="none"/>
+      <circle cx={size/2} cy={size/2} r={r} stroke="url(#g1)" strokeWidth="7" fill="none" strokeLinecap="round"
+        strokeDasharray={c} strokeDashoffset={c*(1-clamp(pct,0,1))}
+        transform={"rotate(-90 "+(size/2)+" "+(size/2)+")"} style={{transition:"stroke-dashoffset .6s ease"}}/>
+      <defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stopColor="#f3d79a"/><stop offset="100%" stopColor="#c99a44"/>
+      </linearGradient></defs>
+      <text x="50%" y="52%" textAnchor="middle" dominantBaseline="middle"
+        style={{fontFamily:"'Cormorant Garamond',serif",fontSize:size*0.29,fill:"#f3d79a"}}>
+        {Math.round(pct*100)}
+      </text>
+    </svg>
+  );
+}
+const Tri = ({on}) => (
+  <svg className="tri" viewBox="0 0 24 24"><path d="M12 3.5 21 20H3z" strokeLinejoin="round"/></svg>
+);
+function Bars({ data, fmt }){
+  const max = Math.max(1, ...data.map(d => d.v));
+  return (
+    <div>
+      <div className="chart">
+        {data.map((d,i) => (
+          <div className="bcol" key={i} title={d.label+": "+(fmt?fmt(d.v):d.v)}>
+            <div className="bar" style={{
+              height: (d.v/max*100)+"%",
+              background: d.v ? "linear-gradient(180deg,#f3d79a,rgba(224,178,92,.35))" : "rgba(255,255,255,.055)",
+              minHeight: d.v ? 3 : 2 }}/>
+          </div>
+        ))}
+      </div>
+      <div className="axis"><span>{data.length?data[0].label:""}</span><span>{data.length?data[data.length-1].label:""}</span></div>
+    </div>
+  );
+}
+function HBar({ label, value, max, right }){
+  return (
+    <div className="hbar">
+      <div className="hl"><span>{label}</span><b>{right}</b></div>
+      <div className="track"><div className="fill" style={{width:(max? (value/max*100):0)+"%"}}/></div>
+    </div>
+  );
+}
+function Heat({ days, weeks=18 }){
+  const cells = [];
+  let start = addDays(todayISO(), -(weeks*7-1));
+  const dow = parseISO(start).getDay();
+  start = addDays(start, -dow);
+  let cur = start; const end = todayISO();
+  while (cur <= end) {
+    const st = dayStats(getDay({days}, cur));
+    cells.push({ d:cur, s:st.score });
+    cur = addDays(cur,1);
+  }
+  return (
+    <div>
+      <div className="heat">
+        {cells.map(c => (
+          <div key={c.d} className="hcell" title={fmtShort(c.d)+" — "+Math.round(c.s*100)+"%"}
+            style={{ background: c.s ? "rgba(224,178,92,"+(0.14+c.s*0.76)+")" : "rgba(255,255,255,.05)" }}/>
+        ))}
+      </div>
+      <div className="legend">
+        <span>less</span>
+        {[0.1,0.35,0.6,0.85,1].map(o => <span key={o} className="lsq" style={{background:"rgba(224,178,92,"+o+")"}}/>)}
+        <span>more</span>
+      </div>
+    </div>
+  );
+}
+
+/* =============================== APP =================================== */
+function App(){
+  const [state,setState] = useState(loadLocal);
+  const [tab,setTab]     = useState("today");
+  const [date,setDate]   = useState(todayISO());
+  const [sync,setSync]   = useState({ s: SYNC_ON ? "idle" : "off", t:"" });
+  const [toast,setToast] = useState("");
+  const timer = useRef(null);
+  const pushed = useRef(false);
+  const stateRef = useRef(state);
+
+  useEffect(() => { stateRef.current = state; }, [state]);
+  useEffect(() => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(e){} }, [state]);
+  useEffect(() => { if (!toast) return; const t = setTimeout(() => setToast(""), 1900); return () => clearTimeout(t); }, [toast]);
+
+  const update = useCallback(fn => { setState(s => fn(s)); queueSync(); }, []);
+
+  /* ---------------------------- sync layer --------------------------- */
+  const post = async (action, body) => {
+    const res = await fetch(SYNC_URL, {
+      method:"POST",
+      headers:{ "Content-Type":"text/plain;charset=utf-8" },
+      body: JSON.stringify(Object.assign({ secret:SYNC_SECRET, action }, body||{})),
+    });
+    return res.json();
+  };
+  const doSync = useCallback(async () => {
+    if (!SYNC_ON) return;
+    setSync({ s:"busy", t:"" });
+    try {
+      const out = await post("sync", { state: stateRef.current });
+      if (!out || !out.ok) throw new Error((out && out.error) || "failed");
+      setState(s => mergeState(s, out.state));
+      setSync({ s:"ok", t:new Date().toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"}) });
+    } catch(e){ setSync({ s:"err", t:String(e.message||e) }); }
+  }, []);
+  const queueSync = useCallback(() => {
+    if (!SYNC_ON) return;
+    clearTimeout(timer.current);
+    timer.current = setTimeout(doSync, 1600);
+  }, [doSync]);
+  useEffect(() => {
+    if (!SYNC_ON || pushed.current) return;
+    pushed.current = true;
+    doSync();
+    const onVis = () => { if (document.visibilityState === "visible") doSync(); };
+    document.addEventListener("visibilitychange", onVis);
+    return () => document.removeEventListener("visibilitychange", onVis);
+  }, [doSync]);
+
+  /* --------------------------- day mutations ------------------------- */
+  const patchDay = (d, fn) => update(s => {
+    const cur = Object.assign({}, getDay(s,d));
+    cur.rituals = { morning:Object.assign({},cur.rituals.morning), night:Object.assign({},cur.rituals.night) };
+    cur.virtues = Object.assign({}, cur.virtues);
+    cur.vnotes  = Object.assign({}, cur.vnotes);
+    cur.meds    = Object.assign({}, cur.meds);
+    cur.study   = (cur.study||[]).slice();
+    fn(cur);
+    cur.updatedAt = Date.now();
+    return Object.assign({}, s, { days: Object.assign({}, s.days, { [d]:cur }) });
+  });
+
+  const day  = getDay(state, date);
+  const stat = dayStats(day);
+
+  /* ------------------------------ views ------------------------------ */
+  const views = {
+    today:     <Today {...{date,day,stat,patchDay,setTab,setToast}}/>,
+    dashboard: <Dashboard state={state}/>,
+    books:     <Books {...{state,update,setToast}}/>,
+    seva:      <Seva {...{state,update,date,setToast}}/>,
+    settings:  <Settings {...{state,setState,sync,doSync,setToast}}/>,
+  };
+
+  return (
+    <div>
+      <div className="topbar"><div className="topinner">
+        <div className="brandrow">
+          <div>
+            <div className="brand">Arhatic <span>Log</span></div>
+            <div className="brandsub">Five Pillars · Daily Practice</div>
+          </div>
+          <button className="syncdot" onClick={doSync} title={sync.t}>
+            <span className={"dot "+(sync.s==="ok"?"ok":sync.s==="busy"?"busy":sync.s==="err"?"err":"")}/>
+            {sync.s==="off"?"Local":sync.s==="busy"?"Syncing":sync.s==="err"?"Retry":sync.s==="ok"?"Synced":"Sync"}
+          </button>
+        </div>
+        {(tab==="today"||tab==="seva") &&
+          <div className="datenav">
+            <button onClick={() => setDate(addDays(date,-1))}>‹</button>
+            <div className="datepill">
+              {fmtDay(date)}
+              <em>{date===todayISO()?"Today":date===addDays(todayISO(),-1)?"Yesterday":"Tap to change"}</em>
+              <input type="date" value={date} max={todayISO()} onChange={e => e.target.value && setDate(e.target.value)}/>
+            </div>
+            <button onClick={() => setDate(addDays(date,1))} disabled={date>=todayISO()}
+              style={{opacity:date>=todayISO()?.3:1}}>›</button>
+          </div>}
+      </div></div>
+
+      <div className="wrap" key={tab}>{views[tab]}</div>
+
+      {toast && <div className="toast">{toast}</div>}
+
+      <div className="nav"><div className="navinner">
+        {[
+          ["today","Today","M12 3v9l5 3M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0"],
+          ["dashboard","Insights","M4 20V10M10 20V4M16 20v-7M22 20H2"],
+          ["books","Study","M4 4h7a2 2 0 0 1 2 2v14a2 2 0 0 0-2-2H4zM20 4h-7a2 2 0 0 0-2 2v14a2 2 0 0 1 2-2h7z"],
+          ["seva","Seva","M12 21s-7-4.6-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.4-7 10-7 10z"],
+          ["settings","More","M4 6h16M4 12h16M4 18h16"],
+        ].map(([k,label,d]) => (
+          <button key={k} className={"navbtn"+(tab===k?" on":"")} onClick={() => setTab(k)}>
+            <svg viewBox="0 0 24 24"><path d={d}/></svg>{label}
+          </button>
+        ))}
+      </div></div>
+    </div>
+  );
+}
+
+/* ------------------------------ TODAY ---------------------------------- */
+function Today({ date, day, stat, patchDay, setTab, setToast }){
+  const [book,setBook]   = useState("");
+  const [smin,setSmin]   = useState("");
+  const [spag,setSpag]   = useState("");
+  const [snote,setSnote] = useState("");
+  const [openV,setOpenV] = useState(null);
+
+  const toggleR = (slot,k) => patchDay(date, d => { d.rituals[slot][k] = !d.rituals[slot][k]; });
+  const allR = slot => patchDay(date, d => {
+    const done = RITUALS[slot].every(r => d.rituals[slot][r.k]);
+    RITUALS[slot].forEach(r => { d.rituals[slot][r.k] = !done; });
+  });
+  const toggleV = k => patchDay(date, d => { d.virtues[k] = !d.virtues[k]; });
+  const toggleM = m => patchDay(date, d => {
+    if (d.meds[m.k] !== undefined) delete d.meds[m.k]; else d.meds[m.k] = m.def;
+  });
+  const setMin = (k,v) => patchDay(date, d => { d.meds[k] = Math.max(0, Number(v)||0); });
+  const addStudy = () => {
+    if (!book) { setToast("Pick a book first"); return; }
+    patchDay(date, d => d.study.push({ id:uid(), book, cat:catOf(book),
+      min:Number(smin)||0, pages:Number(spag)||0, note:snote.trim() }));
+    setSmin(""); setSpag(""); setSnote(""); setToast("Study logged");
+  };
+  const delStudy = id => patchDay(date, d => { d.study = d.study.filter(x => x.id !== id); });
+
+  const pillars = [
+    ["Devotion", stat.devotion], ["Purification", stat.purif],
+    ["Meditation", stat.medS],   ["Study", stat.stS],
+  ];
+
+  return (
+    <div>
+      <div className="card gold">
+        <div className="ring">
+          <Ring pct={stat.score}/>
+          <div className="ringtxt">
+            <div className="cnum">Today's Practice</div>
+            <div style={{marginTop:10}}>
+              {pillars.map(([n,v]) => (
+                <div key={n} style={{display:"flex",alignItems:"center",gap:9,marginBottom:7}}>
+                  <div className="track" style={{flex:1}}><div className="fill" style={{width:(v*100)+"%"}}/></div>
+                  <span style={{fontSize:10.5,color:"var(--muted)",width:78,letterSpacing:".1em"}}>{n}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 1 — Devotion */}
+      <div className="card">
+        <div className="chead"><div>
+          <span className="pillar-tag">Pillar One</span>
+          <div className="ctitle">Devotion &amp; Reverence</div>
+        </div><div className="cnum">{stat.m+stat.n}/9</div></div>
+
+        <div className="sublabel"><span>☀ Morning Ritual</span>
+          <button className="allbtn" onClick={() => allR("morning")}>All</button></div>
+        <div className="chips">
+          {RITUALS.morning.map(r => (
+            <button key={r.k} className={"chip"+(day.rituals.morning[r.k]?" on":"")} onClick={() => toggleR("morning",r.k)}>
+              <span className="tick">{day.rituals.morning[r.k]?"✓":""}</span>{r.label}
+            </button>
+          ))}
+        </div>
+
+        <div className="sublabel"><span>☾ Before Bed</span>
+          <button className="allbtn" onClick={() => allR("night")}>All</button></div>
+        <div className="chips">
+          {RITUALS.night.map(r => (
+            <button key={r.k} className={"chip"+(day.rituals.night[r.k]?" on":"")} onClick={() => toggleR("night",r.k)}>
+              <span className="tick">{day.rituals.night[r.k]?"✓":""}</span>{r.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* 2 — Purifications */}
+      <div className="card">
+        <div className="chead"><div>
+          <span className="pillar-tag">Pillar Two</span>
+          <div className="ctitle">Purifications · Blue Triangles</div>
+        </div><div className="cnum">{stat.v}/5</div></div>
+        {VIRTUES.map(v => (
+          <div key={v.k}>
+            <div className={"vrow"+(day.virtues[v.k]?" on":"")} onClick={() => toggleV(v.k)}>
+              <Tri on={!!day.virtues[v.k]}/>
+              <div className="vname">{v.name}<small>{v.full.replace(v.name+" & ","")}</small></div>
+              <button className="del" onClick={e => { e.stopPropagation(); setOpenV(openV===v.k?null:v.k); }}>
+                {openV===v.k?"−":"+"}
+              </button>
+            </div>
+            {openV===v.k &&
+              <div style={{padding:"4px 0 14px"}}>
+                <textarea placeholder="Reflection for today (optional)" value={day.vnotes[v.k]||""}
+                  onChange={e => { const t = e.target.value; patchDay(date, d => { d.vnotes[v.k] = t; }); }}/>
+                <div className="note" style={{marginTop:7}}>
+                  <a className="link" href={v.url} target="_blank" rel="noopener">Read about {v.full}</a>
+                </div>
+              </div>}
+          </div>
+        ))}
+      </div>
+
+      {/* 3 — Meditations */}
+      <div className="card">
+        <div className="chead"><div>
+          <span className="pillar-tag">Pillar Three</span>
+          <div className="ctitle">Meditations</div>
+        </div><div className="cnum">{stat.medMin} min</div></div>
+        <div className="chips">
+          {MEDS.map(m => (
+            <button key={m.k} className={"chip"+(day.meds[m.k]!==undefined?" on":"")} onClick={() => toggleM(m)}>
+              <span className="tick">{day.meds[m.k]!==undefined?"✓":""}</span>{m.label}
+            </button>
+          ))}
+        </div>
+        {stat.medKeys.length>0 &&
+          <div style={{marginTop:16}}>
+            <div className="sublabel"><span>Duration</span></div>
+            {stat.medKeys.map(k => {
+              const m = MEDS.find(x => x.k===k) || { label:k };
+              return (
+                <div className="minrow" key={k}>
+                  <span className="nm">{m.label}</span>
+                  <div className="step">
+                    <button onClick={() => setMin(k,(day.meds[k]||0)-5)}>−</button>
+                    <input type="number" inputMode="numeric" value={day.meds[k]} onChange={e => setMin(k,e.target.value)}/>
+                    <button onClick={() => setMin(k,(day.meds[k]||0)+5)}>+</button>
+                    <span>MIN</span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>}
+      </div>
+
+      {/* 4 — Study */}
+      <div className="card">
+        <div className="chead"><div>
+          <span className="pillar-tag">Pillar Four</span>
+          <div className="ctitle">Study</div>
+        </div><div className="cnum">{stat.studyMin} min</div></div>
+        <div className="field">
+          <select value={book} onChange={e => setBook(e.target.value)}>
+            <option value="">Select a book…</option>
+            {LIBRARY.map(g => (
+              <optgroup key={g.cat} label={g.cat}>
+                {g.books.map(b => <option key={b} value={b}>{b}</option>)}
+              </optgroup>
+            ))}
+          </select>
+        </div>
+        <div className="row2">
+          <div className="field"><label>Minutes</label>
+            <input type="number" inputMode="numeric" value={smin} onChange={e => setSmin(e.target.value)} placeholder="20"/></div>
+          <div className="field"><label>Pages</label>
+            <input type="number" inputMode="numeric" value={spag} onChange={e => setSpag(e.target.value)} placeholder="optional"/></div>
+        </div>
+        <div className="field"><label>Insight / note</label>
+          <textarea value={snote} onChange={e => setSnote(e.target.value)} placeholder="A line worth remembering…"/></div>
+        <button className="btn" onClick={addStudy}>Add study entry</button>
+        {(day.study||[]).length>0 &&
+          <div style={{marginTop:14}}>
+            {day.study.map(s => (
+              <div className="entry" key={s.id}>
+                <div className="ebody">
+                  <div className="etitle">{s.book}</div>
+                  <div className="esub">{[s.min?s.min+" min":null, s.pages?s.pages+" pages":null].filter(Boolean).join(" · ")}</div>
+                  {s.note && <div className="esub" style={{fontStyle:"italic"}}>{s.note}</div>}
+                </div>
+                <button className="del" onClick={() => delStudy(s.id)}>×</button>
+              </div>
+            ))}
+          </div>}
+      </div>
+
+      {/* 5 — Seva shortcut */}
+      <div className="card">
+        <div className="chead"><div>
+          <span className="pillar-tag">Pillar Five</span>
+          <div className="ctitle">Service &amp; Tithing</div>
+        </div></div>
+        <p className="note">Logged as events rather than daily checkboxes — recorded against this date.</p>
+        <div className="btnrow" style={{marginTop:12}}>
+          <button className="btn ghost slim" onClick={() => setTab("seva")}>Log service</button>
+          <button className="btn ghost slim" onClick={() => setTab("seva")}>Log tithing</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ---------------------------- DASHBOARD -------------------------------- */
+function Dashboard({ state }){
+  const [range,setRange] = useState(30);
+  const days = state.days;
+  const dates = lastNDates(range);
+  const rows = dates.map(d => ({ d, st:dayStats(getDay(state,d)) }));
+
+  const avg = rows.reduce((a,r) => a+r.st.score, 0) / (rows.length||1);
+  const totMedMin = rows.reduce((a,r) => a+r.st.medMin, 0);
+  const totMedSes = rows.reduce((a,r) => a+r.st.medKeys.length, 0);
+  const totStudy  = rows.reduce((a,r) => a+r.st.studyMin, 0);
+  const daysPract = rows.filter(r => r.st.score > 0).length;
+
+  const streakAll  = streakOf(days, d => dayStats(d).score >= 0.6);
+  const streakMed  = streakOf(days, d => Object.keys(d.meds||{}).length > 0);
+  const streakRit  = streakOf(days, d => RITUALS.morning.every(r => d.rituals.morning[r.k]));
+  const streakStud = streakOf(days, d => (d.study||[]).length > 0);
+  const streakVirt = streakOf(days, d => VIRTUES.every(v => d.virtues[v.k]));
+
+  const medMix = MEDS.map(m => ({ ...m, n: rows.filter(r => r.st.medKeys.indexOf(m.k)>=0).length,
+    min: rows.reduce((a,r) => a + (Number(getDay(state,r.d).meds[m.k])||0), 0) }));
+  const maxMix = Math.max(1, ...medMix.map(m => m.n));
+
+  const ritMorn = rows.length ? rows.reduce((a,r) => a+r.st.m,0) / (rows.length*4) : 0;
+  const ritNight= rows.length ? rows.reduce((a,r) => a+r.st.n,0) / (rows.length*5) : 0;
+
+  const services = Object.values(state.services||{});
+  const tithes   = Object.values(state.tithes||{});
+  const svcHours = services.reduce((a,s) => a + (Number(s.hours)||0), 0);
+  const titheTot = tithes.reduce((a,t) => a + (Number(t.amount)||0), 0);
+
+  const months = [];
+  for (let i=5;i>=0;i--){ const d = new Date(); d.setDate(1); d.setMonth(d.getMonth()-i); months.push(iso(d).slice(0,7)); }
+  const svcByMonth   = months.map(m => ({ label:fmtMonth(m),
+    v: services.filter(s => monthKey(s.date||"")===m).reduce((a,s) => a+(Number(s.hours)||1),0) }));
+  const titheByMonth = months.map(m => ({ label:fmtMonth(m),
+    v: tithes.filter(t => monthKey(t.date||"")===m).reduce((a,t) => a+(Number(t.amount)||0),0) }));
+
+  const booksDone = Object.values(state.books||{}).filter(b => b.done).length;
+
+  return (
+    <div>
+      <div className="card gold">
+        <div className="chead">
+          <div className="ctitle">Consistency</div>
+          <div className="range">
+            {[30,90,365].map(n => (
+              <button key={n} className={range===n?"on":""} onClick={() => setRange(n)}>{n===365?"1Y":n+"D"}</button>
+            ))}
+          </div>
+        </div>
+        <div className="ring">
+          <Ring pct={avg} size={104}/>
+          <div className="ringtxt">
+            <div className="bignum">{streakAll}<small> day streak</small></div>
+            <div className="cmeta" style={{marginTop:8}}>
+              Practised on {daysPract} of the last {range} days.<br/>
+              Average daily completion {Math.round(avg*100)}%.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="card">
+        <div className="chead"><div className="ctitle">Current Streaks</div><div className="cnum">Consecutive Days</div></div>
+        <div className="statgrid">
+          {[["Morning ritual",streakRit],["All 5 virtues",streakVirt],["Meditation",streakMed],["Study",streakStud]].map(([l,v]) => (
+            <div className="stat" key={l}><b>{v}</b><i>{l}</i></div>
+          ))}
+        </div>
+      </div>
+
+      <div className="card">
+        <div className="chead"><div className="ctitle">Practice Calendar</div><div className="cnum">18 weeks</div></div>
+        <Heat days={days}/>
+      </div>
+
+      <div className="card">
+        <div className="chead"><div className="ctitle">Meditation</div>
+          <div className="cnum">{totMedMin} min · {totMedSes} sittings</div></div>
+        <Bars data={rows.map(r => ({ label:fmtShort(r.d), v:r.st.medMin }))} fmt={v => v+" min"}/>
+        <div className="hr"/>
+        <div className="sublabel"><span>By type — days practised</span></div>
+        {medMix.map(m => (
+          <HBar key={m.k} label={m.label} value={m.n} max={maxMix}
+            right={m.n+" d · "+m.min+" min"}/>
+        ))}
+      </div>
+
+      <div className="card">
+        <div className="chead"><div className="ctitle">Purifications</div><div className="cnum">Last {range} days</div></div>
+        {VIRTUES.map(v => {
+          const n = rows.filter(r => getDay(state,r.d).virtues[v.k]).length;
+          const st = streakOf(days, d => !!d.virtues[v.k]);
+          const bs = bestStreak(days, d => !!d.virtues[v.k]);
+          return <HBar key={v.k} label={v.name} value={n} max={range}
+            right={n+" d · streak "+st+" · best "+bs}/>;
+        })}
+      </div>
+
+      <div className="card">
+        <div className="chead"><div className="ctitle">Rituals Adherence</div><div className="cnum">Last {range} days</div></div>
+        <HBar label="Morning ritual" value={ritMorn} max={1} right={Math.round(ritMorn*100)+"%"}/>
+        <HBar label="Before bed" value={ritNight} max={1} right={Math.round(ritNight*100)+"%"}/>
+        <div className="hr"/>
+        {RITUALS.night.map(r => {
+          const n = rows.filter(x => { const d = getDay(state,x.d); return d.rituals.morning[r.k] || d.rituals.night[r.k]; }).length;
+          return <HBar key={r.k} label={r.label} value={n} max={range} right={n+" days"}/>;
+        })}
+      </div>
+
+      <div className="card">
+        <div className="chead"><div className="ctitle">Study</div>
+          <div className="cnum">{totStudy} min · {booksDone}/{ALL_BOOKS.length} books</div></div>
+        <Bars data={rows.map(r => ({ label:fmtShort(r.d), v:r.st.studyMin }))} fmt={v => v+" min"}/>
+        <div className="hr"/>
+        {(() => {
+          const tally = {};
+          rows.forEach(r => (getDay(state,r.d).study||[]).forEach(s => { tally[s.book] = (tally[s.book]||0) + (Number(s.min)||0); }));
+          const top = Object.entries(tally).sort((a,b) => b[1]-a[1]).slice(0,6);
+          const mx = Math.max(1, ...top.map(t => t[1]));
+          return top.length ? top.map(([b,m]) => <HBar key={b} label={b} value={m} max={mx} right={m+" min"}/>)
+                            : <div className="empty">No study logged in this window</div>;
+        })()}
+      </div>
+
+      <div className="card">
+        <div className="chead"><div className="ctitle">Service</div>
+          <div className="cnum">{services.length} activities · {svcHours} hrs</div></div>
+        <Bars data={svcByMonth} fmt={v => v+" hrs"}/>
+      </div>
+
+      <div className="card">
+        <div className="chead"><div className="ctitle">Tithing</div><div className="cnum">{inr(titheTot)} total</div></div>
+        <Bars data={titheByMonth} fmt={v => inr(v)}/>
+        <div className="hr"/>
+        {(() => {
+          const tally = {};
+          tithes.forEach(t => { tally[t.foundation||"Unspecified"] = (tally[t.foundation||"Unspecified"]||0) + (Number(t.amount)||0); });
+          const rowsF = Object.entries(tally).sort((a,b) => b[1]-a[1]);
+          const mx = Math.max(1, ...rowsF.map(r => r[1]));
+          return rowsF.length ? rowsF.map(([f,a]) => <HBar key={f} label={f} value={a} max={mx} right={inr(a)}/>)
+                              : <div className="empty">No tithing recorded yet</div>;
+        })()}
+      </div>
+    </div>
+  );
+}
+
+/* ------------------------------- BOOKS --------------------------------- */
+function Books({ state, update, setToast }){
+  const [q,setQ] = useState("");
+  const minutes = useMemo(() => {
+    const t = {};
+    Object.values(state.days||{}).forEach(d => (d.study||[]).forEach(s => { t[s.book] = (t[s.book]||0) + (Number(s.min)||0); }));
+    return t;
+  }, [state.days]);
+  const toggle = title => update(s => {
+    const cur = s.books[title] || { title, cat:catOf(title), done:false };
+    const next = Object.assign({}, cur, { done:!cur.done, finishedOn: !cur.done ? todayISO() : "", updatedAt:Date.now() });
+    return Object.assign({}, s, { books: Object.assign({}, s.books, { [title]:next }) });
+  });
+  const done = Object.values(state.books||{}).filter(b => b.done).length;
+
+  return (
+    <div>
+      <div className="card gold">
+        <div className="chead"><div>
+          <span className="pillar-tag">Pillar Four</span>
+          <div className="ctitle">The Library</div>
+        </div><div className="cnum">{done}/{ALL_BOOKS.length}</div></div>
+        <div className="track"><div className="fill" style={{width:(done/ALL_BOOKS.length*100)+"%"}}/></div>
+        <p className="note" style={{marginTop:12}}>Tap a title to mark it complete. Minutes come from your daily study entries.</p>
+      </div>
+      <div className="card">
+        <input placeholder="Search titles…" value={q} onChange={e => setQ(e.target.value)}/>
+      </div>
+      {LIBRARY.map(g => {
+        const list = g.books.filter(b => b.toLowerCase().indexOf(q.toLowerCase()) >= 0);
+        if (!list.length) return null;
+        return (
+          <div className="card" key={g.cat}>
+            <div className="chead"><div className="ctitle">{g.cat}</div>
+              <div className="cnum">{list.filter(b => (state.books[b]||{}).done).length}/{list.length}</div></div>
+            <div className={g.cat==="Golden Lotus Sutras" ? "sutra" : ""}>
+              {list.map(b => {
+                const rec = state.books[b] || {};
+                return (
+                  <div key={b} className={"book"+(rec.done?" done":"")} onClick={() => toggle(b)}>
+                    <span className="tick" style={rec.done?{background:"var(--gold)",borderColor:"var(--gold)",color:"#22160a",fontWeight:700}:{}}>
+                      {rec.done?"✓":""}
+                    </span>
+                    <span className="bt">{b.replace("Golden Lotus Sutras — ","")}</span>
+                    {minutes[b] ? <span className="bm">{minutes[b]}m</span> : null}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+/* -------------------------------- SEVA --------------------------------- */
+function Seva({ state, update, date, setToast }){
+  const [mode,setMode] = useState("service");
+  const [f,setF] = useState({ activity:"", location:"", organizer:"", hours:"", note:"" });
+  const [t,setT] = useState({ amount:"", foundation:"", note:"" });
+
+  const services = Object.values(state.services||{}).sort((a,b) => (b.date||"").localeCompare(a.date||""));
+  const tithes   = Object.values(state.tithes||{}).sort((a,b) => (b.date||"").localeCompare(a.date||""));
+  const FOUNDATIONS = ["World Pranic Healing Foundation","Prana World / Local Centre","MCKS Charitable Foundation","Food for the Hungry","Other"];
+
+  const addService = () => {
+    if (!f.activity.trim()) { setToast("Describe the activity"); return; }
+    const id = uid();
+    update(s => Object.assign({}, s, { services: Object.assign({}, s.services,
+      { [id]: Object.assign({ id, date }, f, { hours:Number(f.hours)||0, updatedAt:Date.now() }) }) }));
+    setF({ activity:"", location:"", organizer:"", hours:"", note:"" }); setToast("Service recorded");
+  };
+  const addTithe = () => {
+    if (!t.amount) { setToast("Enter an amount"); return; }
+    const id = uid();
+    update(s => Object.assign({}, s, { tithes: Object.assign({}, s.tithes,
+      { [id]: Object.assign({ id, date }, t, { amount:Number(t.amount)||0, updatedAt:Date.now() }) }) }));
+    setT({ amount:"", foundation:t.foundation, note:"" }); setToast("Tithing recorded");
+  };
+  const remove = (coll,id) => update(s => {
+    const next = Object.assign({}, s[coll]); delete next[id];
+    return Object.assign({}, s, { [coll]:next, deleted:Object.assign({}, s.deleted, { [id]:Date.now() }) });
+  });
+
+  return (
+    <div>
+      <div className="card gold">
+        <div className="chead"><div>
+          <span className="pillar-tag">Pillar Five</span>
+          <div className="ctitle">Service &amp; Tithing</div>
+        </div></div>
+        <div className="btnrow">
+          <button className={"btn slim"+(mode==="service"?"":" ghost")} onClick={() => setMode("service")}>Service</button>
+          <button className={"btn slim"+(mode==="tithe"?"":" ghost")} onClick={() => setMode("tithe")}>Tithing</button>
+        </div>
+      </div>
+
+      {mode==="service" ? (
+        <div>
+          <div className="card">
+            <div className="chead"><div className="ctitle">Record service</div><div className="cnum">{fmtShort(date)}</div></div>
+            <div className="field"><label>Activity</label>
+              <input value={f.activity} onChange={e => setF({...f,activity:e.target.value})} placeholder="Healing clinic, course assistance…"/></div>
+            <div className="row2">
+              <div className="field"><label>Location</label>
+                <input value={f.location} onChange={e => setF({...f,location:e.target.value})} placeholder="Centre / city"/></div>
+              <div className="field"><label>Hours</label>
+                <input type="number" inputMode="decimal" value={f.hours} onChange={e => setF({...f,hours:e.target.value})} placeholder="2"/></div>
+            </div>
+            <div className="field"><label>Organizer</label>
+              <input value={f.organizer} onChange={e => setF({...f,organizer:e.target.value})} placeholder="Chapter / foundation / person"/></div>
+            <div className="field"><label>Note</label>
+              <textarea value={f.note} onChange={e => setF({...f,note:e.target.value})} placeholder="Optional"/></div>
+            <button className="btn" onClick={addService}>Save service</button>
+          </div>
+          <div className="card">
+            <div className="chead"><div className="ctitle">History</div><div className="cnum">{services.length} entries</div></div>
+            {services.length ? services.map(s => (
+              <div className="entry" key={s.id}>
+                <div className="ebody">
+                  <div className="etitle">{s.activity}</div>
+                  <div className="esub">{[fmtShort(s.date), s.location, s.organizer, s.hours?s.hours+" hrs":null].filter(Boolean).join(" · ")}</div>
+                  {s.note && <div className="esub" style={{fontStyle:"italic"}}>{s.note}</div>}
+                </div>
+                <button className="del" onClick={() => remove("services",s.id)}>×</button>
+              </div>
+            )) : <div className="empty">No service recorded yet</div>}
+          </div>
+        </div>
+      ) : (
+        <div>
+          <div className="card">
+            <div className="chead"><div className="ctitle">Record tithing</div><div className="cnum">{fmtShort(date)}</div></div>
+            <div className="field"><label>Amount</label>
+              <input type="number" inputMode="decimal" value={t.amount} onChange={e => setT({...t,amount:e.target.value})} placeholder="1000"/></div>
+            <div className="field"><label>Foundation</label>
+              <input list="foundations" value={t.foundation} onChange={e => setT({...t,foundation:e.target.value})} placeholder="Where it went"/>
+              <datalist id="foundations">{FOUNDATIONS.map(x => <option key={x} value={x}/>)}</datalist>
+            </div>
+            <div className="field"><label>Note</label>
+              <textarea value={t.note} onChange={e => setT({...t,note:e.target.value})} placeholder="Optional"/></div>
+            <button className="btn" onClick={addTithe}>Save tithing</button>
+          </div>
+          <div className="card">
+            <div className="chead"><div className="ctitle">History</div>
+              <div className="cnum">{inr(tithes.reduce((a,x) => a+(Number(x.amount)||0),0))}</div></div>
+            {tithes.length ? tithes.map(x => (
+              <div className="entry" key={x.id}>
+                <div className="ebody">
+                  <div className="etitle">{x.foundation||"Unspecified"}</div>
+                  <div className="esub">{fmtShort(x.date)}{x.note?" · "+x.note:""}</div>
+                </div>
+                <div className="eamt">{inr(x.amount)}</div>
+                <button className="del" onClick={() => remove("tithes",x.id)}>×</button>
+              </div>
+            )) : <div className="empty">No tithing recorded yet</div>}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ------------------------------ SETTINGS ------------------------------- */
+function Settings({ state, setState, sync, doSync, setToast }){
+  const exportJSON = () => {
+    const blob = new Blob([JSON.stringify(state,null,2)], { type:"application/json" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "arhatic-log-"+todayISO()+".json";
+    a.click();
+  };
+  const importJSON = e => {
+    const file = e.target.files[0]; if (!file) return;
+    const r = new FileReader();
+    r.onload = () => {
+      try { setState(s => mergeState(s, JSON.parse(r.result))); setToast("Backup merged"); }
+      catch(err){ setToast("Could not read that file"); }
+    };
+    r.readAsText(file); e.target.value = "";
+  };
+  const nDays = Object.keys(state.days||{}).length;
+
+  return (
+    <div>
+      <div className="card gold">
+        <div className="chead"><div className="ctitle">Sync</div>
+          <div className="cnum">{SYNC_ON?"Google Sheet":"Not configured"}</div></div>
+        <p className="note">
+          {SYNC_ON
+            ? "Your log is stored in this browser and mirrored to your Google Sheet on every change. Open the app on any device and it pulls the same data."
+            : "Running in local-only mode. Add your Apps Script URL and secret at the top of index.html to sync across devices via Google Sheets."}
+          {sync.t && SYNC_ON ? " Last sync: "+sync.t+"." : ""}
+        </p>
+        {SYNC_ON && <button className="btn ghost slim" style={{marginTop:12}} onClick={doSync}>Sync now</button>}
+      </div>
+
+      <div className="card">
+        <div className="chead"><div className="ctitle">Backup</div><div className="cnum">{nDays} days logged</div></div>
+        <div className="btnrow">
+          <button className="btn ghost slim" onClick={exportJSON}>Export JSON</button>
+          <label className="btn ghost slim" style={{display:"grid",placeItems:"center",cursor:"pointer"}}>
+            Import JSON
+            <input type="file" accept="application/json" style={{display:"none"}} onChange={importJSON}/>
+          </label>
+        </div>
+      </div>
+
+      <div className="card">
+        <div className="chead"><div className="ctitle">The Five Pillars</div></div>
+        <div className="note" style={{lineHeight:1.9}}>
+          <b style={{color:"var(--gold)"}}>I.</b> Devotion to the Supreme Being &amp; reverence to the Spiritual Teacher<br/>
+          <b style={{color:"var(--gold)"}}>II.</b> Purifications — the blue triangles of the five virtues<br/>
+          <b style={{color:"var(--gold)"}}>III.</b> Meditations<br/>
+          <b style={{color:"var(--gold)"}}>IV.</b> Study<br/>
+          <b style={{color:"var(--gold)"}}>V.</b> Service &amp; Tithing
+        </div>
+      </div>
+
+      <div className="card">
+        <div className="chead"><div className="ctitle">Danger</div></div>
+        <button className="btn danger slim" onClick={() => {
+          if (confirm("Erase all local data on this device? Your Google Sheet copy is not touched.")) {
+            localStorage.removeItem(KEY); location.reload();
+          }
+        }}>Clear local data</button>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>
