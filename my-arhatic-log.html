@@ -74,7 +74,7 @@ body:before{
 .ctitle{font-family:var(--serif);font-size:20px;font-weight:600;letter-spacing:.03em}
 .cnum{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);white-space:nowrap}
 .cmeta{font-size:11.5px;color:var(--muted);letter-spacing:.06em}
-.pillar-tag{font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--violet-soft);display:block;margin-bottom:3px;opacity:.8}
+.pillar-tag{font-size:9.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:4px}
 .sublabel{font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--faint);margin:16px 0 9px;display:flex;
   align-items:center;justify-content:space-between;gap:8px}
 .sublabel:first-of-type{margin-top:0}
@@ -104,7 +104,8 @@ body:before{
 .vname small{display:block;color:var(--faint);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;margin-top:3px}
 .tri{width:22px;height:22px;flex:none}
 .tri path{fill:none;stroke:var(--faint);stroke-width:2.5;transition:.2s}
-.vrow.on .tri path{stroke:var(--violet);fill:rgba(171,140,255,.3)}
+.vrow.on .tri path{stroke:#8fd4ff;fill:rgba(143,212,255,.32)}
+.vrow.on .tri{filter:drop-shadow(0 0 6px rgba(143,212,255,.55))}
 
 .field{margin-bottom:11px}
 .field label{display:block;font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--faint);margin-bottom:6px}
@@ -172,17 +173,58 @@ textarea{resize:vertical;min-height:62px}
 .nav{position:fixed;left:0;right:0;bottom:0;z-index:40;backdrop-filter:blur(20px);
   background:linear-gradient(0deg,rgba(11,9,26,.97),rgba(11,9,26,.82));border-top:1px solid var(--line2);
   padding-bottom:env(safe-area-inset-bottom)}
-.navinner{max-width:760px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr)}
-.navbtn{background:transparent;border:0;padding:11px 4px 13px;color:var(--faint);cursor:pointer;
+.navinner{max-width:760px;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr)}
+.navbtn{background:transparent;border:0;padding:8px 2px 9px;color:var(--faint);cursor:pointer;
   font-family:var(--sans);font-size:9px;letter-spacing:.16em;text-transform:uppercase;display:grid;gap:5px;justify-items:center;
   border-top:2px solid transparent;margin-top:-1px}
-.navbtn svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.navbtn svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .navbtn.on{color:var(--gold);border-top-color:var(--gold)}
+.navbtn{gap:3px!important}
+.nvl{font-size:9px;letter-spacing:.16em;line-height:1.1}
+.nvp{font-size:7.5px;letter-spacing:.12em;line-height:1;color:var(--gold);opacity:.5;white-space:nowrap}
+.navbtn.on .nvp{opacity:1}
+.ctitle2{display:block;font-size:15.5px;font-weight:500;color:var(--muted);font-style:italic;margin-top:3px;letter-spacing:.02em}
 .toast{position:fixed;bottom:86px;left:50%;transform:translateX(-50%);background:rgba(26,17,64,.97);
   border:1px solid var(--line);color:var(--gold-soft);padding:11px 18px;border-radius:999px;font-size:12.5px;
   letter-spacing:.06em;z-index:60;animation:rise .3s both}
 .note{font-size:11.5px;color:var(--muted);line-height:1.6}
 .link{color:var(--violet-soft);text-decoration:none;border-bottom:1px solid var(--violet-dim)}
+/* badges */
+.medals{display:grid;grid-template-columns:repeat(4,1fr);gap:12px 8px}
+.medal{display:grid;justify-items:center;gap:6px;text-align:center}
+.mring{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;
+  border:1.5px dashed rgba(255,255,255,.14);background:rgba(255,255,255,.02)}
+.mring b{font-family:var(--serif);font-size:19px;font-weight:600;color:var(--faint)}
+.medal i{font-style:normal;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);line-height:1.25}
+.medal.on .mring{border:2px solid var(--gold);background:radial-gradient(circle at 35% 30%,rgba(247,224,172,.35),rgba(171,140,255,.18) 70%);
+  box-shadow:0 0 16px rgba(232,188,100,.3),inset 0 0 10px rgba(247,224,172,.18)}
+.medal.on .mring b{color:var(--gold-soft)}
+.medal.on i{color:var(--gold-soft)}
+.pills{display:flex;flex-wrap:wrap;gap:6px}
+.pill{font-size:10.5px;letter-spacing:.06em;color:var(--violet-soft);border:1px solid rgba(171,140,255,.35);
+  background:var(--violet-dim);padding:5px 10px;border-radius:999px}
+/* leaderboard */
+.mchips{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;margin-bottom:6px;scrollbar-width:none}
+.mchips::-webkit-scrollbar{display:none}
+.mchips button{flex:none;background:transparent;border:1px solid var(--line2);color:var(--muted);font-family:var(--sans);
+  font-size:10.5px;letter-spacing:.1em;padding:7px 12px;border-radius:999px;cursor:pointer}
+.mchips button.on{border-color:var(--gold);color:var(--gold);background:var(--gold-dim)}
+.lbrow{display:flex;align-items:center;gap:12px;padding:12px 8px;border-bottom:1px solid var(--line2);border-radius:12px}
+.lbrow:last-of-type{border-bottom:0}
+.lbrow.me{background:linear-gradient(90deg,rgba(232,188,100,.1),transparent)}
+.rank{width:30px;height:30px;flex:none;border-radius:50%;display:grid;place-items:center;font-family:var(--serif);
+  font-size:16px;font-weight:600;color:var(--muted);border:1px solid var(--line2)}
+.rank.r1{background:linear-gradient(140deg,#f7e0ac,#c99a44);color:#2a1c08;border:0;box-shadow:0 0 12px rgba(232,188,100,.45)}
+.rank.r2{background:linear-gradient(140deg,#eef0f6,#9ea4b5);color:#1d2030;border:0}
+.rank.r3{background:linear-gradient(140deg,#e9b98f,#a86a3d);color:#2a1508;border:0}
+.lbname{flex:1;min-width:0;font-size:14px}
+.lbname em{font-style:normal;color:var(--gold);font-size:11px;letter-spacing:.1em}
+.lbname small{display:flex;align-items:center;gap:6px;font-size:10.5px;color:var(--faint);margin-top:3px;letter-spacing:.04em}
+.lbval{font-family:var(--serif);font-size:19px;color:var(--gold-soft);white-space:nowrap}
+.live{width:7px;height:7px;border-radius:50%;background:var(--jade);box-shadow:0 0 7px rgba(127,210,180,.9);flex:none}
+.todaybar{display:flex;align-items:center;gap:12px;margin-top:6px}
+.todaybar span{font-size:11px;color:var(--muted);letter-spacing:.06em;white-space:nowrap}
+.nvl{letter-spacing:.1em!important}
 .authwrap{min-height:100vh;display:grid;place-items:center;padding:24px 18px}
 .clabel{flex:1;min-width:0}
 .clabel em{display:block;font-style:normal;font-size:9px;letter-spacing:.22em;text-transform:uppercase;
@@ -228,12 +270,14 @@ const SELF_HEAL_URL = "https://www.thepranichealers.com/self-healing-affirmation
 
 const RITUALS = {
   morning: [
+    { k:"invocation",   label:"AY Invocation" },
     { k:"sharanagathi", label:"Sharanagathi" },
     { k:"iam",          label:"I AM Affirmation" },
     { k:"selfheal",     label:"Self-Healing Affirmation", sub:"MCKS", info:SELF_HEAL_URL },
     { k:"positive",     label:"Positive Affirmation",     sub:"MCKS", info:SELF_HEAL_URL },
   ],
   night: [
+    { k:"invocation",   label:"AY Invocation" },
     { k:"sharanagathi", label:"Sharanagathi" },
     { k:"iam",          label:"I AM Affirmation" },
     { k:"selfheal",     label:"Self-Healing Affirmation", sub:"MCKS", info:SELF_HEAL_URL },
@@ -391,6 +435,80 @@ function bestStreak(days,pred){
 const countDays = (days,pred) => Object.keys(days).filter(k => pred(days[k])).length;
 const lastNDates = n => { const out = []; for (let i=n-1;i>=0;i--) out.push(addDays(todayISO(),-i)); return out; };
 
+/* ---------------------- streaks, points & badges ----------------------- */
+const STREAK_MIN = 0.6;   // a day counts toward the streak at 60% daily completion
+
+const STREAK_BADGES = [
+  { id:"s5",   days:5,   short:"5",  name:"Seed" },
+  { id:"s10",  days:10,  short:"10", name:"Sprout" },
+  { id:"s15",  days:15,  short:"15", name:"Lotus Bud" },
+  { id:"s30",  days:30,  short:"30", name:"Lotus" },
+  { id:"s60",  days:60,  short:"2M", name:"Golden Lotus" },
+  { id:"s90",  days:90,  short:"3M", name:"Radiance" },
+  { id:"s180", days:180, short:"6M", name:"Luminous" },
+  { id:"s365", days:365, short:"1Y", name:"Thousand Petals" },
+];
+const MILESTONES = [
+  { id:"m108",  name:"108 Meditations",       test:s => s.meditations >= 108 },
+  { id:"k108",  name:"108 Kundalini Cycles",  test:s => Number(s.kundalini_cycles) >= 108 },
+  { id:"v100",  name:"100 Virtue Days",       test:s => s.virtue_days >= 100 },
+  { id:"sv50",  name:"50 Hours of Service",   test:s => Number(s.service_hours) >= 50 },
+  { id:"b10",   name:"10 Books Completed",    test:s => s.books_done >= 10 },
+  { id:"d100",  name:"100 Days of Practice",  test:s => s.days_practised >= 100 },
+];
+const badgeById = id => STREAK_BADGES.find(b => b.id === id) || MILESTONES.find(b => b.id === id);
+const topStreakBadge = ids => STREAK_BADGES.slice().reverse().find(b => (ids||[]).indexOf(b.id) >= 0);
+
+/* points: ritual 1 each · virtue 2 each · meditation 3 each · Kundalini 2 per cycle
+   · study 1 per 10 min · service 5 per activity + 2 per hour.  Tithing earns no points. */
+function dayPoints(d){
+  const st = dayStats(d);
+  return st.m + st.n + st.v*2 + st.medKeys.length*3 + Math.round(st.cycles*2) + Math.floor(st.studyMin/10);
+}
+const servicePoints = s => 5 + Math.round((Number(s.hours)||0) * 2);
+function weekStartISO(){ const d = new Date(); d.setDate(d.getDate() - ((d.getDay()+6)%7)); return iso(d); }
+
+function computeMyStats(state){
+  const days = state.days || {};
+  const today = todayISO(), ws = weekStartISO();
+  let pointsTotal=0, pointsWeek=0, practised=0, meds=0, cycles=0, studyMin=0, virtueDays=0, lastActive=null;
+  Object.keys(days).forEach(k => {
+    if (k > today) return;
+    const st = dayStats(days[k]), p = dayPoints(days[k]);
+    pointsTotal += p; if (k >= ws) pointsWeek += p;
+    if (st.score > 0) { practised++; if (!lastActive || k > lastActive) lastActive = k; }
+    meds += st.medKeys.length; cycles += st.cycles; studyMin += st.studyMin; if (st.v) virtueDays++;
+  });
+  const services = Object.values(state.services || {});
+  services.forEach(s => { const p = servicePoints(s); pointsTotal += p; if ((s.date||"") >= ws && (s.date||"") <= today) pointsWeek += p; });
+  const pred = d => dayStats(d).score >= STREAK_MIN;
+  const current = streakOf(days, pred);
+  const best = Math.max(bestStreak(days, pred), current);
+  const s = {
+    current_streak: current,
+    best_streak: best,
+    streak_through: current ? (pred(days[today]||emptyDay()) ? today : addDays(today,-1)) : null,
+    last_active: lastActive,
+    days_practised: practised,
+    points_total: pointsTotal,
+    points_week: pointsWeek,
+    week_start: ws,
+    consistency_30: Math.round(lastNDates(30).reduce((a,dt) => a + dayStats(getDay(state,dt)).score, 0) / 30 * 100),
+    meditations: meds,
+    kundalini_cycles: Math.round(cycles*10)/10,
+    study_minutes: studyMin,
+    books_done: Object.values(state.books || {}).filter(b => b.done).length,
+    service_hours: Math.round(services.reduce((a,x) => a + (Number(x.hours)||0), 0) * 10) / 10,
+    virtue_days: virtueDays,
+  };
+  s.badges = STREAK_BADGES.filter(b => best >= b.days).map(b => b.id)
+    .concat(MILESTONES.filter(m => m.test(s)).map(m => m.id));
+  return s;
+}
+/* a friend's numbers as of *today* — a streak that lapsed shows 0, last week's points show 0 */
+const effStreak = r => (r.streak_through && r.streak_through >= addDays(todayISO(),-1)) ? r.current_streak : 0;
+const effWeek   = r => r.week_start === weekStartISO() ? r.points_week : 0;
+
 /* ------------------------------ UI atoms ------------------------------- */
 function Ring({ pct, size=96 }){
   const r = (size/2) - 7, c = 2*Math.PI*r;
@@ -486,12 +604,28 @@ function App({ session, onSignOut }){
   const timer = useRef(null);
   const pulled = useRef(false);
   const stateRef = useRef(state);
+  const [profile,setProfile] = useState(null);
+  const profileRef = useRef(null);
 
   useEffect(() => { stateRef.current = state; }, [state]);
+  useEffect(() => { profileRef.current = profile; }, [profile]);
   useEffect(() => { try { localStorage.setItem(keyFor(uid), JSON.stringify(state)); } catch(e){} }, [state, uid]);
-  useEffect(() => { if (!toast) return; const t = setTimeout(() => setToast(""), 1900); return () => clearTimeout(t); }, [toast]);
+  useEffect(() => { if (!toast) return; const t = setTimeout(() => setToast(""), 2600); return () => clearTimeout(t); }, [toast]);
 
   const stamp = () => new Date().toLocaleTimeString([], { hour:"2-digit", minute:"2-digit" });
+
+  /* summary numbers only — shared with circle-mates through circle_leaderboard() */
+  const pushStats = async () => {
+    if (!CLOUD_ON || !session) return;
+    try {
+      const p = profileRef.current;
+      const meta = session.user.user_metadata || {};
+      const name = (p && p.full_name) || meta.full_name || meta.name || (session.user.email||"").split("@")[0];
+      await sb.from("public_stats").upsert(Object.assign(
+        { user_id: session.user.id, display_name: name, updated_at: new Date().toISOString() },
+        computeMyStats(stateRef.current)));
+    } catch(e){}
+  };
 
   const push = useCallback(async () => {
     if (!CLOUD_ON || !session) return;
@@ -504,6 +638,7 @@ function App({ session, onSignOut }){
       });
       if (error) throw error;
       setSync({ s:"ok", t:stamp() });
+      pushStats();
     } catch(e){ setSync({ s:"err", t:String(e.message||e) }); }
   }, [session]);
 
@@ -521,6 +656,7 @@ function App({ session, onSignOut }){
       });
       if (up.error) throw up.error;
       setSync({ s:"ok", t:stamp() });
+      pushStats();
     } catch(e){ setSync({ s:"err", t:String(e.message||e) }); }
   }, [session]);
 
@@ -552,6 +688,38 @@ function App({ session, onSignOut }){
     return Object.assign({}, s, { days: Object.assign({}, s.days, { [d]:cur }) });
   });
 
+  useEffect(() => {
+    if (!CLOUD_ON || !session) return;
+    (async () => {
+      try {
+        const { data } = await sb.from("profiles").select("*").eq("id", session.user.id).maybeSingle();
+        if (data) { setProfile(data); profileRef.current = data; }
+      } catch(e){}
+      try { await sb.rpc("claim_invites"); } catch(e){}
+    })();
+  }, [session]);
+
+  const saveProfile = async p => {
+    const row = {
+      id: session.user.id,
+      full_name: (p.full_name||"").trim(),
+      age: p.age ? Number(p.age) : null,
+      gender: p.gender || null,
+      email: session.user.email,
+      phone: (p.phone||"").trim() || null,
+      updated_at: new Date().toISOString(),
+    };
+    const { data, error } = await sb.from("profiles").upsert(row).select().single();
+    if (error) throw error;
+    setProfile(data); profileRef.current = data;
+    pushStats();
+  };
+
+  const goProfile = () => {
+    setTab("insights");
+    setTimeout(() => { const el = document.getElementById("profile"); if (el) el.scrollIntoView({ behavior:"smooth" }); }, 150);
+  };
+
   useEffect(() => { try { window.scrollTo(0,0); } catch(e){} }, [tab]);
 
   const goSeva = mode => { setSevaMode(mode); setTab("seva"); };
@@ -562,7 +730,8 @@ function App({ session, onSignOut }){
     today: <Today {...{date,day,stat,patchDay,setTab,goSeva}}/>,
     study: <Study {...{state,update,date,day,patchDay,setToast}}/>,
     seva:  <Seva {...{state,update,date,setToast,sevaMode,setSevaMode}}/>,
-    insights: <Insights {...{state,setState,setToast,onSignOut,email}}/>,
+    insights: <Insights {...{state,setState,setToast,onSignOut,session,profile,saveProfile}}/>,
+    circle: <Circle {...{session,profile,goProfile,setToast,pushStats}}/>,
   };
 
   return (
@@ -578,7 +747,7 @@ function App({ session, onSignOut }){
               {sync.s==="busy"?"Syncing":sync.s==="err"?"Retry":sync.s==="ok"?"Synced":"Sync"}
             </button>}
         </div>
-        {tab!=="insights" &&
+        {tab!=="insights" && tab!=="circle" &&
           <div className="datenav">
             <button onClick={() => setDate(addDays(date,-1))}>‹</button>
             <div className="datepill">
@@ -597,13 +766,16 @@ function App({ session, onSignOut }){
 
       <div className="nav"><div className="navinner">
         {[
-          ["today","Today","M12 3v9l5 3M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0"],
-          ["study","Study","M4 4h7a2 2 0 0 1 2 2v14a2 2 0 0 0-2-2H4zM20 4h-7a2 2 0 0 0-2 2v14a2 2 0 0 1 2-2h7z"],
-          ["seva","Seva","M12 21s-7-4.6-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.4-7 10-7 10z"],
-          ["insights","Dashboard","M4 20V10M10 20V4M16 20v-7M22 20H2"],
-        ].map(([k,label,d]) => (
+          ["today","Today","Pillar 1 · 2 · 3","M12 3v9l5 3M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0"],
+          ["seva","Seva","Pillar 4","M12 21s-7-4.6-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.4-7 10-7 10z"],
+          ["study","Study","Pillar 5","M4 4h7a2 2 0 0 1 2 2v14a2 2 0 0 0-2-2H4zM20 4h-7a2 2 0 0 0-2 2v14a2 2 0 0 1 2-2h7z"],
+          ["insights","Dashboard","All Pillars","M4 20V10M10 20V4M16 20v-7M22 20H2"],
+          ["circle","Circle","Leaderboard","M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"],
+        ].map(([k,label,pl,d]) => (
           <button key={k} className={"navbtn"+(tab===k?" on":"")} onClick={() => setTab(k)}>
-            <svg viewBox="0 0 24 24"><path d={d}/></svg>{label}
+            <svg viewBox="0 0 24 24"><path d={d}/></svg>
+            <span className="nvl">{label}</span>
+            <span className="nvp">{pl}</span>
           </button>
         ))}
       </div></div>
@@ -655,7 +827,7 @@ function Today({ date, day, stat, patchDay, setTab, goSeva }){
       <div className="card">
         <div className="chead"><div>
           <span className="pillar-tag">Pillar One</span>
-          <div className="ctitle">Devotion &amp; Reverence</div>
+          <div className="ctitle">Devotion to the Supreme God<span className="ctitle2">&amp; Reverence to the Spiritual Teacher</span></div>
         </div><div className="cnum">{stat.m+stat.n}/{RITUAL_TOTAL}</div></div>
 
         <div className="sublabel"><span>☀ Morning Ritual · On Bed</span>
@@ -726,20 +898,10 @@ function Today({ date, day, stat, patchDay, setTab, goSeva }){
           </div>}
       </div>
 
-      {/* 4 — Study */}
+      {/* 4 — Seva */}
       <div className="card">
         <div className="chead"><div>
           <span className="pillar-tag">Pillar Four</span>
-          <div className="ctitle">Study</div>
-        </div><div className="cnum">{studyCount ? stat.studyMin+" min" : "Not logged"}</div></div>
-        <p className="note">Recorded on the Study page, against this date.</p>
-        <button className="btn ghost slim" style={{marginTop:12}} onClick={() => setTab("study")}>Log study</button>
-      </div>
-
-      {/* 5 — Seva */}
-      <div className="card">
-        <div className="chead"><div>
-          <span className="pillar-tag">Pillar Five</span>
           <div className="ctitle">Service &amp; Tithing</div>
         </div></div>
         <p className="note">Logged as events rather than daily checkboxes — recorded against this date.</p>
@@ -747,6 +909,16 @@ function Today({ date, day, stat, patchDay, setTab, goSeva }){
           <button className="btn ghost slim" onClick={() => goSeva("service")}>Log service</button>
           <button className="btn ghost slim" onClick={() => goSeva("tithe")}>Log tithing</button>
         </div>
+      </div>
+
+      {/* 5 — Study */}
+      <div className="card">
+        <div className="chead"><div>
+          <span className="pillar-tag">Pillar Five</span>
+          <div className="ctitle">Study</div>
+        </div><div className="cnum">{studyCount ? stat.studyMin+" min" : "Not logged"}</div></div>
+        <p className="note">Recorded on the Study page, against this date.</p>
+        <button className="btn ghost slim" style={{marginTop:12}} onClick={() => setTab("study")}>Log study</button>
       </div>
     </div>
   );
@@ -785,7 +957,7 @@ function Study({ state, update, date, day, patchDay, setToast }){
     <div>
       <div className="card gold">
         <div className="chead"><div>
-          <span className="pillar-tag">Pillar Four</span>
+          <span className="pillar-tag">Pillar Five</span>
           <div className="ctitle">Record study</div>
         </div><div className="cnum">{fmtShort(date)}</div></div>
         <div className="field">
@@ -894,7 +1066,7 @@ function Seva({ state, update, date, setToast, sevaMode, setSevaMode }){
     <div>
       <div className="card gold">
         <div className="chead"><div>
-          <span className="pillar-tag">Pillar Five</span>
+          <span className="pillar-tag">Pillar Four</span>
           <div className="ctitle">Service &amp; Tithing</div>
         </div></div>
         <div className="btnrow">
@@ -984,7 +1156,7 @@ function Seva({ state, update, date, setToast, sevaMode, setSevaMode }){
 }
 
 /* ------------------------------ INSIGHTS -------------------------------- */
-function Insights({ state, setState, setToast, onSignOut, email }){
+function Insights({ state, setState, setToast, onSignOut, session, profile, saveProfile }){
   const [range,setRange] = useState(30);
   const days = state.days || {};
   const dates = lastNDates(range);
@@ -1059,7 +1231,7 @@ function Insights({ state, setState, setToast, onSignOut, email }){
         <div className="ring">
           <Ring pct={avg} size={104}/>
           <div className="ringtxt">
-            <div className="bignum">{streakOf(days, d => dayStats(d).score >= 0.6)}<small> day streak</small></div>
+            <div className="bignum">{streakOf(days, d => dayStats(d).score >= STREAK_MIN)}<small> day streak</small></div>
             <div className="cmeta" style={{marginTop:8}}>
               Practised on {daysPract} of the last {range} days.<br/>
               Average daily completion {Math.round(avg*100)}%.
@@ -1081,6 +1253,8 @@ function Insights({ state, setState, setToast, onSignOut, email }){
           {streaks.map(([l,p]) => <div className="stat v" key={l}><b>{countDays(days,p)}</b><i>{l}</i></div>)}
         </div>
       </div>
+
+      <BadgesCard stats={computeMyStats(state)}/>
 
       <div className="card">
         <div className="chead"><div className="ctitle">Practice Calendar</div><div className="cnum">18 weeks</div></div>
@@ -1173,12 +1347,399 @@ function Insights({ state, setState, setToast, onSignOut, email }){
         </div>
       </div>
 
-      {CLOUD_ON &&
-        <div className="card">
-          <div className="chead"><div className="ctitle">Account</div><div className="cnum">Signed in</div></div>
-          <p className="note">{email}</p>
-          <button className="btn ghost slim" style={{marginTop:12}} onClick={onSignOut}>Sign out</button>
+      {CLOUD_ON && session &&
+        <ProfileCard {...{session,profile,saveProfile,onSignOut,setToast}}/>}
+    </div>
+  );
+}
+
+/* ------------------------------- BADGES --------------------------------- */
+function Medal({ b, on }){
+  return (
+    <div className={"medal"+(on?" on":"")} title={b.name+" — "+b.days+" day streak"}>
+      <div className="mring"><b>{b.short}</b></div>
+      <i>{b.name}</i>
+    </div>
+  );
+}
+function BadgesCard({ stats }){
+  const earned = stats.badges || [];
+  const next = STREAK_BADGES.find(b => stats.best_streak < b.days);
+  const miles = MILESTONES.filter(m => earned.indexOf(m.id) >= 0);
+  return (
+    <div className="card violet">
+      <div className="chead"><div className="ctitle">Streak Badges</div>
+        <div className="cnum">{STREAK_BADGES.filter(b => earned.indexOf(b.id)>=0).length}/{STREAK_BADGES.length} earned</div></div>
+      <div className="medals">
+        {STREAK_BADGES.map(b => <Medal key={b.id} b={b} on={earned.indexOf(b.id)>=0}/>)}
+      </div>
+      <p className="note" style={{marginTop:14}}>
+        Best streak <b style={{color:"var(--gold-soft)"}}>{stats.best_streak} days</b>
+        {next ? <span> · {next.days - stats.best_streak} more to <b style={{color:"var(--gold-soft)"}}>{next.name}</b></span>
+              : <span> · every badge earned</span>}
+        <br/><span style={{color:"var(--faint)"}}>A day counts toward the streak at {Math.round(STREAK_MIN*100)}% of the daily practice.</span>
+      </p>
+      {miles.length>0 &&
+        <div className="pills" style={{marginTop:12}}>
+          {miles.map(m => <span key={m.id} className="pill">✦ {m.name}</span>)}
         </div>}
+      <div className="hr"/>
+      <div className="statgrid">
+        <div className="stat"><b>{stats.points_week}</b><i>Points this week</i></div>
+        <div className="stat"><b>{stats.points_total}</b><i>Points all time</i></div>
+      </div>
+    </div>
+  );
+}
+
+/* ------------------------------- PROFILE -------------------------------- */
+function ProfileCard({ session, profile, saveProfile, onSignOut, setToast }){
+  const meta = session.user.user_metadata || {};
+  const init = pr => ({
+    full_name: (pr && pr.full_name) || meta.full_name || meta.name || "",
+    age:       (pr && pr.age) || "",
+    gender:    (pr && pr.gender) || "",
+    phone:     (pr && pr.phone) || "",
+  });
+  const [p,setP]   = useState(init(profile));
+  const [busy,setBusy] = useState(false);
+  const [pw,setPw] = useState("");
+  const [pw2,setPw2] = useState("");
+  useEffect(() => { if (profile) setP(init(profile)); }, [profile]);
+
+  const save = async () => {
+    if (!p.full_name.trim()) { setToast("Please enter your name"); return; }
+    if (p.age && (Number(p.age) < 5 || Number(p.age) > 120)) { setToast("Please check the age"); return; }
+    setBusy(true);
+    try { await saveProfile(p); setToast("Profile saved"); }
+    catch(e){ setToast(String(e.message||e).indexOf("profiles")>=0 ? "Profiles aren't set up yet in Supabase" : (e.message||"Could not save")); }
+    setBusy(false);
+  };
+  const changePw = async () => {
+    if (pw.length < 6) { setToast("Password needs at least 6 characters"); return; }
+    if (pw !== pw2)    { setToast("The two passwords don't match"); return; }
+    const { error } = await sb.auth.updateUser({ password: pw });
+    if (error) { setToast(error.message); return; }
+    setPw(""); setPw2(""); setToast("Password updated");
+  };
+
+  return (
+    <div className="card gold" id="profile">
+      <div className="chead"><div className="ctitle">My Profile</div>
+        <div className="cnum">{profile && profile.full_name ? "Saved" : "Incomplete"}</div></div>
+      <div className="field"><label>Name</label>
+        <input value={p.full_name} onChange={e => setP({...p, full_name:e.target.value})} placeholder="Your full name"/></div>
+      <div className="row2">
+        <div className="field"><label>Age</label>
+          <input type="number" inputMode="numeric" value={p.age} onChange={e => setP({...p, age:e.target.value})} placeholder="Age"/></div>
+        <div className="field"><label>Gender</label>
+          <select value={p.gender} onChange={e => setP({...p, gender:e.target.value})}>
+            <option value="">Select…</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select></div>
+      </div>
+      <div className="field"><label>Email</label>
+        <input value={session.user.email || ""} disabled style={{opacity:.65}}/></div>
+      <div className="field"><label>Phone (optional)</label>
+        <input type="tel" inputMode="tel" value={p.phone} onChange={e => setP({...p, phone:e.target.value})} placeholder="+91"/></div>
+      <button className="btn" disabled={busy} onClick={save}>{busy ? "Saving…" : "Save profile"}</button>
+      <p className="note" style={{marginTop:10,color:"var(--faint)"}}>
+        Your profile is private. Circle members see only your name and summary numbers.
+      </p>
+
+      <div className="hr"/>
+      <div className="sublabel"><span>Change password</span></div>
+      <div className="row2">
+        <div className="field"><input type="password" autoComplete="new-password" value={pw}
+          onChange={e => setPw(e.target.value)} placeholder="New password"/></div>
+        <div className="field"><input type="password" autoComplete="new-password" value={pw2}
+          onChange={e => setPw2(e.target.value)} placeholder="Repeat it"/></div>
+      </div>
+      <button className="btn ghost slim" onClick={changePw}>Update password</button>
+
+      <div className="hr"/>
+      <button className="btn ghost slim" onClick={onSignOut}>Sign out</button>
+    </div>
+  );
+}
+
+/* ------------------------------- CIRCLE --------------------------------- */
+const appLink = () => window.location.origin + window.location.pathname;
+const SETUP_MSG = "Circles aren't switched on yet — run circles-setup.sql in Supabase.";
+
+function Circle({ session, profile, goProfile, setToast, pushStats }){
+  const [circles,setCircles] = useState(null);
+  const [err,setErr]   = useState("");
+  const [sel,setSel]   = useState(null);
+  const [name,setName] = useState("");
+  const [busy,setBusy] = useState(false);
+
+  const load = async () => {
+    const { data, error } = await sb.rpc("my_circles");
+    if (error) { setErr(error.message.indexOf("my_circles")>=0 ? SETUP_MSG : error.message); setCircles([]); return; }
+    setErr(""); setCircles(data || []);
+  };
+  useEffect(() => { if (CLOUD_ON && session) { pushStats(); load(); } }, []);
+
+  if (!CLOUD_ON || !session)
+    return <div className="card"><div className="empty">Circles need sign-in to be switched on.</div></div>;
+
+  if (!profile || !profile.full_name)
+    return (
+      <div className="card gold">
+        <span className="pillar-tag">Practice Together</span>
+        <div className="ctitle">Set up your profile first</div>
+        <p className="note" style={{marginTop:10}}>Your circle-mates will see you by the name on your profile. It takes a few seconds.</p>
+        <button className="btn" style={{marginTop:14}} onClick={goProfile}>Complete my profile</button>
+      </div>
+    );
+
+  if (sel) return <CircleBoard circle={sel} session={session} setToast={setToast}
+                    onBack={() => { setSel(null); load(); }}/>;
+
+  const create = async () => {
+    if (!name.trim()) { setToast("Give your circle a name"); return; }
+    setBusy(true);
+    const { data, error } = await sb.rpc("create_circle", { p_name: name.trim() });
+    setBusy(false);
+    if (error) { setToast(error.message.indexOf("create_circle")>=0 ? SETUP_MSG : error.message); return; }
+    setName(""); setToast("Circle created");
+    await load();
+    setSel({ circle_id:data, name:name.trim(), is_owner:true, my_status:"active", member_count:1 });
+  };
+  const respond = async (c, accept) => {
+    const { error } = await sb.rpc("respond_invite", { p_circle:c.circle_id, p_accept:accept });
+    if (error) { setToast(error.message); return; }
+    setToast(accept ? "Welcome to "+c.name : "Invitation declined");
+    load();
+  };
+
+  const invites = (circles||[]).filter(c => c.my_status === "invited");
+  const mine    = (circles||[]).filter(c => c.my_status === "active");
+
+  return (
+    <div>
+      <div className="card gold">
+        <span className="pillar-tag">Practice Together</span>
+        <div className="ctitle">Circles</div>
+        <p className="note" style={{marginTop:8}}>
+          Private groups of fellow practitioners. Members see each other's streaks, points and badges — never your reflections, notes or tithing.
+        </p>
+      </div>
+
+      {err && <div className="card"><p className="note" style={{color:"var(--rose)"}}>{err}</p></div>}
+
+      {invites.length>0 &&
+        <div className="card violet">
+          <div className="chead"><div className="ctitle">Invitations</div><div className="cnum">{invites.length} waiting</div></div>
+          {invites.map(c => (
+            <div className="entry" key={c.circle_id}>
+              <div className="ebody">
+                <div className="etitle">{c.name}</div>
+                <div className="esub">{c.invited_by_name ? c.invited_by_name+" invited you" : "You're invited"} · {c.member_count} member{c.member_count===1?"":"s"}</div>
+              </div>
+              <div style={{display:"flex",gap:6}}>
+                <button className="allbtn" onClick={() => respond(c,true)}>Join</button>
+                <button className="del" onClick={() => respond(c,false)}>×</button>
+              </div>
+            </div>
+          ))}
+        </div>}
+
+      <div className="card">
+        <div className="chead"><div className="ctitle">My circles</div><div className="cnum">{mine.length}</div></div>
+        {circles === null ? <div className="empty">Loading…</div>
+          : mine.length ? mine.map(c => (
+            <div className="entry" key={c.circle_id} style={{cursor:"pointer"}} onClick={() => setSel(c)}>
+              <div className="ebody">
+                <div className="etitle">{c.name}</div>
+                <div className="esub">{c.member_count} member{c.member_count===1?"":"s"}{c.is_owner ? " · you created it" : ""}</div>
+              </div>
+              <span className="cnum">Open ›</span>
+            </div>
+          )) : <div className="empty">No circles yet — start one below</div>}
+      </div>
+
+      <div className="card">
+        <div className="chead"><div className="ctitle">Start a circle</div></div>
+        <div className="field">
+          <input value={name} maxLength={60} onChange={e => setName(e.target.value)} placeholder="e.g. Delhi Arhatic Sangha"/>
+        </div>
+        <button className="btn" disabled={busy} onClick={create}>{busy ? "Creating…" : "Create circle"}</button>
+      </div>
+    </div>
+  );
+}
+
+const METRICS = [
+  { k:"week",  label:"This week",   val:r => effWeek(r),                 fmt:v => v+" pts" },
+  { k:"streak",label:"Streak",      val:r => effStreak(r),               fmt:v => v+" d" },
+  { k:"total", label:"All time",    val:r => r.points_total,             fmt:v => v+" pts" },
+  { k:"kund",  label:"Kundalini",   val:r => Number(r.kundalini_cycles), fmt:v => v+" cyc" },
+  { k:"cons",  label:"Consistency", val:r => r.consistency_30,           fmt:v => v+"%" },
+  { k:"med",   label:"Meditations", val:r => r.meditations,              fmt:v => v },
+  { k:"study", label:"Study",       val:r => r.study_minutes,            fmt:v => v+" min" },
+  { k:"seva",  label:"Service",     val:r => Number(r.service_hours),    fmt:v => v+" hrs" },
+];
+
+function CircleBoard({ circle, session, onBack, setToast }){
+  const [rows,setRows]     = useState(null);
+  const [metric,setMetric] = useState("week");
+  const [email,setEmail]   = useState("");
+  const [q,setQ]           = useState("");
+  const [found,setFound]   = useState(null);
+  const [note,setNote]     = useState("");
+  const me = session.user.id;
+
+  const load = async () => {
+    const { data, error } = await sb.rpc("circle_leaderboard", { p_circle: circle.circle_id });
+    if (error) { setToast(error.message); setRows([]); return; }
+    setRows(data || []);
+  };
+  useEffect(() => { load(); }, [circle.circle_id]);
+
+  const invite = async payload => {
+    setNote("");
+    const { data, error } = await sb.rpc("invite_to_circle", Object.assign({ p_circle: circle.circle_id }, payload));
+    if (error) { setToast(error.message); return; }
+    if (data === "pending_signup")
+      setNote("They're not on the app yet. The invitation is saved — share the link below, and it will be waiting when they sign up with that email.");
+    else setToast({ invited:"Invitation sent", already:"Already in this circle", self:"That's you" }[data] || "Done");
+    setEmail(""); load();
+  };
+  const search = async () => {
+    if (q.trim().length < 3) { setToast("Type at least 3 letters"); return; }
+    const { data, error } = await sb.rpc("search_people", { p_q: q.trim() });
+    if (error) { setToast(error.message); return; }
+    setFound(data || []);
+  };
+  const shareText = "Join my circle \u201C"+circle.name+"\u201D on the Arhatic Yoga Daily Practice Log. "
+                  + "Sign up here with your email and the invitation will be waiting: "+appLink();
+  const share = async () => {
+    if (navigator.share) { try { await navigator.share({ title:"Arhatic Yoga Daily Practice Log", text:shareText }); } catch(e){} }
+    else window.open("https://wa.me/?text="+encodeURIComponent(shareText), "_blank");
+  };
+  const whatsapp = () => window.open("https://wa.me/?text="+encodeURIComponent(shareText), "_blank");
+  const leave = async () => {
+    if (!confirm("Leave "+circle.name+"? Your own practice log is not affected.")) return;
+    const { error } = await sb.rpc("leave_circle", { p_circle: circle.circle_id });
+    if (error) { setToast(error.message); return; }
+    setToast("You left the circle"); onBack();
+  };
+  const remove = async r => {
+    if (!confirm("Remove "+r.display_name+" from this circle?")) return;
+    const { error } = await sb.rpc("remove_member", { p_circle: circle.circle_id, p_user: r.user_id });
+    if (error) { setToast(error.message); return; }
+    load();
+  };
+
+  const active  = (rows||[]).filter(r => r.status === "active");
+  const pending = (rows||[]).filter(r => r.status === "invited");
+  const M = METRICS.find(m => m.k === metric);
+  const ranked = active.slice().sort((a,b) => M.val(b) - M.val(a));
+  const today = todayISO();
+  const practisedToday = active.filter(r => r.last_active === today).length;
+  const sum = f => Math.round(active.reduce((a,r) => a + (Number(f(r))||0), 0) * 10) / 10;
+  const allIn = active.length > 1 && practisedToday === active.length;
+
+  return (
+    <div>
+      <div className="card gold">
+        <button className="allbtn" onClick={onBack} style={{marginBottom:12}}>‹ Circles</button>
+        <div className="chead" style={{marginBottom:6}}>
+          <div className="ctitle" style={{fontSize:24}}>{circle.name}</div>
+          <div className="cnum">{active.length} member{active.length===1?"":"s"}</div>
+        </div>
+        <div className="todaybar">
+          <div className="track" style={{flex:1}}>
+            <div className="fill" style={{width:(active.length ? practisedToday/active.length*100 : 0)+"%"}}/>
+          </div>
+          <span>{practisedToday} of {active.length} practised today{allIn ? " · full circle ✦" : ""}</span>
+        </div>
+      </div>
+
+      <div className="card">
+        <div className="chead"><div className="ctitle">Together</div><div className="cnum">Circle totals</div></div>
+        <div className="statgrid">
+          <div className="stat v"><b>{sum(r => r.kundalini_cycles)}</b><i>Kundalini cycles</i></div>
+          <div className="stat v"><b>{sum(r => r.meditations)}</b><i>Meditations</i></div>
+          <div className="stat v"><b>{sum(r => effWeek(r))}</b><i>Points this week</i></div>
+          <div className="stat v"><b>{Math.round(sum(r => r.study_minutes)/60)}</b><i>Study hours</i></div>
+          <div className="stat v"><b>{sum(r => r.service_hours)}</b><i>Service hours</i></div>
+          <div className="stat v"><b>{Math.max(0, ...active.map(effStreak))}</b><i>Longest live streak</i></div>
+        </div>
+      </div>
+
+      <div className="card">
+        <div className="chead"><div className="ctitle">Leaderboard</div></div>
+        <div className="mchips">
+          {METRICS.map(m => (
+            <button key={m.k} className={metric===m.k?"on":""} onClick={() => setMetric(m.k)}>{m.label}</button>
+          ))}
+        </div>
+        {rows === null ? <div className="empty">Loading…</div>
+          : ranked.map((r,i) => {
+            const top = topStreakBadge(r.badges);
+            const live = r.last_active === today;
+            return (
+              <div key={r.user_id} className={"lbrow"+(r.user_id===me?" me":"")}>
+                <div className={"rank"+(i<3?" r"+(i+1):"")}>{i+1}</div>
+                <div className="lbname">
+                  <div>{r.display_name}{r.user_id===me ? <em> · you</em> : null}</div>
+                  <small>
+                    {live && <span className="live"/>}
+                    {top ? top.name+" · " : ""}{effStreak(r)}-day streak
+                  </small>
+                </div>
+                <div className="lbval">{M.fmt(M.val(r))}</div>
+                {circle.is_owner && r.user_id!==me &&
+                  <button className="del" title="Remove" onClick={() => remove(r)}>×</button>}
+              </div>
+            );
+          })}
+        {pending.length>0 &&
+          <div style={{marginTop:10}}>
+            <div className="sublabel"><span>Invited · awaiting reply</span></div>
+            {pending.map(r => <div key={r.user_id} className="esub" style={{padding:"4px 0"}}>{r.display_name}</div>)}
+          </div>}
+        <p className="note" style={{marginTop:14,color:"var(--faint)"}}>
+          Points: ritual 1 · virtue 2 · meditation 3 · Kundalini 2 per cycle · study 1 per 10 min · service 5 + 2 per hour. Weekly points reset every Monday.
+        </p>
+      </div>
+
+      <div className="card violet">
+        <div className="chead"><div className="ctitle">Invite friends</div></div>
+        <div className="sublabel"><span>By email</span></div>
+        <div style={{display:"flex",gap:8}}>
+          <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="friend@email.com"/>
+          <button className="btn slim" style={{width:"auto",padding:"0 16px"}} onClick={() => email.trim() && invite({ p_email: email.trim() })}>Invite</button>
+        </div>
+        {note && <p className="note" style={{marginTop:10,color:"var(--gold-soft)"}}>{note}</p>}
+
+        <div className="sublabel" style={{marginTop:18}}><span>Find by name</span></div>
+        <div style={{display:"flex",gap:8}}>
+          <input value={q} onChange={e => setQ(e.target.value)} placeholder="Type a name"
+            onKeyDown={e => { if (e.key === "Enter") search(); }}/>
+          <button className="btn ghost slim" style={{width:"auto",padding:"0 16px"}} onClick={search}>Search</button>
+        </div>
+        {found && (found.length ? found.map(f => (
+          <div className="entry" key={f.user_id}>
+            <div className="ebody"><div className="etitle">{f.full_name}</div><div className="esub">{f.email_hint}</div></div>
+            <button className="allbtn" onClick={() => invite({ p_user: f.user_id })}>Invite</button>
+          </div>
+        )) : <p className="note" style={{marginTop:10}}>Nobody found by that name. Try their email, or share the link.</p>)}
+
+        <div className="sublabel" style={{marginTop:18}}><span>Not on the app yet?</span></div>
+        <div className="btnrow">
+          <button className="btn ghost slim" onClick={whatsapp}>WhatsApp</button>
+          <button className="btn ghost slim" onClick={share}>Share link</button>
+        </div>
+      </div>
+
+      <div className="card">
+        <button className="btn ghost slim" onClick={leave}>Leave this circle</button>
+      </div>
     </div>
   );
 }
