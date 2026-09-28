@@ -225,6 +225,19 @@ textarea{resize:vertical;min-height:62px}
 .todaybar{display:flex;align-items:center;gap:12px;margin-top:6px}
 .todaybar span{font-size:11px;color:var(--muted);letter-spacing:.06em;white-space:nowrap}
 .nvl{letter-spacing:.1em!important}
+button.infobtn{background:transparent;cursor:pointer;padding:0}
+.rules{background:rgba(0,0,0,.22);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:-4px 0 14px;
+  font-size:12px;color:var(--muted);line-height:1.6}
+.rules b{color:var(--gold-soft);font-weight:500}
+.rules ol{margin:6px 0 8px;padding-left:20px;color:var(--text)}
+.twostreak{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.tsbox{background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:14px 14px 12px}
+.tsbox b{display:block;font-family:var(--serif);font-size:38px;line-height:1;color:var(--gold-soft);font-weight:600}
+.tsbox i{display:block;font-style:normal;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-top:7px}
+.tsbox small{display:block;font-size:11px;color:var(--faint);margin-top:4px;letter-spacing:.04em}
+.tsbox.v{border-color:rgba(171,140,255,.3)}
+.tsbox.v b{color:var(--violet-soft)}
+.tsbox.v i{color:var(--violet)}
 .authwrap{min-height:100vh;display:grid;place-items:center;padding:24px 18px}
 .clabel{flex:1;min-width:0}
 .clabel em{display:block;font-style:normal;font-size:9px;letter-spacing:.22em;text-transform:uppercase;
@@ -245,21 +258,22 @@ textarea{resize:vertical;min-height:62px}
 <body>
 <div id="root"></div>
 
+<script src="config.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
 <script type="text/babel" data-presets="react">
 /* =======================================================================
-   SUPABASE CONFIG — paste the two values from your Supabase project here.
-   Settings -> API :  Project URL  and  anon public key
-   Leave both blank to run the app locally with no login.
+   SUPABASE CONFIG — read from config.js, which sits next to this file.
+   Never edit keys here: update config.js once and leave it alone.
    ======================================================================= */
-const SUPABASE_URL      = "https://nvabakfuszdeffulziuf.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im52YWJha2Z1c3pkZWZmdWx6aXVmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk3MTI4NDEsImV4cCI6MjEwNTI4ODg0MX0.IPuzUVvAAkp4RxRdszxa3kXGVaZCDYfiOaJCQRRMzxM";
+const APP_CONFIG        = window.APP_CONFIG || {};
+const SUPABASE_URL      = APP_CONFIG.SUPABASE_URL || "";
+const SUPABASE_ANON_KEY = APP_CONFIG.SUPABASE_ANON_KEY || "";
 /* ===================================================================== */
 
-const CLOUD_ON = !!(SUPABASE_URL && SUPABASE_ANON_KEY);
+const CLOUD_ON = !!(SUPABASE_URL && SUPABASE_ANON_KEY && SUPABASE_ANON_KEY.indexOf("PASTE-") !== 0);
 const sb = CLOUD_ON ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
 const TABLE = "practice_logs";
 const keyFor = uid => "arhatic-log-v1:" + (uid || "local");
@@ -376,7 +390,7 @@ const uid = () => Math.random().toString(36).slice(2,9)+Date.now().toString(36).
 const inr = n => "₹" + Number(n||0).toLocaleString("en-IN");
 const clamp = (n,a,b) => Math.max(a,Math.min(b,n));
 
-const BLANK = { days:{}, services:{}, tithes:{}, books:{}, deleted:{}, v:2 };
+const BLANK = { days:{}, services:{}, tithes:{}, books:{}, deleted:{}, settings:{ customVirtues:[], updatedAt:0 }, v:2 };
 const emptyDay = () => ({ rituals:{morning:{},night:{}}, virtues:{}, vnotes:{}, meds:{}, study:[], updatedAt:0 });
 const getDay = (st,d) => st.days[d] || emptyDay();
 
@@ -389,6 +403,7 @@ function mergeState(a,b){
   a = Object.assign({}, BLANK, a||{}); b = Object.assign({}, BLANK, b||{});
   const out = { days:{}, services:{}, tithes:{}, books:{}, deleted:Object.assign({},a.deleted,b.deleted), v:2 };
   const newer = (x,y) => !x ? y : !y ? x : ((y.updatedAt||0) > (x.updatedAt||0) ? y : x);
+  out.settings = newer(a.settings, b.settings) || { customVirtues:[], updatedAt:0 };
   new Set([].concat(Object.keys(a.days),Object.keys(b.days))).forEach(d => { out.days[d] = newer(a.days[d],b.days[d]); });
   ["services","tithes","books"].forEach(coll => {
     new Set([].concat(Object.keys(a[coll]),Object.keys(b[coll]))).forEach(id => {
@@ -403,18 +418,43 @@ function mergeState(a,b){
 function dayStats(d){
   const m = RITUALS.morning.filter(r => d.rituals.morning[r.k]).length;
   const n = RITUALS.night.filter(r => d.rituals.night[r.k]).length;
-  const v = VIRTUES.filter(x => d.virtues[x.k]).length;
+  const v = Object.keys(d.virtues||{}).filter(k => d.virtues[k]).length;
   const medKeys = Object.keys(d.meds||{});
   const cycles  = Number((d.meds||{})["kundalini"]) || 0;
   const study   = d.study||[];
   const studyMin= study.reduce((a,x) => a + (Number(x.min)||0), 0);
+  const studyPages = study.reduce((a,x) => a + (Number(x.pages)||0), 0);
   const devotion = (m+n) / RITUAL_TOTAL;
   const purif    = v ? 1 : 0;
   const medS     = medKeys.length ? 1 : 0;
-  const stS      = study.length ? 1 : 0;
-  return { m, n, v, medKeys, cycles, studyMin, devotion, purif, medS, stS,
+  const stS      = (studyMin >= 1 || studyPages >= 1) ? 1 : 0;
+  return { m, n, v, medKeys, cycles, studyMin, studyPages, devotion, purif, medS, stS,
            score:(devotion+purif+medS+stS)/4 };
 }
+/* CONSISTENCY — a day counts when all five daily practices are present */
+function dayChecks(d){
+  const R = d.rituals || {};
+  const morning = RITUALS.morning.some(r => (R.morning||{})[r.k]);
+  const night   = RITUALS.night.some(r => (R.night||{})[r.k]);
+  const virtue  = Object.keys(d.virtues||{}).some(k => d.virtues[k]);
+  const med     = Object.keys(d.meds||{}).length > 0;
+  const study   = (d.study||[]).some(x => (Number(x.min)||0) >= 1 || (Number(x.pages)||0) >= 1);
+  return { morning, night, virtue, med, study, all: morning && night && virtue && med && study };
+}
+const isConsistent = d => dayChecks(d).all;
+const CONSISTENCY_RULES = [
+  "At least 1 morning ritual",
+  "At least 1 night ritual",
+  "At least 1 blue triangle",
+  "At least 1 meditation, of any type",
+  "Study — even 1 page or 1 minute counts",
+];
+
+const MAX_CUSTOM_VIRTUES = 2;
+const customVirtues = st => ((st.settings||{}).customVirtues || []).filter(v => v && v.name);
+const allVirtues = st => VIRTUES.concat(customVirtues(st).map(v =>
+  ({ k:v.k, name:v.name, full:"Your own blue triangle", custom:true })));
+
 function streakOf(days,pred){
   let s = 0, d = todayISO();
   if (!pred(days[d]||emptyDay())) d = addDays(d,-1);
@@ -481,7 +521,7 @@ function computeMyStats(state){
   });
   const services = Object.values(state.services || {});
   services.forEach(s => { const p = servicePoints(s); pointsTotal += p; if ((s.date||"") >= ws && (s.date||"") <= today) pointsWeek += p; });
-  const pred = d => dayStats(d).score >= STREAK_MIN;
+  const pred = isConsistent;
   const current = streakOf(days, pred);
   const best = Math.max(bestStreak(days, pred), current);
   const s = {
@@ -493,7 +533,7 @@ function computeMyStats(state){
     points_total: pointsTotal,
     points_week: pointsWeek,
     week_start: ws,
-    consistency_30: Math.round(lastNDates(30).reduce((a,dt) => a + dayStats(getDay(state,dt)).score, 0) / 30 * 100),
+    consistency_30: Math.round(lastNDates(30).filter(dt => isConsistent(getDay(state,dt))).length / 30 * 100),
     meditations: meds,
     kundalini_cycles: Math.round(cycles*10)/10,
     study_minutes: studyMin,
@@ -723,11 +763,14 @@ function App({ session, onSignOut }){
   useEffect(() => { try { window.scrollTo(0,0); } catch(e){} }, [tab]);
 
   const goSeva = mode => { setSevaMode(mode); setTab("seva"); };
+  const setCustomVirtues = list => update(s => Object.assign({}, s, {
+    settings: Object.assign({}, s.settings, { customVirtues:list, updatedAt:Date.now() }) }));
   const day  = getDay(state, date);
   const stat = dayStats(day);
 
   const views = {
-    today: <Today {...{date,day,stat,patchDay,setTab,goSeva}}/>,
+    today: <Today {...{date,day,stat,patchDay,setTab,goSeva,setToast,setCustomVirtues}}
+             virtues={allVirtues(state)} customList={customVirtues(state)}/>,
     study: <Study {...{state,update,date,day,patchDay,setToast}}/>,
     seva:  <Seva {...{state,update,date,setToast,sevaMode,setSevaMode}}/>,
     insights: <Insights {...{state,setState,setToast,onSignOut,session,profile,saveProfile}}/>,
@@ -784,8 +827,21 @@ function App({ session, onSignOut }){
 }
 
 /* ------------------------------ TODAY ---------------------------------- */
-function Today({ date, day, stat, patchDay, setTab, goSeva }){
+function Today({ date, day, stat, patchDay, setTab, goSeva, virtues, customList, setCustomVirtues, setToast }){
   const [openV,setOpenV] = useState(null);
+  const [adding,setAdding] = useState(false);
+  const [newV,setNewV] = useState("");
+  const addCustom = () => {
+    const nm = newV.trim();
+    if (!nm) { setToast("Name your blue triangle"); return; }
+    if (customList.length >= MAX_CUSTOM_VIRTUES) return;
+    setCustomVirtues(customList.concat([{ k:"c_"+uid(), name:nm }]));
+    setNewV(""); setAdding(false); setToast("Blue triangle added");
+  };
+  const removeCustom = k => {
+    if (!confirm("Remove this custom blue triangle? Days you already ticked stay in your history.")) return;
+    setCustomVirtues(customList.filter(v => v.k !== k)); setOpenV(null);
+  };
 
   const toggleR = (slot,k) => patchDay(date, d => { d.rituals[slot][k] = !d.rituals[slot][k]; });
   const allR = slot => patchDay(date, d => {
@@ -851,7 +907,7 @@ function Today({ date, day, stat, patchDay, setTab, goSeva }){
           <span className="pillar-tag">Pillar Two</span>
           <div className="ctitle">Purifications · Blue Triangles</div>
         </div><div className="cnum">{stat.v ? stat.v+" today" : "None yet"}</div></div>
-        {VIRTUES.map(v => (
+        {virtues.map(v => (
           <div key={v.k}>
             <div className={"vrow"+(day.virtues[v.k]?" on":"")} onClick={() => toggleV(v.k)}>
               <Tri/>
@@ -865,11 +921,23 @@ function Today({ date, day, stat, patchDay, setTab, goSeva }){
                 <textarea placeholder="Reflection for today (optional)" value={day.vnotes[v.k]||""}
                   onChange={e => { const t = e.target.value; patchDay(date, d => { d.vnotes[v.k] = t; }); }}/>
                 <div className="note" style={{marginTop:7}}>
-                  <a className="link" href={v.url} target="_blank" rel="noopener">Read about {v.full}</a>
+                  {v.custom
+                    ? <a className="link" href="#" onClick={e => { e.preventDefault(); removeCustom(v.k); }}>Remove this custom triangle</a>
+                    : <a className="link" href={v.url} target="_blank" rel="noopener">Read about {v.full}</a>}
                 </div>
               </div>}
           </div>
         ))}
+        {customList.length < MAX_CUSTOM_VIRTUES && (adding
+          ? <div style={{display:"flex",gap:8,marginTop:12}}>
+              <input autoFocus value={newV} maxLength={40} onChange={e => setNewV(e.target.value)}
+                onKeyDown={e => { if (e.key === "Enter") addCustom(); }} placeholder="Name of the triangle"/>
+              <button className="btn slim" style={{width:"auto",padding:"0 16px"}} onClick={addCustom}>Add</button>
+              <button className="del" onClick={() => { setAdding(false); setNewV(""); }}>×</button>
+            </div>
+          : <button className="allbtn" style={{marginTop:14}} onClick={() => setAdding(true)}>
+              + Custom blue triangle ({customList.length}/{MAX_CUSTOM_VIRTUES})
+            </button>)}
       </div>
 
       {/* 3 — Meditations */}
@@ -940,6 +1008,7 @@ function Study({ state, update, date, day, patchDay, setToast }){
 
   const addStudy = () => {
     if (!book) { setToast("Pick a book first"); return; }
+    if (!(Number(spag) >= 1) && !(Number(smin) >= 1)) { setToast("Enter pages or minutes"); return; }
     patchDay(date, d => d.study.push({ id:uid(), book, cat:catOf(book),
       min:Number(smin)||0, pages:Number(spag)||0, note:snote.trim() }));
     setSmin(""); setSpag(""); setSnote(""); setToast("Study logged");
@@ -971,10 +1040,10 @@ function Study({ state, update, date, day, patchDay, setToast }){
           </select>
         </div>
         <div className="row2">
-          <div className="field"><label>Minutes</label>
-            <input type="number" inputMode="numeric" value={smin} onChange={e => setSmin(e.target.value)} placeholder="20"/></div>
           <div className="field"><label>Pages</label>
-            <input type="number" inputMode="numeric" value={spag} onChange={e => setSpag(e.target.value)} placeholder="optional"/></div>
+            <input type="number" inputMode="numeric" value={spag} onChange={e => setSpag(e.target.value)}/></div>
+          <div className="field"><label>Minutes</label>
+            <input type="number" inputMode="numeric" value={smin} onChange={e => setSmin(e.target.value)}/></div>
         </div>
         <div className="field"><label>Insight / note</label>
           <textarea value={snote} onChange={e => setSnote(e.target.value)} placeholder="A line worth remembering…"/></div>
@@ -989,7 +1058,7 @@ function Study({ state, update, date, day, patchDay, setToast }){
             <div className="entry" key={s.id}>
               <div className="ebody">
                 <div className="etitle">{s.book}</div>
-                <div className="esub">{[s.min?s.min+" min":null, s.pages?s.pages+" pages":null].filter(Boolean).join(" · ")}</div>
+                <div className="esub">{[s.pages?s.pages+" pages":null, s.min?s.min+" min":null].filter(Boolean).join(" · ")}</div>
                 {s.note && <div className="esub" style={{fontStyle:"italic"}}>{s.note}</div>}
               </div>
               <button className="del" onClick={() => delStudy(s.id)}>×</button>
@@ -1158,46 +1227,55 @@ function Seva({ state, update, date, setToast, sevaMode, setSevaMode }){
 /* ------------------------------ INSIGHTS -------------------------------- */
 function Insights({ state, setState, setToast, onSignOut, session, profile, saveProfile }){
   const [range,setRange] = useState(30);
+  const [rules,setRules] = useState(false);
   const days = state.days || {};
   const dates = lastNDates(range);
-  const rows = dates.map(d => ({ d, st:dayStats(getDay(state,d)) }));
+  const rows = dates.map(d => ({ d, st:dayStats(getDay(state,d)), ck:dayChecks(getDay(state,d)) }));
+  const VIRT = allVirtues(state);
 
-  const avg = rows.reduce((a,r) => a+r.st.score, 0) / (rows.length||1);
-  const daysPract = rows.filter(r => r.st.score > 0).length;
-  const totStudy  = rows.reduce((a,r) => a+r.st.studyMin, 0);
-  const totSit    = rows.reduce((a,r) => a+r.st.medKeys.length, 0);
+  /* the five daily checks — same rules drive streaks, totals and Consistency */
+  const pMorning = d => dayChecks(d).morning;
+  const pNight   = d => dayChecks(d).night;
+  const pVirtue  = d => dayChecks(d).virtue;
+  const pMed     = d => dayChecks(d).med;
+  const pStudy   = d => dayChecks(d).study;
+  const checks = [["Morning ritual",pMorning],["Night ritual",pNight],["Blue triangle",pVirtue],
+                  ["Meditation",pMed],["Study",pStudy]];
 
-  const pMorning = d => RITUALS.morning.every(r => d.rituals.morning[r.k]);
-  const pNight   = d => RITUALS.night.every(r => d.rituals.night[r.k]);
-  const pVirtue  = d => VIRTUES.some(v => d.virtues[v.k]);
-  const pMed     = d => Object.keys(d.meds||{}).length > 0;
-  const pStudy   = d => (d.study||[]).length > 0;
+  const consDays = rows.filter(r => r.ck.all).length;
+  const consPct  = consDays / (rows.length||1);
+  const consStreak = streakOf(days, isConsistent), consBest = bestStreak(days, isConsistent);
+  const medStreak  = streakOf(days, pMed),         medBest  = bestStreak(days, pMed);
 
-  const streaks = [["Morning ritual",pMorning],["Night ritual",pNight],["Virtue practice",pVirtue],
-                   ["Meditation",pMed],["Study",pStudy]];
-
-  const medMix = MEDS.map(m => ({ ...m, n: rows.filter(r => r.st.medKeys.indexOf(m.k)>=0).length }));
-  const maxMix = Math.max(1, ...medMix.map(m => m.n));
-
+  /* Pillar One */
+  const ritMorn = rows.length ? rows.reduce((a,r) => a+r.st.m,0) / (rows.length*RITUALS.morning.length) : 0;
+  const ritNight= rows.length ? rows.reduce((a,r) => a+r.st.n,0) / (rows.length*RITUALS.night.length) : 0;
+  const totRit  = rows.reduce((a,r) => a+r.st.m+r.st.n, 0);
+  /* Pillar Two */
+  const totTri  = rows.reduce((a,r) => a+r.st.v, 0);
+  const virtMix = VIRT.map(v => ({ ...v, n: rows.filter(r => getDay(state,r.d).virtues[v.k]).length }));
+  const maxVirt = Math.max(1, ...virtMix.map(v => v.n));
+  /* Pillar Three */
+  const totSit  = rows.reduce((a,r) => a+r.st.medKeys.length, 0);
+  const medMix  = MEDS.map(m => ({ ...m, n: rows.filter(r => r.st.medKeys.indexOf(m.k)>=0).length }));
+  const maxMix  = Math.max(1, ...medMix.map(m => m.n));
   const kundRange = rows.reduce((a,r) => a+r.st.cycles, 0);
   const kundAll   = Object.keys(days).reduce((a,k) => a + (Number((days[k].meds||{})["kundalini"])||0), 0);
   const kundDays  = countDays(days, d => (d.meds||{})["kundalini"] !== undefined);
-
-  const ritMorn = rows.length ? rows.reduce((a,r) => a+r.st.m,0) / (rows.length*RITUALS.morning.length) : 0;
-  const ritNight= rows.length ? rows.reduce((a,r) => a+r.st.n,0) / (rows.length*RITUALS.night.length) : 0;
-
+  /* Pillar Four */
   const services = Object.values(state.services||{});
   const tithes   = Object.values(state.tithes||{});
   const svcHours = services.reduce((a,s) => a + (Number(s.hours)||0), 0);
   const titheTot = tithes.reduce((a,t) => a + (Number(t.amount)||0), 0);
-
   const months = [];
   for (let i=5;i>=0;i--){ const d = new Date(); d.setDate(1); d.setMonth(d.getMonth()-i); months.push(iso(d).slice(0,7)); }
   const svcByMonth   = months.map(m => ({ label:fmtMonth(m),
     v: services.filter(s => monthKey(s.date||"")===m).reduce((a,s) => a+(Number(s.hours)||0),0) }));
   const titheByMonth = months.map(m => ({ label:fmtMonth(m),
     v: tithes.filter(t => monthKey(t.date||"")===m).reduce((a,t) => a+(Number(t.amount)||0),0) }));
-
+  /* Pillar Five */
+  const totStudy = rows.reduce((a,r) => a+r.st.studyMin, 0);
+  const totPages = rows.reduce((a,r) => a+r.st.studyPages, 0);
   const booksDone = Object.values(state.books||{}).filter(b => b.done).length;
 
   const exportJSON = () => {
@@ -1216,54 +1294,91 @@ function Insights({ state, setState, setToast, onSignOut, session, profile, save
     };
     r.readAsText(file); e.target.value = "";
   };
+  const Head = ({ pillar, title, right }) => (
+    <div className="chead"><div>
+      {pillar && <span className="pillar-tag">{pillar}</span>}
+      <div className="ctitle">{title}</div>
+    </div>{right != null && <div className="cnum">{right}</div>}</div>
+  );
 
   return (
     <div>
+      {/* ---------- CONSISTENCY ---------- */}
       <div className="card gold">
         <div className="chead">
-          <div className="ctitle">Consistency</div>
+          <div style={{display:"flex",alignItems:"center",gap:10}}>
+            <div className="ctitle">Consistency</div>
+            <button className="infobtn" title="How Consistency is counted" onClick={() => setRules(!rules)}>i</button>
+          </div>
           <div className="range">
             {[30,90,365].map(n => (
               <button key={n} className={range===n?"on":""} onClick={() => setRange(n)}>{n===365?"1Y":n+"D"}</button>
             ))}
           </div>
         </div>
+        {rules &&
+          <div className="rules">
+            <b>A day counts toward Consistency when all five are done:</b>
+            <ol>{CONSISTENCY_RULES.map(r => <li key={r}>{r}</li>)}</ol>
+            Service and tithing aren't counted, since they can't be done every day.
+            The same rules apply to Current Streaks and Total Count.
+          </div>}
         <div className="ring">
-          <Ring pct={avg} size={104}/>
+          <Ring pct={consPct} size={104}/>
           <div className="ringtxt">
-            <div className="bignum">{streakOf(days, d => dayStats(d).score >= STREAK_MIN)}<small> day streak</small></div>
-            <div className="cmeta" style={{marginTop:8}}>
-              Practised on {daysPract} of the last {range} days.<br/>
-              Average daily completion {Math.round(avg*100)}%.
-            </div>
+            <div className="cmeta">{consDays} of the last {range} days were consistent.</div>
+          </div>
+        </div>
+        <div className="twostreak">
+          <div className="tsbox">
+            <b>{consStreak}</b>
+            <i>Consistency streak</i>
+            <small>Best {consBest} days</small>
+          </div>
+          <div className="tsbox v">
+            <b>{medStreak}</b>
+            <i>Meditation streak</i>
+            <small>Best {medBest} days</small>
           </div>
         </div>
       </div>
 
       <div className="card">
-        <div className="chead"><div className="ctitle">Current Streaks</div><div className="cnum">Consecutive days</div></div>
+        <Head title="Current Streaks" right="Consecutive days"/>
         <div className="statgrid">
-          {streaks.map(([l,p]) => <div className="stat" key={l}><b>{streakOf(days,p)}</b><i>{l}</i></div>)}
+          {checks.map(([l,p]) => <div className="stat" key={l}><b>{streakOf(days,p)}</b><i>{l}</i></div>)}
         </div>
       </div>
 
       <div className="card">
-        <div className="chead"><div className="ctitle">Total Count</div><div className="cnum">All time</div></div>
+        <Head title="Total Count" right="All time"/>
         <div className="statgrid">
-          {streaks.map(([l,p]) => <div className="stat v" key={l}><b>{countDays(days,p)}</b><i>{l}</i></div>)}
+          <div className="stat"><b>{countDays(days,isConsistent)}</b><i>Consistent days</i></div>
+          {checks.map(([l,p]) => <div className="stat v" key={l}><b>{countDays(days,p)}</b><i>{l}</i></div>)}
         </div>
       </div>
 
-      <BadgesCard stats={computeMyStats(state)}/>
-
+      {/* ---------- PILLAR ONE ---------- */}
       <div className="card">
-        <div className="chead"><div className="ctitle">Practice Calendar</div><div className="cnum">18 weeks</div></div>
-        <Heat days={days}/>
+        <Head pillar="Pillar One" title="Ritual Adherence" right={totRit+" rituals"}/>
+        <Bars data={rows.map(r => ({ label:fmtShort(r.d), v:r.st.m + r.st.n }))} fmt={v => v+" of "+RITUAL_TOTAL}/>
+        <div className="hr"/>
+        <HBar label="Morning ritual" value={ritMorn} max={1} right={Math.round(ritMorn*100)+"%"}/>
+        <HBar label="Night ritual" value={ritNight} max={1} right={Math.round(ritNight*100)+"%"}/>
       </div>
 
+      {/* ---------- PILLAR TWO ---------- */}
       <div className="card">
-        <div className="chead"><div className="ctitle">Meditation</div>
-          <div className="cnum">{totSit} sittings</div></div>
+        <Head pillar="Pillar Two" title="Purifications" right={totTri+" triangles"}/>
+        <Bars data={rows.map(r => ({ label:fmtShort(r.d), v:r.st.v }))} fmt={v => v+" triangles"}/>
+        <div className="hr"/>
+        <div className="sublabel"><span>By type — days practised</span></div>
+        {virtMix.map(v => <HBar key={v.k} label={v.name} value={v.n} max={maxVirt} right={v.n+" days"}/>)}
+      </div>
+
+      {/* ---------- PILLAR THREE ---------- */}
+      <div className="card">
+        <Head pillar="Pillar Three" title="Meditation" right={totSit+" sittings"}/>
         <Bars data={rows.map(r => ({ label:fmtShort(r.d), v:r.st.medKeys.length }))} fmt={v => v+" meditations"}/>
         <div className="hr"/>
         <div className="sublabel"><span>By type — days practised</span></div>
@@ -1271,7 +1386,7 @@ function Insights({ state, setState, setToast, onSignOut, session, profile, save
       </div>
 
       <div className="card violet">
-        <div className="chead"><div className="ctitle">Kundalini Cycles</div><div className="cnum">Till date</div></div>
+        <Head pillar="Pillar Three" title="Kundalini Cycles" right="Till date"/>
         <div className="statgrid">
           <div className="stat v"><b>{kundAll}</b><i>Total cycles</i></div>
           <div className="stat v"><b>{kundDays}</b><i>Sittings</i></div>
@@ -1283,46 +1398,14 @@ function Insights({ state, setState, setToast, onSignOut, session, profile, save
         </div>
       </div>
 
+      {/* ---------- PILLAR FOUR ---------- */}
       <div className="card">
-        <div className="chead"><div className="ctitle">Purifications</div><div className="cnum">Last {range} days</div></div>
-        {VIRTUES.map(v => {
-          const n = rows.filter(r => getDay(state,r.d).virtues[v.k]).length;
-          const st = streakOf(days, d => !!d.virtues[v.k]);
-          const bs = bestStreak(days, d => !!d.virtues[v.k]);
-          return <HBar key={v.k} label={v.name} value={n} max={range}
-            right={n+" d · streak "+st+" · best "+bs}/>;
-        })}
-      </div>
-
-      <div className="card">
-        <div className="chead"><div className="ctitle">Ritual Adherence</div><div className="cnum">Last {range} days</div></div>
-        <HBar label="Morning ritual" value={ritMorn} max={1} right={Math.round(ritMorn*100)+"%"}/>
-        <HBar label="Night ritual (before bed)" value={ritNight} max={1} right={Math.round(ritNight*100)+"%"}/>
-      </div>
-
-      <div className="card">
-        <div className="chead"><div className="ctitle">Study</div>
-          <div className="cnum">{totStudy} min · {booksDone}/{ALL_BOOKS.length} books</div></div>
-        <Bars data={rows.map(r => ({ label:fmtShort(r.d), v:r.st.studyMin }))} fmt={v => v+" min"}/>
-        <div className="hr"/>
-        {(() => {
-          const tally = {};
-          rows.forEach(r => (getDay(state,r.d).study||[]).forEach(s => { tally[s.book] = (tally[s.book]||0) + (Number(s.min)||0); }));
-          const top = Object.entries(tally).sort((a,b) => b[1]-a[1]).slice(0,6);
-          const mx = Math.max(1, ...top.map(t => t[1]));
-          return top.length ? top.map(([b,m]) => <HBar key={b} label={b} value={m} max={mx} right={m+" min"}/>)
-                            : <div className="empty">No study logged in this window</div>;
-        })()}
-      </div>
-
-      <div className="card">
-        <div className="chead"><div className="ctitle">Service</div>
-          <div className="cnum">{services.length} activities · {svcHours} hrs</div></div>
+        <Head pillar="Pillar Four" title="Service" right={services.length+" activities · "+svcHours+" hrs"}/>
         <Bars data={svcByMonth} fmt={v => v+" hrs"}/>
       </div>
 
       <div className="card">
-        <div className="chead"><div className="ctitle">Tithing</div><div className="cnum">{inr(titheTot)} total</div></div>
+        <Head pillar="Pillar Four" title="Tithing" right={inr(titheTot)+" total"}/>
         <Bars data={titheByMonth} fmt={v => inr(v)}/>
         <div className="hr"/>
         {(() => {
@@ -1335,9 +1418,29 @@ function Insights({ state, setState, setToast, onSignOut, session, profile, save
         })()}
       </div>
 
+      {/* ---------- PILLAR FIVE ---------- */}
       <div className="card">
-        <div className="chead"><div className="ctitle">Backup</div>
-          <div className="cnum">{Object.keys(days).length} days logged</div></div>
+        <Head pillar="Pillar Five" title="Study" right={totPages+" pages · "+totStudy+" min"}/>
+        <Bars data={rows.map(r => ({ label:fmtShort(r.d), v:r.st.studyMin }))} fmt={v => v+" min"}/>
+        <div className="hr"/>
+        <div className="sublabel"><span>By book</span><span>{booksDone}/{ALL_BOOKS.length} completed</span></div>
+        {(() => {
+          const tally = {};
+          rows.forEach(r => (getDay(state,r.d).study||[]).forEach(s => {
+            const t = tally[s.book] || (tally[s.book] = { min:0, pages:0 });
+            t.min += Number(s.min)||0; t.pages += Number(s.pages)||0;
+          }));
+          const top = Object.entries(tally).sort((a,b) => (b[1].min - a[1].min) || (b[1].pages - a[1].pages)).slice(0,6);
+          const mx = Math.max(1, ...top.map(t => t[1].min || t[1].pages));
+          return top.length
+            ? top.map(([b,t]) => <HBar key={b} label={b} value={t.min || t.pages} max={mx}
+                right={t.pages+" pages · "+t.min+" min"}/>)
+            : <div className="empty">No study logged in this window</div>;
+        })()}
+      </div>
+
+      <div className="card">
+        <Head title="Backup" right={Object.keys(days).length+" days logged"}/>
         <div className="btnrow">
           <button className="btn ghost slim" onClick={exportJSON}>Export JSON</button>
           <label className="btn ghost slim" style={{display:"grid",placeItems:"center",cursor:"pointer"}}>
@@ -1817,6 +1920,21 @@ function Auth(){
   );
 }
 
+function SetupNeeded(){
+  return (
+    <div className="authwrap">
+      <div className="card gold" style={{width:"100%",maxWidth:400,textAlign:"center"}}>
+        <div className="brand" style={{fontSize:26}}>Arhatic Yoga<span>Daily Practice Log</span></div>
+        <p className="note" style={{marginTop:18}}>
+          The app can't find its settings. The file <b style={{color:"var(--gold-soft)"}}>config.js</b> is
+          missing, or still has the placeholder instead of the Supabase anon key.
+        </p>
+        <p className="note" style={{marginTop:10,color:"var(--faint)"}}>Everyone's saved practice is safe — this only needs the settings file fixed.</p>
+      </div>
+    </div>
+  );
+}
+
 function Splash(){
   return <div className="authwrap"><div className="brand" style={{fontSize:24,opacity:.7}}>Arhatic Yoga<span>Daily Practice Log</span></div></div>;
 }
@@ -1834,6 +1952,7 @@ function Root(){
 
   const signOut = async () => { await sb.auth.signOut(); setSession(null); };
 
+  if (!CLOUD_ON) return <SetupNeeded/>;
   if (CLOUD_ON && session === undefined) return <Splash/>;
   if (CLOUD_ON && !session) return <Auth/>;
   return <App key={session ? session.user.id : "local"} session={session} onSignOut={signOut}/>;
