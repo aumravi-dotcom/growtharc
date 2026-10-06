@@ -226,6 +226,16 @@ textarea{resize:vertical;min-height:62px}
 .todaybar span{font-size:11px;color:var(--muted);letter-spacing:.06em;white-space:nowrap}
 .nvl{letter-spacing:.1em!important}
 button.infobtn{background:transparent;cursor:pointer;padding:0}
+.btn.danger{background:linear-gradient(120deg,#ea9f9f,#c76c6c);color:#2b0c0c}
+.modalback{position:fixed;inset:0;z-index:80;background:rgba(6,4,16,.66);backdrop-filter:blur(6px);
+  display:grid;place-items:center;padding:24px;animation:fadein .18s both}
+.modal{width:100%;max-width:360px;background:linear-gradient(160deg,#21164a,#150f30);border:1px solid var(--line);
+  border-radius:20px;padding:22px;box-shadow:0 24px 60px rgba(0,0,0,.5);animation:rise .25s cubic-bezier(.2,.7,.3,1) both}
+@keyframes fadein{from{opacity:0}}
+.editing{border-color:rgba(171,140,255,.55)!important;box-shadow:0 0 0 1px rgba(171,140,255,.25)}
+.editbar{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:11px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--violet-soft);margin-bottom:12px}
+.ebtns{display:flex;gap:2px;align-items:center}
 .rules{background:rgba(0,0,0,.22);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:-4px 0 14px;
   font-size:12px;color:var(--muted);line-height:1.6}
 .rules b{color:var(--gold-soft);font-weight:500}
@@ -290,6 +300,10 @@ const RITUALS = {
     { k:"selfheal",     label:"Self-Healing Affirmation", sub:"MCKS", info:SELF_HEAL_URL },
     { k:"positive",     label:"Positive Affirmation",     sub:"MCKS", info:SELF_HEAL_URL },
   ],
+  day: [
+    { k:"greatinv",     label:"Great Invocation" },
+    { k:"saltbath",     label:"Salt Water Bath" },
+  ],
   night: [
     { k:"invocation",   label:"AY Invocation" },
     { k:"sharanagathi", label:"Sharanagathi" },
@@ -299,10 +313,10 @@ const RITUALS = {
     { k:"cord",         label:"Cord Cutting" },
   ],
 };
-const RITUAL_TOTAL = RITUALS.morning.length + RITUALS.night.length;
+const RITUAL_TOTAL = RITUALS.morning.length + RITUALS.day.length + RITUALS.night.length;
 
-const SERVICE_ACTIVITIES = ["Healing Camp","Group THM","Intro to PH & Basic Class",
-                            "Food for Hungry Distribution","Others"];
+const SERVICE_ACTIVITIES = ["Healing","Healing Camp","Group THM","Intro to PH & Basic Class",
+                            "Food for Hungry Distribution","Volunteering for an Event","Others"];
 
 const VIRTUES = [
   { k:"lk",  name:"Loving Kindness",     full:"Loving Kindness & Non-Injury",
@@ -391,7 +405,7 @@ const inr = n => "₹" + Number(n||0).toLocaleString("en-IN");
 const clamp = (n,a,b) => Math.max(a,Math.min(b,n));
 
 const BLANK = { days:{}, services:{}, tithes:{}, books:{}, deleted:{}, settings:{ customVirtues:[], updatedAt:0 }, v:2 };
-const emptyDay = () => ({ rituals:{morning:{},night:{}}, virtues:{}, vnotes:{}, meds:{}, study:[], updatedAt:0 });
+const emptyDay = () => ({ rituals:{morning:{},day:{},night:{}}, virtues:{}, vnotes:{}, meds:{}, study:[], updatedAt:0 });
 const getDay = (st,d) => st.days[d] || emptyDay();
 
 function loadLocal(uid){
@@ -416,19 +430,21 @@ function mergeState(a,b){
 
 /* day scoring — four daily pillars; any virtue and any meditation count as done */
 function dayStats(d){
-  const m = RITUALS.morning.filter(r => d.rituals.morning[r.k]).length;
-  const n = RITUALS.night.filter(r => d.rituals.night[r.k]).length;
+  const R  = d.rituals || {};
+  const m  = RITUALS.morning.filter(r => (R.morning||{})[r.k]).length;
+  const dd = RITUALS.day.filter(r => (R.day||{})[r.k]).length;
+  const n  = RITUALS.night.filter(r => (R.night||{})[r.k]).length;
   const v = Object.keys(d.virtues||{}).filter(k => d.virtues[k]).length;
   const medKeys = Object.keys(d.meds||{});
   const cycles  = Number((d.meds||{})["kundalini"]) || 0;
   const study   = d.study||[];
   const studyMin= study.reduce((a,x) => a + (Number(x.min)||0), 0);
   const studyPages = study.reduce((a,x) => a + (Number(x.pages)||0), 0);
-  const devotion = (m+n) / RITUAL_TOTAL;
+  const devotion = (m+dd+n) / RITUAL_TOTAL;
   const purif    = v ? 1 : 0;
   const medS     = medKeys.length ? 1 : 0;
   const stS      = (studyMin >= 1 || studyPages >= 1) ? 1 : 0;
-  return { m, n, v, medKeys, cycles, studyMin, studyPages, devotion, purif, medS, stS,
+  return { m, dd, n, v, medKeys, cycles, studyMin, studyPages, devotion, purif, medS, stS,
            score:(devotion+purif+medS+stS)/4 };
 }
 /* CONSISTENCY — a day counts when all five daily practices are present */
@@ -503,7 +519,7 @@ const topStreakBadge = ids => STREAK_BADGES.slice().reverse().find(b => (ids||[]
    · study 1 per 10 min · service 5 per activity + 2 per hour.  Tithing earns no points. */
 function dayPoints(d){
   const st = dayStats(d);
-  return st.m + st.n + st.v*2 + st.medKeys.length*3 + Math.round(st.cycles*2) + Math.floor(st.studyMin/10);
+  return st.m + st.dd + st.n + st.v*2 + st.medKeys.length*3 + Math.round(st.cycles*2) + Math.floor(st.studyMin/10);
 }
 const servicePoints = s => 5 + Math.round((Number(s.hours)||0) * 2);
 function weekStartISO(){ const d = new Date(); d.setDate(d.getDate() - ((d.getDay()+6)%7)); return iso(d); }
@@ -569,6 +585,32 @@ function Ring({ pct, size=96 }){
   );
 }
 const Tri = () => (<svg className="tri" viewBox="0 0 24 24"><path d="M12 3.5 21 20H3z" strokeLinejoin="round"/></svg>);
+
+/* ---- confirmation pop-up: await askConfirm("…") anywhere, resolves true/false ---- */
+let __openConfirm = null;
+const askConfirm = (message, opts) => new Promise(resolve => {
+  const o = opts || {};
+  if (__openConfirm) __openConfirm({ message, title:o.title || "Delete this?", yes:o.yes || "Delete", resolve });
+  else resolve(window.confirm(message));
+});
+function ConfirmHost(){
+  const [req,setReq] = useState(null);
+  useEffect(() => { __openConfirm = setReq; return () => { __openConfirm = null; }; }, []);
+  if (!req) return null;
+  const close = v => { req.resolve(v); setReq(null); };
+  return (
+    <div className="modalback" onClick={() => close(false)}>
+      <div className="modal" onClick={e => e.stopPropagation()}>
+        <div className="ctitle" style={{fontSize:22}}>{req.title}</div>
+        <p className="note" style={{marginTop:10,fontSize:13.5}}>{req.message}</p>
+        <div className="btnrow" style={{marginTop:20}}>
+          <button className="btn ghost slim" onClick={() => close(false)}>Cancel</button>
+          <button className="btn danger slim" onClick={() => close(true)}>{req.yes}</button>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 function RitualChip({ r, on, onTap }){
   return (
@@ -718,7 +760,8 @@ function App({ session, onSignOut }){
 
   const patchDay = (d, fn) => update(s => {
     const cur = Object.assign({}, getDay(s,d));
-    cur.rituals = { morning:Object.assign({},cur.rituals.morning), night:Object.assign({},cur.rituals.night) };
+    const R0 = cur.rituals || {};
+    cur.rituals = { morning:Object.assign({},R0.morning), day:Object.assign({},R0.day), night:Object.assign({},R0.night) };
     cur.virtues = Object.assign({}, cur.virtues);
     cur.vnotes  = Object.assign({}, cur.vnotes);
     cur.meds    = Object.assign({}, cur.meds);
@@ -806,6 +849,7 @@ function App({ session, onSignOut }){
       <div className="wrap" key={tab}>{views[tab]}</div>
 
       {toast && <div className="toast">{toast}</div>}
+      <ConfirmHost/>
 
       <div className="nav"><div className="navinner">
         {[
@@ -838,13 +882,14 @@ function Today({ date, day, stat, patchDay, setTab, goSeva, virtues, customList,
     setCustomVirtues(customList.concat([{ k:"c_"+uid(), name:nm }]));
     setNewV(""); setAdding(false); setToast("Blue triangle added");
   };
-  const removeCustom = k => {
-    if (!confirm("Remove this custom blue triangle? Days you already ticked stay in your history.")) return;
+  const removeCustom = async k => {
+    if (!(await askConfirm("Days you already ticked stay in your history.", { title:"Remove this custom triangle?", yes:"Remove" }))) return;
     setCustomVirtues(customList.filter(v => v.k !== k)); setOpenV(null);
   };
 
-  const toggleR = (slot,k) => patchDay(date, d => { d.rituals[slot][k] = !d.rituals[slot][k]; });
+  const toggleR = (slot,k) => patchDay(date, d => { d.rituals[slot] = d.rituals[slot] || {}; d.rituals[slot][k] = !d.rituals[slot][k]; });
   const allR = slot => patchDay(date, d => {
+    d.rituals[slot] = d.rituals[slot] || {};
     const done = RITUALS[slot].every(r => d.rituals[slot][r.k]);
     RITUALS[slot].forEach(r => { d.rituals[slot][r.k] = !done; });
   });
@@ -884,13 +929,20 @@ function Today({ date, day, stat, patchDay, setTab, goSeva, virtues, customList,
         <div className="chead"><div>
           <span className="pillar-tag">Pillar One</span>
           <div className="ctitle">Devotion to the Supreme God<span className="ctitle2">&amp; Reverence to the Spiritual Teacher</span></div>
-        </div><div className="cnum">{stat.m+stat.n}/{RITUAL_TOTAL}</div></div>
+        </div><div className="cnum">{stat.m+stat.dd+stat.n}/{RITUAL_TOTAL}</div></div>
 
         <div className="sublabel"><span>☀ Morning Ritual · On Bed</span>
           <button className="allbtn" onClick={() => allR("morning")}>All</button></div>
         <div className="chips">
           {RITUALS.morning.map(r => <RitualChip key={r.k} r={r} on={!!day.rituals.morning[r.k]}
             onTap={() => toggleR("morning",r.k)}/>)}
+        </div>
+
+        <div className="sublabel"><span>☼ Day Ritual</span>
+          <button className="allbtn" onClick={() => allR("day")}>All</button></div>
+        <div className="chips">
+          {RITUALS.day.map(r => <RitualChip key={r.k} r={r} on={!!(day.rituals.day||{})[r.k]}
+            onTap={() => toggleR("day",r.k)}/>)}
         </div>
 
         <div className="sublabel"><span>☾ Night Ritual · On Bed</span>
@@ -1006,14 +1058,34 @@ function Study({ state, update, date, day, patchDay, setToast }){
     return t;
   }, [state.days]);
 
+  const [editId,setEditId] = useState(null);
+  const clearForm = () => { setEditId(null); setSmin(""); setSpag(""); setSnote(""); };
+  useEffect(() => { clearForm(); }, [date]);
+
   const addStudy = () => {
     if (!book) { setToast("Pick a book first"); return; }
     if (!(Number(spag) >= 1) && !(Number(smin) >= 1)) { setToast("Enter pages or minutes"); return; }
-    patchDay(date, d => d.study.push({ id:uid(), book, cat:catOf(book),
-      min:Number(smin)||0, pages:Number(spag)||0, note:snote.trim() }));
-    setSmin(""); setSpag(""); setSnote(""); setToast("Study logged");
+    const entry = { book, cat:catOf(book), min:Number(smin)||0, pages:Number(spag)||0, note:snote.trim() };
+    if (editId) {
+      patchDay(date, d => { d.study = d.study.map(x => x.id === editId ? Object.assign({}, x, entry) : x); });
+      setToast("Study entry updated");
+    } else {
+      patchDay(date, d => d.study.push(Object.assign({ id:uid() }, entry)));
+      setToast("Study logged");
+    }
+    clearForm();
   };
-  const delStudy = id => patchDay(date, d => { d.study = d.study.filter(x => x.id !== id); });
+  const startEdit = x => {
+    setEditId(x.id); setBook(x.book); setSpag(x.pages ? String(x.pages) : "");
+    setSmin(x.min ? String(x.min) : ""); setSnote(x.note || "");
+    try { window.scrollTo({ top:0, behavior:"smooth" }); } catch(e){ window.scrollTo(0,0); }
+  };
+  const delStudy = async x => {
+    if (!(await askConfirm(x.book, { title:"Delete this study entry?" }))) return;
+    if (editId === x.id) clearForm();
+    patchDay(date, d => { d.study = d.study.filter(y => y.id !== x.id); });
+    setToast("Study entry deleted");
+  };
 
   const toggleBook = title => update(s => {
     const cur = s.books[title] || { title, cat:catOf(title), done:false };
@@ -1024,10 +1096,12 @@ function Study({ state, update, date, day, patchDay, setToast }){
 
   return (
     <div>
-      <div className="card gold">
+      <div className={"card gold"+(editId?" editing":"")}>
+        {editId && <div className="editbar"><span>✎ Editing an entry</span>
+          <button className="allbtn" onClick={clearForm}>Cancel</button></div>}
         <div className="chead"><div>
           <span className="pillar-tag">Pillar Five</span>
-          <div className="ctitle">Record study</div>
+          <div className="ctitle">{editId ? "Edit study" : "Record study"}</div>
         </div><div className="cnum">{fmtShort(date)}</div></div>
         <div className="field">
           <select value={book} onChange={e => setBook(e.target.value)}>
@@ -1047,7 +1121,7 @@ function Study({ state, update, date, day, patchDay, setToast }){
         </div>
         <div className="field"><label>Insight / note</label>
           <textarea value={snote} onChange={e => setSnote(e.target.value)} placeholder="A line worth remembering…"/></div>
-        <button className="btn" onClick={addStudy}>Add study entry</button>
+        <button className="btn" onClick={addStudy}>{editId ? "Save changes" : "Add study entry"}</button>
       </div>
 
       {(day.study||[]).length > 0 &&
@@ -1061,7 +1135,10 @@ function Study({ state, update, date, day, patchDay, setToast }){
                 <div className="esub">{[s.pages?s.pages+" pages":null, s.min?s.min+" min":null].filter(Boolean).join(" · ")}</div>
                 {s.note && <div className="esub" style={{fontStyle:"italic"}}>{s.note}</div>}
               </div>
-              <button className="del" onClick={() => delStudy(s.id)}>×</button>
+              <div className="ebtns">
+                <button className="del" title="Edit" onClick={() => startEdit(s)}>✎</button>
+                <button className="del" title="Delete" onClick={() => delStudy(s)}>×</button>
+              </div>
             </div>
           ))}
         </div>}
@@ -1102,34 +1179,90 @@ function Study({ state, update, date, day, patchDay, setToast }){
 
 /* -------------------------------- SEVA --------------------------------- */
 function Seva({ state, update, date, setToast, sevaMode, setSevaMode }){
-  const [f,setF] = useState({ activity:"", activityOther:"", institution:"", location:"", organizer:"", hours:"", note:"" });
-  const [t,setT] = useState({ amount:"", foundation:"", note:"" });
+  const BLANK_F = { activity:"", activityOther:"", institution:"", location:"", organizer:"", hours:"", note:"", healedFor:"", healCount:"" };
+  const BLANK_T = { amount:"", foundation:"", note:"" };
+  const [f,setF] = useState(BLANK_F);
+  const [t,setT] = useState(BLANK_T);
+  const [editS,setEditS] = useState(null);     // id of service being edited
+  const [editT,setEditT] = useState(null);     // id of tithe being edited
+  const [recDate,setRecDate] = useState(date); // date of the record being edited
+  const isHealing = f.activity === "Healing";
 
   const services = Object.values(state.services||{}).sort((a,b) => (b.date||"").localeCompare(a.date||""));
   const tithes   = Object.values(state.tithes||{}).sort((a,b) => (b.date||"").localeCompare(a.date||""));
 
-  const addService = () => {
+  const toTop = () => { try { window.scrollTo({ top:0, behavior:"smooth" }); } catch(e){ window.scrollTo(0,0); } };
+  const cancelS = () => { setEditS(null); setF(BLANK_F); };
+  const cancelT = () => { setEditT(null); setT(Object.assign({}, BLANK_T, { foundation:t.foundation })); };
+  useEffect(() => { cancelS(); setEditT(null); setT(BLANK_T); }, [sevaMode]);
+
+  const saveService = () => {
     if (!f.activity) { setToast("Choose an activity"); return; }
+    if (isHealing && !(Number(f.healCount) >= 1)) { setToast("Enter the number of healings"); return; }
     const label = f.activity === "Others" ? (f.activityOther.trim() || "Others") : f.activity;
-    const id = uid();
-    update(s => Object.assign({}, s, { services: Object.assign({}, s.services,
-      { [id]: { id, date, activity:label, institution:f.institution, location:f.location,
-                organizer:f.organizer, hours:Number(f.hours)||0, note:f.note, updatedAt:Date.now() } }) }));
-    setF({ activity:"", activityOther:"", institution:"", location:"", organizer:"", hours:"", note:"" });
-    setToast("Service recorded");
+    const id = editS || uid();
+    const rec = {
+      id, date: editS ? recDate : date, activity: label,
+      location: f.location, hours: Number(f.hours)||0, note: f.note, updatedAt: Date.now(),
+    };
+    if (isHealing) { rec.healedFor = f.healedFor.trim(); rec.healCount = Number(f.healCount)||0; }
+    else           { rec.institution = f.institution; rec.organizer = f.organizer; }
+    update(s => Object.assign({}, s, { services: Object.assign({}, s.services, { [id]: rec }) }));
+    setToast(editS ? "Service updated" : "Service recorded");
+    cancelS();
   };
-  const addTithe = () => {
+  const startEditS = x => {
+    const preset = SERVICE_ACTIVITIES.indexOf(x.activity) >= 0 && x.activity !== "Others";
+    setF({
+      activity: preset ? x.activity : "Others",
+      activityOther: preset ? "" : (x.activity || ""),
+      institution: x.institution || "", location: x.location || "", organizer: x.organizer || "",
+      hours: x.hours ? String(x.hours) : "", note: x.note || "",
+      healedFor: x.healedFor || "", healCount: x.healCount ? String(x.healCount) : "",
+    });
+    setEditS(x.id); setRecDate(x.date || date); toTop();
+  };
+
+  const saveTithe = () => {
     if (!t.amount) { setToast("Enter an amount"); return; }
     if (!t.foundation) { setToast("Choose a foundation"); return; }
-    const id = uid();
-    update(s => Object.assign({}, s, { tithes: Object.assign({}, s.tithes,
-      { [id]: Object.assign({ id, date }, t, { amount:Number(t.amount)||0, updatedAt:Date.now() }) }) }));
-    setT({ amount:"", foundation:t.foundation, note:"" }); setToast("Tithing recorded");
+    const id = editT || uid();
+    const rec = { id, date: editT ? recDate : date, amount:Number(t.amount)||0, foundation:t.foundation,
+                  note:t.note, updatedAt:Date.now() };
+    update(s => Object.assign({}, s, { tithes: Object.assign({}, s.tithes, { [id]: rec }) }));
+    setToast(editT ? "Tithing updated" : "Tithing recorded");
+    cancelT();
   };
-  const remove = (coll,id) => update(s => {
-    const next = Object.assign({}, s[coll]); delete next[id];
-    return Object.assign({}, s, { [coll]:next, deleted:Object.assign({}, s.deleted, { [id]:Date.now() }) });
-  });
+  const startEditT = x => {
+    setT({ amount: x.amount ? String(x.amount) : "", foundation: x.foundation || "", note: x.note || "" });
+    setEditT(x.id); setRecDate(x.date || date); toTop();
+  };
+
+  const remove = async (coll, rec, what) => {
+    if (!(await askConfirm(what, { title: coll === "services" ? "Delete this service entry?" : "Delete this tithing entry?" }))) return;
+    if (coll === "services" && editS === rec.id) cancelS();
+    if (coll === "tithes"   && editT === rec.id) cancelT();
+    update(s => {
+      const next = Object.assign({}, s[coll]); delete next[rec.id];
+      return Object.assign({}, s, { [coll]:next, deleted:Object.assign({}, s.deleted, { [rec.id]:Date.now() }) });
+    });
+    setToast("Entry deleted");
+  };
+
+  const svcLine = s => (s.activity === "Healing"
+    ? [fmtShort(s.date), s.healedFor ? "for "+s.healedFor : null,
+       s.healCount ? s.healCount+" healing"+(s.healCount===1?"":"s") : null, s.location, s.hours ? s.hours+" hrs" : null]
+    : [fmtShort(s.date), s.institution, s.location, s.organizer, s.hours ? s.hours+" hrs" : null]
+  ).filter(Boolean).join(" · ");
+
+  const editBar = onCancel => (
+    <div className="editbar"><span>✎ Editing an entry</span>
+      <button className="allbtn" onClick={onCancel}>Cancel</button></div>
+  );
+  const dateField = (
+    <div className="field"><label>Date</label>
+      <input type="date" value={recDate} max={todayISO()} onChange={e => e.target.value && setRecDate(e.target.value)}/></div>
+  );
 
   return (
     <div>
@@ -1146,8 +1279,11 @@ function Seva({ state, update, date, setToast, sevaMode, setSevaMode }){
 
       {sevaMode==="service" ? (
         <div>
-          <div className="card">
-            <div className="chead"><div className="ctitle">Record service</div><div className="cnum">{fmtShort(date)}</div></div>
+          <div className={"card"+(editS?" editing":"")}>
+            {editS && editBar(cancelS)}
+            <div className="chead"><div className="ctitle">{editS ? "Edit service" : "Record service"}</div>
+              {!editS && <div className="cnum">{fmtShort(date)}</div>}</div>
+            {editS && dateField}
             <div className="field"><label>Activity</label>
               <select value={f.activity} onChange={e => setF({...f,activity:e.target.value})}>
                 <option value="">Select…</option>
@@ -1158,40 +1294,67 @@ function Seva({ state, update, date, setToast, sevaMode, setSevaMode }){
               <div className="field"><label>Describe the activity</label>
                 <input value={f.activityOther} onChange={e => setF({...f,activityOther:e.target.value})}
                   placeholder="What was the seva?"/></div>}
-            <div className="row2">
-              <div className="field"><label>Institution</label>
-                <input value={f.institution} onChange={e => setF({...f,institution:e.target.value})} placeholder="Society, company, org…"/></div>
-              <div className="field"><label>Location</label>
-                <input value={f.location} onChange={e => setF({...f,location:e.target.value})} placeholder="City"/></div>
-            </div>
-            <div className="row2">
-              <div className="field"><label>Organizer</label>
-                <input value={f.organizer} onChange={e => setF({...f,organizer:e.target.value})} placeholder="Chapter / foundation"/></div>
-              <div className="field"><label>Hours</label>
-                <input type="number" inputMode="decimal" value={f.hours} onChange={e => setF({...f,hours:e.target.value})} placeholder="2"/></div>
-            </div>
+
+            {isHealing ? (
+              <div>
+                <div className="row2">
+                  <div className="field"><label>Whose healing</label>
+                    <input value={f.healedFor} onChange={e => setF({...f,healedFor:e.target.value})} placeholder="Name or group"/></div>
+                  <div className="field"><label>Number of healings</label>
+                    <input type="number" inputMode="numeric" value={f.healCount} onChange={e => setF({...f,healCount:e.target.value})} placeholder="1"/></div>
+                </div>
+                <div className="row2">
+                  <div className="field"><label>City</label>
+                    <input value={f.location} onChange={e => setF({...f,location:e.target.value})} placeholder="City"/></div>
+                  <div className="field"><label>Hours</label>
+                    <input type="number" inputMode="decimal" value={f.hours} onChange={e => setF({...f,hours:e.target.value})} placeholder="1"/></div>
+                </div>
+              </div>
+            ) : (
+              <div>
+                <div className="row2">
+                  <div className="field"><label>Institution</label>
+                    <input value={f.institution} onChange={e => setF({...f,institution:e.target.value})} placeholder="Society, company, org…"/></div>
+                  <div className="field"><label>Location</label>
+                    <input value={f.location} onChange={e => setF({...f,location:e.target.value})} placeholder="City"/></div>
+                </div>
+                <div className="row2">
+                  <div className="field"><label>Organizer</label>
+                    <input value={f.organizer} onChange={e => setF({...f,organizer:e.target.value})} placeholder="Chapter / foundation"/></div>
+                  <div className="field"><label>Hours</label>
+                    <input type="number" inputMode="decimal" value={f.hours} onChange={e => setF({...f,hours:e.target.value})} placeholder="2"/></div>
+                </div>
+              </div>
+            )}
             <div className="field"><label>Note</label>
               <textarea value={f.note} onChange={e => setF({...f,note:e.target.value})} placeholder="Optional"/></div>
-            <button className="btn" onClick={addService}>Save service</button>
+            <button className="btn" onClick={saveService}>{editS ? "Save changes" : "Save service"}</button>
           </div>
+
           <div className="card">
             <div className="chead"><div className="ctitle">History</div><div className="cnum">{services.length} entries</div></div>
             {services.length ? services.map(s => (
               <div className="entry" key={s.id}>
                 <div className="ebody">
                   <div className="etitle">{s.activity}</div>
-                  <div className="esub">{[fmtShort(s.date), s.institution, s.location, s.organizer, s.hours?s.hours+" hrs":null].filter(Boolean).join(" · ")}</div>
+                  <div className="esub">{svcLine(s)}</div>
                   {s.note && <div className="esub" style={{fontStyle:"italic"}}>{s.note}</div>}
                 </div>
-                <button className="del" onClick={() => remove("services",s.id)}>×</button>
+                <div className="ebtns">
+                  <button className="del" title="Edit" onClick={() => startEditS(s)}>✎</button>
+                  <button className="del" title="Delete" onClick={() => remove("services", s, s.activity+" · "+fmtShort(s.date))}>×</button>
+                </div>
               </div>
             )) : <div className="empty">No service recorded yet</div>}
           </div>
         </div>
       ) : (
         <div>
-          <div className="card">
-            <div className="chead"><div className="ctitle">Record tithing</div><div className="cnum">{fmtShort(date)}</div></div>
+          <div className={"card"+(editT?" editing":"")}>
+            {editT && editBar(cancelT)}
+            <div className="chead"><div className="ctitle">{editT ? "Edit tithing" : "Record tithing"}</div>
+              {!editT && <div className="cnum">{fmtShort(date)}</div>}</div>
+            {editT && dateField}
             <div className="field"><label>Amount</label>
               <input type="number" inputMode="decimal" value={t.amount} onChange={e => setT({...t,amount:e.target.value})} placeholder="1000"/></div>
             <div className="field"><label>Foundation</label>
@@ -1202,7 +1365,7 @@ function Seva({ state, update, date, setToast, sevaMode, setSevaMode }){
             </div>
             <div className="field"><label>Note</label>
               <textarea value={t.note} onChange={e => setT({...t,note:e.target.value})} placeholder="Optional"/></div>
-            <button className="btn" onClick={addTithe}>Save tithing</button>
+            <button className="btn" onClick={saveTithe}>{editT ? "Save changes" : "Save tithing"}</button>
           </div>
           <div className="card">
             <div className="chead"><div className="ctitle">History</div>
@@ -1214,7 +1377,10 @@ function Seva({ state, update, date, setToast, sevaMode, setSevaMode }){
                   <div className="esub">{fmtShort(x.date)}{x.note?" · "+x.note:""}</div>
                 </div>
                 <div className="eamt">{inr(x.amount)}</div>
-                <button className="del" onClick={() => remove("tithes",x.id)}>×</button>
+                <div className="ebtns">
+                  <button className="del" title="Edit" onClick={() => startEditT(x)}>✎</button>
+                  <button className="del" title="Delete" onClick={() => remove("tithes", x, inr(x.amount)+" to "+(x.foundation||"Unspecified")+" · "+fmtShort(x.date))}>×</button>
+                </div>
               </div>
             )) : <div className="empty">No tithing recorded yet</div>}
           </div>
@@ -1250,7 +1416,8 @@ function Insights({ state, setState, setToast, onSignOut, session, profile, save
   /* Pillar One */
   const ritMorn = rows.length ? rows.reduce((a,r) => a+r.st.m,0) / (rows.length*RITUALS.morning.length) : 0;
   const ritNight= rows.length ? rows.reduce((a,r) => a+r.st.n,0) / (rows.length*RITUALS.night.length) : 0;
-  const totRit  = rows.reduce((a,r) => a+r.st.m+r.st.n, 0);
+  const ritDay  = rows.length ? rows.reduce((a,r) => a+r.st.dd,0) / (rows.length*RITUALS.day.length) : 0;
+  const totRit  = rows.reduce((a,r) => a+r.st.m+r.st.dd+r.st.n, 0);
   /* Pillar Two */
   const totTri  = rows.reduce((a,r) => a+r.st.v, 0);
   const virtMix = VIRT.map(v => ({ ...v, n: rows.filter(r => getDay(state,r.d).virtues[v.k]).length }));
@@ -1266,6 +1433,7 @@ function Insights({ state, setState, setToast, onSignOut, session, profile, save
   const services = Object.values(state.services||{});
   const tithes   = Object.values(state.tithes||{});
   const svcHours = services.reduce((a,s) => a + (Number(s.hours)||0), 0);
+  const healings = services.reduce((a,s) => a + (Number(s.healCount)||0), 0);
   const titheTot = tithes.reduce((a,t) => a + (Number(t.amount)||0), 0);
   const months = [];
   for (let i=5;i>=0;i--){ const d = new Date(); d.setDate(1); d.setMonth(d.getMonth()-i); months.push(iso(d).slice(0,7)); }
@@ -1361,9 +1529,10 @@ function Insights({ state, setState, setToast, onSignOut, session, profile, save
       {/* ---------- PILLAR ONE ---------- */}
       <div className="card">
         <Head pillar="Pillar One" title="Ritual Adherence" right={totRit+" rituals"}/>
-        <Bars data={rows.map(r => ({ label:fmtShort(r.d), v:r.st.m + r.st.n }))} fmt={v => v+" of "+RITUAL_TOTAL}/>
+        <Bars data={rows.map(r => ({ label:fmtShort(r.d), v:r.st.m + r.st.dd + r.st.n }))} fmt={v => v+" of "+RITUAL_TOTAL}/>
         <div className="hr"/>
         <HBar label="Morning ritual" value={ritMorn} max={1} right={Math.round(ritMorn*100)+"%"}/>
+        <HBar label="Day ritual" value={ritDay} max={1} right={Math.round(ritDay*100)+"%"}/>
         <HBar label="Night ritual" value={ritNight} max={1} right={Math.round(ritNight*100)+"%"}/>
       </div>
 
@@ -1402,6 +1571,12 @@ function Insights({ state, setState, setToast, onSignOut, session, profile, save
       <div className="card">
         <Head pillar="Pillar Four" title="Service" right={services.length+" activities · "+svcHours+" hrs"}/>
         <Bars data={svcByMonth} fmt={v => v+" hrs"}/>
+        <div className="hr"/>
+        <div className="statgrid">
+          <div className="stat"><b>{services.length}</b><i>Activities</i></div>
+          <div className="stat"><b>{svcHours}</b><i>Hours</i></div>
+          <div className="stat v"><b>{healings}</b><i>Healings given</i></div>
+        </div>
       </div>
 
       <div className="card">
@@ -1612,6 +1787,7 @@ function Circle({ session, profile, goProfile, setToast, pushStats }){
     setSel({ circle_id:data, name:name.trim(), is_owner:true, my_status:"active", member_count:1 });
   };
   const respond = async (c, accept) => {
+    if (!accept && !(await askConfirm("You can be invited again later.", { title:"Decline invitation to "+c.name+"?", yes:"Decline" }))) return;
     const { error } = await sb.rpc("respond_invite", { p_circle:c.circle_id, p_accept:accept });
     if (error) { setToast(error.message); return; }
     setToast(accept ? "Welcome to "+c.name : "Invitation declined");
@@ -1725,13 +1901,13 @@ function CircleBoard({ circle, session, onBack, setToast }){
   };
   const whatsapp = () => window.open("https://wa.me/?text="+encodeURIComponent(shareText), "_blank");
   const leave = async () => {
-    if (!confirm("Leave "+circle.name+"? Your own practice log is not affected.")) return;
+    if (!(await askConfirm("Your own practice log is not affected.", { title:"Leave "+circle.name+"?", yes:"Leave" }))) return;
     const { error } = await sb.rpc("leave_circle", { p_circle: circle.circle_id });
     if (error) { setToast(error.message); return; }
     setToast("You left the circle"); onBack();
   };
   const remove = async r => {
-    if (!confirm("Remove "+r.display_name+" from this circle?")) return;
+    if (!(await askConfirm("They can be invited again later.", { title:"Remove "+r.display_name+"?", yes:"Remove" }))) return;
     const { error } = await sb.rpc("remove_member", { p_circle: circle.circle_id, p_user: r.user_id });
     if (error) { setToast(error.message); return; }
     load();
