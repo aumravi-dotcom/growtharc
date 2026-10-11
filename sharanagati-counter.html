@@ -9,134 +9,81 @@
 <title>Sharanagati Counter</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;}
-
-html,body{height:100%;overflow:hidden;}
-
+html,body{height:100%;overflow:hidden;background:#050c1c;}
 body{
   background:radial-gradient(circle at 50% 30%,#122a4d 0%,#0a1830 45%,#050c1c 100%);
-  color:#fff;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-  cursor:pointer;
+  color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;cursor:pointer;
 }
-
 #app{
-  position:fixed;
-  inset:0;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  text-align:center;
-  padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
+  position:fixed;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;
+  text-align:center;padding:calc(70px + env(safe-area-inset-top)) 16px calc(60px + env(safe-area-inset-bottom));
 }
-
-.controls{
-  position:absolute;
-  top:calc(22px + env(safe-area-inset-top));
-  right:22px;
-  display:flex;
-  gap:12px;
-  z-index:100;
-}
-
+.controls{position:absolute;top:calc(20px + env(safe-area-inset-top));right:20px;display:flex;gap:12px;z-index:100;}
 .btn{
-  width:44px;height:44px;
-  display:flex;justify-content:center;align-items:center;
-  border:1px solid rgba(212,175,55,.35);
-  border-radius:50%;
-  font-size:18px;color:#fff;
-  background:rgba(212,175,55,.08);
-  cursor:pointer;opacity:.7;
-  transition:.2s;
+  width:44px;height:44px;display:flex;justify-content:center;align-items:center;
+  border:1px solid rgba(212,175,55,.35);border-radius:50%;font-size:18px;color:#fff;
+  background:rgba(212,175,55,.08);cursor:pointer;opacity:.7;transition:.2s;
 }
 .btn:hover{opacity:1;background:rgba(212,175,55,.18);}
-
-.namaste{font-size:58px;}
-
-h1{
-  color:#D4AF37;
-  letter-spacing:8px;
-  font-size:18px;
-  font-weight:500;
-  margin-top:12px;
-}
-
+.namaste{font-size:52px;}
+h1{color:#D4AF37;letter-spacing:8px;font-size:18px;font-weight:500;margin-top:10px;}
 #count{
-  font-size:min(32vw,190px);
-  font-weight:700;
-  margin-top:18px;
-  line-height:1;
-  text-shadow:0 0 40px rgba(212,175,55,.25);
-  transition:transform .08s;
+  font-size:min(28vw,170px);font-weight:700;margin-top:14px;line-height:1;
+  text-shadow:0 0 40px rgba(212,175,55,.25);transition:transform .08s;
 }
 .pulse{transform:scale(1.08);}
-
 .label{opacity:.65;margin-top:6px;font-size:16px;letter-spacing:1px;}
-
-.beadBox{margin-top:30px;font-size:22px;line-height:1.5;}
+.countBox{margin-top:20px;font-size:22px;line-height:1.5;}
 .gold{color:#D4AF37;}
+.progress{width:min(280px,70vw);height:8px;background:rgba(255,255,255,.08);border-radius:50px;margin:14px auto 0;overflow:hidden;}
+.progressFill{height:100%;width:0%;background:linear-gradient(90deg,#D4AF37,#F5D77A);box-shadow:0 0 12px rgba(212,175,55,.5);transition:.2s;}
 
-.progress{
-  width:min(280px,70vw);
-  height:8px;
-  background:rgba(255,255,255,.08);
-  border-radius:50px;
-  margin:18px auto 0;
-  overflow:hidden;
+#status{
+  margin-top:20px;padding:10px 26px;border-radius:50px;font-size:15px;font-weight:600;letter-spacing:2px;
+  border:1px solid #D4AF37;transition:background .3s,color .3s;
 }
-.progressFill{
-  height:100%;width:0%;
-  background:linear-gradient(90deg,#D4AF37,#F5D77A);
-  box-shadow:0 0 12px rgba(212,175,55,.5);
-  transition:.2s;
-}
+#status.cta{background:#D4AF37;color:#0a1830;animation:glow 1.6s ease-in-out infinite;}
+#status.hide{visibility:hidden;}
+@keyframes glow{0%,100%{box-shadow:0 0 0 rgba(212,175,55,0);}50%{box-shadow:0 0 22px rgba(212,175,55,.6);}}
 
-#malas{margin-top:22px;font-size:16px;opacity:.6;letter-spacing:1px;}
+.stats{display:flex;gap:14px;margin-top:20px;justify-content:center;flex-wrap:wrap;}
+.stat{border:1px solid rgba(212,175,55,.3);background:rgba(212,175,55,.06);border-radius:14px;padding:10px 18px;min-width:130px;}
+.stat small{display:block;font-size:11px;letter-spacing:2px;opacity:.6;}
+.stat b{display:block;font-size:24px;font-weight:600;margin-top:4px;color:#F5D77A;font-variant-numeric:tabular-nums;}
 
-#hint{
-  position:absolute;
-  bottom:calc(28px + env(safe-area-inset-bottom));
-  left:0;right:0;
-  opacity:.4;font-size:14px;letter-spacing:.5px;
-}
+#hint{position:absolute;bottom:calc(24px + env(safe-area-inset-bottom));left:0;right:0;opacity:.4;font-size:14px;letter-spacing:.5px;padding:0 16px;}
 
-#plusOne{
-  position:absolute;
-  left:50%;top:44%;
-  transform:translateX(-50%);
-  font-size:44px;color:#D4AF37;
-  opacity:0;pointer-events:none;
-}
+#plusOne{position:absolute;left:50%;top:36%;transform:translateX(-50%);font-size:44px;color:#D4AF37;opacity:0;pointer-events:none;}
 .float{animation:float .8s ease-out;}
-@keyframes float{
-  0%{transform:translateX(-50%) translateY(0);opacity:1;}
-  100%{transform:translateX(-50%) translateY(-120px);opacity:0;}
-}
+@keyframes float{0%{transform:translateX(-50%) translateY(0);opacity:1;}100%{transform:translateX(-50%) translateY(-120px);opacity:0;}}
 
-#lotus{
-  position:fixed;inset:0;
-  display:flex;justify-content:center;align-items:center;flex-direction:column;
-  background:radial-gradient(circle at 50% 40%,rgba(18,42,77,.97),rgba(5,12,28,.98));
-  opacity:0;pointer-events:none;transition:.5s;
+.overlay{
+  position:fixed;inset:0;display:flex;justify-content:center;align-items:center;flex-direction:column;
+  opacity:0;pointer-events:none;transition:.5s;padding:20px;
 }
-#lotus.show{opacity:1;}
-#flower{font-size:110px;}
-#lotus h2{margin-top:20px;color:#D4AF37;font-size:34px;letter-spacing:3px;}
-#lotus p{margin-top:10px;font-size:22px;opacity:.9;}
-@keyframes bloom{
-  0%{transform:scale(.2) rotate(-30deg);}
-  100%{transform:scale(1);}
-}
+.overlay.show{opacity:1;pointer-events:auto;}
+#lotus{background:radial-gradient(circle at 50% 40%,rgba(18,42,77,.97),rgba(5,12,28,.98));z-index:40;}
+#lotus .flower{font-size:110px;}
+#lotus h2{margin-top:20px;color:#D4AF37;font-size:34px;letter-spacing:3px;font-weight:500;}
+#lotus p{margin-top:10px;font-size:20px;opacity:.9;}
 .bloom{animation:bloom .8s ease;}
+@keyframes bloom{0%{transform:scale(.2) rotate(-30deg);}100%{transform:scale(1);}}
+
+#done{background:radial-gradient(circle at 50% 35%,#122a4d 0%,#0a1830 50%,#050c1c 100%);z-index:50;}
+#done .flower{font-size:70px;}
+#done h2{margin-top:14px;color:#D4AF37;font-size:28px;letter-spacing:4px;font-weight:500;}
+#done small{margin-top:26px;font-size:12px;letter-spacing:2px;opacity:.6;}
+#doneTotal{font-size:52px;font-weight:700;color:#F5D77A;font-variant-numeric:tabular-nums;}
+#doneAvg{font-size:32px;font-weight:600;font-variant-numeric:tabular-nums;}
+#done .again{margin-top:36px;font-size:15px;opacity:.5;}
 </style>
 </head>
 <body>
 
 <div id="app">
-
   <div class="controls">
-    <div class="btn" id="undo">&#8630;</div>
-    <div class="btn" id="reset">&#8634;</div>
+    <div class="btn" id="undo" title="Undo">&#8630;</div>
+    <div class="btn" id="reset" title="Reset">&#8634;</div>
   </div>
 
   <div class="namaste">&#128591;</div>
@@ -145,117 +92,193 @@ h1{
   <div id="count">0</div>
   <div class="label">Current Chant</div>
 
-  <div class="beadBox">
-    Bead<br>
-    <span class="gold" id="bead">0</span><br>
-    / 108
-  </div>
+  <div class="countBox">Count<br><span class="gold" id="countSmall">0</span> / 108</div>
 
   <div class="progress"><div class="progressFill" id="fill"></div></div>
 
-  <div id="malas">Malas Completed: <span class="gold" id="malaCount">0</span></div>
+  <div id="status" class="cta">&#9654; TAP TO START</div>
 
-  <div id="hint">Tap Anywhere &#8226; SPACE &#8226; ENTER &#8226; &#8593;</div>
+  <div class="stats">
+    <div class="stat"><small>TOTAL TIME</small><b id="total">00:00</b></div>
+    <div class="stat"><small>AVG / COUNT</small><b id="avg">0.0s</b></div>
+  </div>
+
+  <div id="hint">Tap anywhere to begin</div>
   <div id="plusOne">+1</div>
-
 </div>
 
-<div id="lotus">
-  <div id="flower">&#127800;</div>
+<div id="lotus" class="overlay">
+  <div class="flower" id="flower">&#127800;</div>
   <h2>MALA COMPLETE</h2>
-  <p>You completed one Mala.</p>
+  <p>Tap once more to finish</p>
+</div>
+
+<div id="done" class="overlay">
+  <div class="flower">&#127800;</div>
+  <h2>MALA FINISHED</h2>
+  <small>TOTAL TIME</small>
+  <div id="doneTotal">00:00</div>
+  <small>AVERAGE PER COUNT</small>
+  <div id="doneAvg">0.0s</div>
+  <div class="again">Tap anywhere to begin a new Mala</div>
 </div>
 
 <script>
 (function(){
-  var chants = Number(localStorage.getItem("sh_chants")) || 0;
+  var TARGET = 108, KEY = 'sh_session_v2';
+  var state = 'idle';               // idle -> running -> await -> done
+  var chants = 0, startT = 0, endT = 0, taps = [], timer = null, guard = 0;
+  var $ = function(id){ return document.getElementById(id); };
 
-  var countEl = document.getElementById("count");
-  var beadEl  = document.getElementById("bead");
-  var fillEl  = document.getElementById("fill");
-  var malaEl  = document.getElementById("malaCount");
-  var plusEl  = document.getElementById("plusOne");
-  var lotusEl = document.getElementById("lotus");
-  var flowerEl= document.getElementById("flower");
+  /* ---------- helpers ---------- */
+  function pad(n){ return (n < 10 ? '0' : '') + n; }
+  function fmt(ms){
+    var s = Math.max(0, Math.floor(ms / 1000)), h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), x = s % 60;
+    return h ? h + ':' + pad(m) + ':' + pad(x) : pad(m) + ':' + pad(x);
+  }
+  function avgMs(){ return chants > 0 ? (taps[chants - 1] - startT) / chants : 0; }
+  function fmtAvg(ms){ return (ms / 1000).toFixed(1) + 's'; }
 
-  function update(){
-    countEl.innerText = chants;
-    beadEl.innerText  = chants % 108;
-    malaEl.innerText  = Math.floor(chants / 108);
-    fillEl.style.width = ((chants % 108) / 108 * 100) + "%";
-    try{ localStorage.setItem("sh_chants", chants); }catch(e){}
+  /* ---------- save / restore (survives refresh) ---------- */
+  function save(){
+    try{ localStorage.setItem(KEY, JSON.stringify({state:state, startT:startT, endT:endT, taps:taps})); }catch(e){}
+  }
+  function load(){
+    try{
+      var d = JSON.parse(localStorage.getItem(KEY));
+      if(!d || !d.state) return;
+      state = d.state; startT = d.startT || 0; endT = d.endT || 0; taps = d.taps || [];
+      chants = taps.length;
+    }catch(e){}
   }
 
-  function add(){
-    chants++;
+  /* ---------- display ---------- */
+  function tick(){
+    var now = (state === 'done') ? endT : Date.now();
+    $('total').innerText = startT ? fmt(now - startT) : '00:00';
+  }
+  function setStatus(){
+    var s = $('status'), h = $('hint');
+    if(state === 'idle'){
+      s.className = 'cta'; s.innerHTML = '&#9654; TAP TO START';
+      h.innerHTML = 'Tap anywhere to begin';
+    } else if(state === 'running'){
+      s.className = 'hide';
+      h.innerHTML = 'Tap Anywhere &#8226; SPACE &#8226; ENTER &#8226; &#8593;';
+    } else {
+      s.className = 'cta'; s.innerHTML = '&#10003; TAP TO FINISH';
+      h.innerHTML = 'Tap once more to finish &amp; stop the timer';
+    }
+  }
+  function render(){
+    $('count').innerText = chants;
+    $('countSmall').innerText = chants;
+    $('fill').style.width = (chants / TARGET * 100) + '%';
+    $('avg').innerText = fmtAvg(avgMs());
+    setStatus(); tick(); save();
+  }
+  function startTimer(){ clearInterval(timer); timer = setInterval(tick, 200); }
+  function stopTimer(){ clearInterval(timer); timer = null; }
 
-    countEl.classList.add("pulse");
-    setTimeout(function(){ countEl.classList.remove("pulse"); }, 80);
+  function showDone(){
+    $('doneTotal').innerText = fmt(endT - startT);
+    $('doneAvg').innerText = fmtAvg(avgMs());
+    $('done').classList.add('show');
+  }
 
-    plusEl.classList.remove("float");
-    void plusEl.offsetWidth;
-    plusEl.classList.add("float");
+  function goIdle(){
+    stopTimer();
+    state = 'idle'; chants = 0; taps = []; startT = 0; endT = 0;
+    $('lotus').classList.remove('show'); $('done').classList.remove('show');
+    render();
+  }
 
-    if(navigator.vibrate){ navigator.vibrate(12); }
-
-    if(chants > 0 && chants % 108 === 0){
-      lotusEl.classList.add("show");
-      flowerEl.classList.remove("bloom");
-      void flowerEl.offsetWidth;
-      flowerEl.classList.add("bloom");
-      setTimeout(function(){ lotusEl.classList.remove("show"); }, 2200);
+  /* ---------- main tap ---------- */
+  function tap(){
+    if(state === 'idle'){
+      state = 'running'; startT = Date.now(); chants = 0; taps = [];
+      startTimer();
+      if(navigator.vibrate) navigator.vibrate(20);
+      render(); return;
     }
 
-    update();
+    if(state === 'running'){
+      if(chants >= TARGET) return;
+      chants++; taps.push(Date.now());
+
+      var c = $('count'); c.classList.add('pulse');
+      setTimeout(function(){ c.classList.remove('pulse'); }, 80);
+
+      var p = $('plusOne'); p.classList.remove('float'); void p.offsetWidth; p.classList.add('float');
+      if(navigator.vibrate) navigator.vibrate(12);
+
+      if(chants === TARGET){
+        state = 'await'; guard = Date.now() + 700;
+        var l = $('lotus'), f = $('flower');
+        l.classList.add('show');
+        f.classList.remove('bloom'); void f.offsetWidth; f.classList.add('bloom');
+        setTimeout(function(){ l.classList.remove('show'); }, 2200);
+      }
+      render(); return;
+    }
+
+    if(state === 'await'){
+      if(Date.now() < guard) return;
+      state = 'done'; endT = Date.now();
+      stopTimer();
+      $('lotus').classList.remove('show');
+      showDone();
+      if(navigator.vibrate) navigator.vibrate([30, 60, 30]);
+      render(); return;
+    }
+
+    if(state === 'done'){ goIdle(); }
   }
 
   function undo(){
-    if(chants === 0) return;
-    chants--;
-    if(navigator.vibrate){ navigator.vibrate(8); }
-    update();
+    if(state === 'await'){ state = 'running'; $('lotus').classList.remove('show'); }
+    if(state !== 'running' || chants === 0) return;
+    chants--; taps.pop();
+    if(navigator.vibrate) navigator.vibrate(8);
+    render();
   }
 
-  document.body.addEventListener("click", function(e){
-    if(e.target.id === "reset" || e.target.id === "undo") return;
-    add();
+  /* ---------- events ---------- */
+  document.body.addEventListener('click', function(e){
+    if(e.target.closest('.controls')) return;
+    tap();
   });
 
-  document.addEventListener("keydown", function(e){
-    if(e.code === "Space" || e.code === "ArrowUp" || e.code === "Enter"){
+  document.addEventListener('keydown', function(e){
+    if(e.code === 'Space' || e.code === 'ArrowUp' || e.code === 'Enter'){
       e.preventDefault();
-      add();
+      if(e.repeat) return;
+      tap();
     }
   });
 
-  document.getElementById("undo").addEventListener("click", function(e){
+  $('undo').addEventListener('click', function(e){ e.stopPropagation(); undo(); });
+  $('reset').addEventListener('click', function(e){
     e.stopPropagation();
-    undo();
+    if(state === 'idle') return;
+    if(confirm('Reset chant counter and timer?')) goIdle();
   });
 
-  document.getElementById("reset").addEventListener("click", function(e){
-    e.stopPropagation();
-    if(confirm("Reset chant counter?")){
-      chants = 0;
-      update();
-    }
-  });
-
-  // Keep screen awake
+  /* ---------- keep screen awake ---------- */
   var wakeLock = null;
   async function requestWake(){
-    try{
-      if("wakeLock" in navigator){
-        wakeLock = await navigator.wakeLock.request("screen");
-      }
-    }catch(e){}
+    try{ if('wakeLock' in navigator){ wakeLock = await navigator.wakeLock.request('screen'); } }catch(e){}
   }
   requestWake();
-  document.addEventListener("visibilitychange", function(){
-    if(document.visibilityState === "visible"){ requestWake(); }
+  document.addEventListener('visibilitychange', function(){
+    if(document.visibilityState === 'visible') requestWake();
   });
 
-  update();
+  /* ---------- init ---------- */
+  load();
+  if(state === 'running' || state === 'await') startTimer();
+  if(state === 'done') showDone();
+  render();
 })();
 </script>
 </body>
