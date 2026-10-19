@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>For Pranic Healers · Growth Arc</title>
+<meta name="description" content="Your own organised website for your healings, courses and products, with Razorpay, Google My Business and Instagram set up properly. A seva offering for pranic healers, in gratitude to Master Choa Kok Sui." />
+<meta property="og:title" content="For Pranic Healers · Growth Arc" />
+<meta property="og:description" content="An organised website of your own, with payments, Google and Instagram set up properly. Offered as seva." />
+<meta name="theme-color" content="#0A1733" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Hanken+Grotesk:wght@400;500;600&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --navy:#0A1733;
+  --navy-deep:#060F24;
+  --navy-soft:#13224A;
+  --gold:#D7A93E;
+  --gold-light:#EFD08C;
+  --gold-bright:#F2CD6B;
+  --gold-dark:#A9802A;
+  --cream:#F7EEDB;
+  --cream-deep:#EFE2C6;
+  --ink:#16203D;
+  --mist:#C9D0E2;
+  --line:rgba(215,169,62,.32);
+  --serif:'Fraunces',Georgia,'Times New Roman',serif;
+  --sans:'Hanken Grotesk',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'Spline Sans Mono',ui-monospace,Menlo,monospace;
+  --wrap:1160px;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--navy);color:var(--mist);font-family:var(--sans);font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--gold-bright);outline-offset:3px;border-radius:4px}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 24px}
+h1,h2,h3{font-family:var(--serif);color:#fff;font-weight:400;margin:0;letter-spacing:-.01em}
+h2{font-size:clamp(30px,4.2vw,48px);line-height:1.12}
+h3{font-size:22px;line-height:1.3}
+p{margin:0 0 1em}
+.kicker{font-family:var(--serif);font-style:italic;color:var(--gold-light);font-size:19px;display:block;margin-bottom:14px}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;font-family:var(--sans);font-weight:600;font-size:16px;text-decoration:none;border:1px solid transparent;cursor:pointer;transition:background .2s,color .2s,border-color .2s}
+.btn-gold{background:var(--gold);color:var(--navy-deep)}
+.btn-gold:hover{background:var(--gold-bright)}
+.btn-ghost{border-color:var(--line);color:var(--gold-light)}
+.btn-ghost:hover{border-color:var(--gold);color:#fff}
+
+/* nav */
+.nav{position:sticky;top:0;z-index:20;background:rgba(10,23,51,.86);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(215,169,62,.14)}
+.nav-in{display:flex;align-items:center;justify-content:space-between;height:68px}
+.logo{font-family:var(--serif);font-size:22px;text-decoration:none;color:#fff;letter-spacing:-.01em}
+.logo b{font-weight:500;color:var(--gold)}
+.nav-links{display:flex;gap:28px;align-items:center}
+.nav-links a{text-decoration:none;font-size:15px;color:var(--mist)}
+.nav-links a:hover{color:var(--gold-light)}
+.nav-links .btn{padding:10px 20px;font-size:14px}
+@media (max-width:820px){.nav-links a:not(.btn){display:none}}
+
+/* hero */
+.hero{position:relative;overflow:hidden;padding:96px 0 84px}
+.hero-arc{position:absolute;right:-6%;top:6%;width:min(720px,70vw);opacity:.9;pointer-events:none}
+.hero-arc path{fill:none;stroke:url(#arcGrad);stroke-width:2.2;stroke-linecap:round;stroke-dasharray:1400;stroke-dashoffset:1400;animation:draw 2.6s cubic-bezier(.6,.1,.2,1) .3s forwards}
+.hero-arc circle{fill:var(--gold-bright);opacity:0;animation:glow 1s ease 2.6s forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes glow{to{opacity:1}}
+.hero-in{position:relative;max-width:820px}
+.hero h1{font-size:clamp(52px,9vw,112px);line-height:.98;font-weight:300;letter-spacing:-.025em}
+.hero h1 span{display:block;font-style:italic;color:var(--gold-light);font-weight:300}
+.hero .lede{font-size:clamp(18px,2vw,21px);max-width:620px;margin:30px 0 36px;color:#E3E7F1}
+.hero-actions{display:flex;flex-wrap:wrap;gap:14px}
+.live-now{margin-top:56px;padding-top:22px;border-top:1px solid rgba(215,169,62,.18);display:flex;flex-wrap:wrap;gap:10px 26px;align-items:baseline;font-size:15px}
+.live-now em{font-family:var(--serif);color:var(--gold-light)}
+.live-now a{text-decoration:none;color:var(--mist);border-bottom:1px solid rgba(215,169,62,.35)}
+.live-now a:hover{color:#fff;border-color:var(--gold)}
+
+/* dedication */
+.dedication{background:var(--navy-deep);border-block:1px solid rgba(215,169,62,.16);text-align:center;padding:22px 24px;font-family:var(--serif);font-style:italic;color:var(--gold-light);font-size:18px}
+
+/* why */
+.why{background:var(--cream);color:var(--ink);padding:110px 0}
+.why h2{color:var(--navy)}
+.why .kicker{color:var(--gold-dark)}
+.why-grid{display:grid;grid-template-columns:5fr 7fr;gap:72px;align-items:start}
+.why-body{font-family:var(--serif);font-size:19px;line-height:1.75;color:#28304C;max-width:640px}
+.why-body strong{font-weight:500;color:var(--navy)}
+.sig{margin-top:30px;padding-top:22px;border-top:1px solid rgba(169,128,42,.35);font-style:italic;color:var(--gold-dark)}
+.sig small{display:block;font-family:var(--sans);font-style:normal;color:#5B6380;font-size:14px;margin-top:4px}
+.why-name{margin-top:34px;font-family:var(--sans);font-size:15px;color:#5B6380}
+.why-name b{display:block;font-family:var(--serif);font-weight:500;font-size:22px;color:var(--navy)}
+@media (max-width:860px){.why-grid{grid-template-columns:1fr;gap:28px}.why{padding:80px 0}}
+
+/* what I set up */
+.setup{padding:110px 0}
+.setup-head{max-width:640px;margin-bottom:56px}
+.setup-head p{margin-top:18px}
+.setup-list{border-top:1px solid var(--line)}
+.setup-row{display:grid;grid-template-columns:300px 1fr;gap:40px;padding:34px 0;border-bottom:1px solid var(--line)}
+.setup-row h3{font-size:26px}
+.setup-row h3 small{display:block;font-family:var(--sans);font-size:14px;color:var(--gold);margin-top:6px;letter-spacing:.01em}
+.setup-row p{max-width:600px;margin:0;color:#D6DBE8}
+.setup-row ul{margin:14px 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:8px}
+.setup-row li{font-size:14px;padding:5px 12px;border-radius:999px;background:rgba(215,169,62,.09);color:var(--gold-light)}
+@media (max-width:760px){.setup-row{grid-template-columns:1fr;gap:12px}}
+
+/* work */
+.work{background:linear-gradient(180deg,var(--navy-deep),var(--navy) 70%);padding:110px 0}
+.work-head{display:flex;justify-content:space-between;align-items:flex-end;gap:28px;flex-wrap:wrap;margin-bottom:44px}
+.work-head p{max-width:520px;margin:16px 0 0}
+.view-toggle{display:inline-flex;padding:4px;border-radius:999px;border:1px solid var(--line);background:rgba(6,15,36,.6)}
+.view-toggle button{display:inline-flex;align-items:center;gap:8px;border:0;background:transparent;color:var(--mist);font:500 14px var(--sans);padding:9px 18px;border-radius:999px;cursor:pointer}
+.view-toggle button svg{width:16px;height:16px}
+.view-toggle button[aria-pressed="true"]{background:var(--gold);color:var(--navy-deep)}
+
+.sites{display:grid;gap:28px}
+.sites.grid{grid-template-columns:repeat(auto-fill,minmax(320px,1fr))}
+.sites.list{grid-template-columns:1fr;gap:22px}
+
+.site{background:var(--navy-soft);border:1px solid rgba(215,169,62,.2);border-radius:18px;overflow:hidden;display:flex;flex-direction:column}
+.sites.list .site{display:grid;grid-template-columns:minmax(0,46%) 1fr;align-items:stretch}
+@media (max-width:820px){.sites.list .site{grid-template-columns:1fr}}
+
+/* browser preview window */
+.preview{position:relative;display:block;text-decoration:none;background:var(--navy-deep);padding:12px 12px 0}
+.sites.list .preview{padding:14px 0 14px 14px}
+.chrome{display:flex;align-items:center;gap:10px;background:#0E1A3A;border:1px solid rgba(255,255,255,.07);border-bottom:0;border-radius:10px 10px 0 0;padding:8px 12px}
+.dots{display:flex;gap:5px}
+.dots i{width:8px;height:8px;border-radius:50%;background:rgba(239,208,140,.35)}
+.url{flex:1;min-width:0;font-family:var(--mono);font-size:11.5px;color:#9AA3BE;background:rgba(255,255,255,.05);border-radius:6px;padding:4px 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.screen{position:relative;aspect-ratio:16/10;overflow:hidden;background:#fff;border:1px solid rgba(255,255,255,.07);border-top:0}
+.sites.list .screen{border-radius:0 0 10px 10px}
+.screen iframe{position:absolute;top:0;left:0;width:1280px;height:800px;border:0;transform-origin:0 0;transform:scale(var(--s,.3));pointer-events:none}
+.screen img{width:100%;height:100%;object-fit:cover;object-position:top}
+.screen-fallback{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:var(--navy-soft);color:var(--gold-light);font-family:var(--serif);font-size:22px;font-style:italic}
+.visit{position:absolute;right:22px;bottom:12px;font-size:13px;font-weight:600;background:var(--gold);color:var(--navy-deep);padding:7px 14px;border-radius:999px;opacity:0;transform:translateY(4px);transition:opacity .2s,transform .2s}
+.sites.list .visit{right:12px;bottom:26px}
+.preview:hover .visit,.preview:focus-visible .visit{opacity:1;transform:none}
+
+.site-body{padding:26px 26px 28px;display:flex;flex-direction:column;gap:16px;flex:1}
+.sites.list .site-body{padding:30px 34px}
+.site-top h3{font-size:24px}
+.place{font-size:14px;color:var(--gold);margin-top:4px}
+.people{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+.people li{font-size:15px;line-height:1.45}
+.people b{color:#fff;font-weight:600}
+.people span{color:#A9B1C9}
+.snippet{font-size:15.5px;color:#D3D8E6;margin:0}
+.sites.grid .snippet{display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.helped{margin-top:auto;padding-top:16px;border-top:1px solid rgba(215,169,62,.16)}
+.helped-label{font-family:var(--serif);font-style:italic;font-size:15px;color:var(--gold-light);margin-bottom:10px}
+.caps{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
+.caps li{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:500;padding:6px 13px 6px 10px;border-radius:999px;border:1px solid rgba(215,169,62,.45);color:var(--gold-light);background:rgba(215,169,62,.07)}
+.caps li::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--gold)}
+
+.work-note{margin-top:34px;font-size:15px;color:#A9B1C9}
+
+/* steps */
+.steps{padding:110px 0}
+.steps h2{max-width:640px}
+.step-list{counter-reset:s;display:grid;grid-template-columns:repeat(3,1fr);gap:36px;margin:52px 0 0;padding:0;list-style:none}
+.step-list li{counter-increment:s;padding-top:22px;border-top:1px solid var(--line)}
+.step-list li::before{content:counter(s);display:block;font-family:var(--serif);font-size:44px;font-weight:300;color:var(--gold);line-height:1;margin-bottom:16px}
+.step-list h3{margin-bottom:10px}
+.step-list p{color:#D3D8E6;font-size:16px}
+@media (max-width:820px){.step-list{grid-template-columns:1fr}}
+
+/* form */
+.talk{background:var(--cream);color:var(--ink);padding:110px 0}
+.talk h2{color:var(--navy)}
+.talk .kicker{color:var(--gold-dark)}
+.talk-grid{display:grid;grid-template-columns:5fr 7fr;gap:64px;align-items:start}
+.talk-intro p{color:#3A4262;margin-top:18px}
+.talk-intro .wa{display:inline-flex;margin-top:12px;font-weight:600;color:var(--navy);text-decoration:none;border-bottom:2px solid var(--gold)}
+form{background:#fff;border:1px solid var(--cream-deep);border-radius:18px;padding:34px}
+.field{margin-bottom:20px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+label,.legend{display:block;font-size:14px;font-weight:600;color:var(--navy);margin-bottom:7px}
+label small{font-weight:400;color:#6B7290}
+input[type=text],input[type=tel],input[type=url],textarea{width:100%;font:16px var(--sans);color:var(--ink);padding:13px 15px;border:1px solid #D9CFB8;border-radius:10px;background:#FFFDF8}
+input:focus,textarea:focus{outline:none;border-color:var(--gold-dark);box-shadow:0 0 0 3px rgba(215,169,62,.25)}
+textarea{min-height:110px;resize:vertical}
+fieldset{border:0;padding:0;margin:0 0 22px}
+.checks{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.check{display:flex;align-items:center;gap:10px;font-weight:500;font-size:15px;color:var(--ink);padding:11px 14px;border:1px solid #E3D9C2;border-radius:10px;cursor:pointer;margin:0}
+.check input{accent-color:var(--gold-dark);width:17px;height:17px}
+.check:has(input:checked){border-color:var(--gold-dark);background:#FBF3E0}
+form .btn-gold{width:100%;justify-content:center;margin-top:6px}
+.form-msg{margin-top:16px;font-size:15px;display:none}
+.form-msg.ok{display:block;color:#2F6B3A}
+.form-msg.err{display:block;color:#A3342A}
+.done{display:none;text-align:center;padding:40px 10px}
+.done h3{color:var(--navy);font-size:28px;margin-bottom:10px}
+.done p{color:#3A4262}
+@media (max-width:860px){.talk-grid{grid-template-columns:1fr;gap:36px}.row2,.checks{grid-template-columns:1fr}form{padding:24px}.talk{padding:80px 0}}
+
+/* footer */
+footer{background:var(--navy-deep);padding:56px 0 40px;font-size:14px;color:#8E97B3}
+.foot-in{display:flex;justify-content:space-between;gap:30px;flex-wrap:wrap;align-items:flex-start}
+.foot-in .logo{font-size:20px}
+.foot-links{display:flex;gap:22px;flex-wrap:wrap}
+.foot-links a{text-decoration:none}
+.foot-links a:hover{color:var(--gold-light)}
+.disclaimer{margin-top:34px;padding-top:22px;border-top:1px solid rgba(215,169,62,.12);max-width:760px}
+
+@media (max-width:640px){
+  body{font-size:16px}
+  .hero{padding:64px 0 60px}
+  .setup,.work,.steps{padding:80px 0}
+  .hero-arc{opacity:.45;top:auto;bottom:-4%;right:-30%;width:120vw}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .hero-arc path{animation:none;stroke-dashoffset:0}
+  .hero-arc circle{animation:none;opacity:1}
+  *{transition:none!important}
+}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a href="/" class="logo" aria-label="Growth Arc home">Growth <b>Arc</b></a>
+    <nav class="nav-links" aria-label="Page">
+      <a href="#why">Why I do this</a>
+      <a href="#setup">What I set up</a>
+      <a href="#work">Websites</a>
+      <a href="#talk" class="btn btn-gold">Tell me about your practice</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<!-- HERO -->
+<section class="hero">
+  <svg class="hero-arc" viewBox="0 0 720 520" aria-hidden="true">
+    <defs>
+      <linearGradient id="arcGrad" x1="0" y1="1" x2="1" y2="0">
+        <stop offset="0" stop-color="#A9802A" stop-opacity="0"/>
+        <stop offset=".45" stop-color="#D7A93E"/>
+        <stop offset="1" stop-color="#F2CD6B"/>
+      </linearGradient>
+    </defs>
+    <path d="M20 500 C 220 470, 420 360, 520 210 S 650 40, 690 30"/>
+    <circle cx="690" cy="30" r="6"/>
+  </svg>
+  <div class="wrap hero-in">
+    <h1>For Pranic <span>Healers</span></h1>
+    <p class="lede">An organised website of your own for your healings, courses and products, with Razorpay, Google My Business and Instagram set up properly around it. Built with you, offered as seva.</p>
+    <div class="hero-actions">
+      <a href="#talk" class="btn btn-gold">Tell me about your practice</a>
+      <a href="#work" class="btn btn-ghost">See the websites</a>
+    </div>
+    <div class="live-now">
+      <em>Live so far</em>
+      <a href="https://www.thepranaspace.com" target="_blank" rel="noopener">The Prana Space</a>
+      <a href="https://urjitapranichealing.com" target="_blank" rel="noopener">Urjita Pranic Upchar Kendra</a>
+      <a href="https://www.pranatattva.com" target="_blank" rel="noopener">Pranatattva</a>
+    </div>
+  </div>
+</section>
+
+<div class="dedication">All of it offered in gratitude to Master Choa Kok Sui</div>
+
+<!-- WHY -->
+<section class="why" id="why">
+  <div class="wrap why-grid">
+    <div>
+      <span class="kicker">Why I'm doing this</span>
+      <h2>Eight years on the path. This is my way of giving back.</h2>
+      <p class="why-name"><b>Aum K Ravi</b>Arhatic Yoga practitioner, pranic healer, and the strategist behind Growth Arc</p>
+    </div>
+    <div class="why-body">
+      <p>For eight years, Pranic Healing and Arhatic Yoga have been at the centre of my life, and the community around them has given me more than I can repay.</p>
+      <p>My working life has been in marketing. Seven-plus years inside the core marketing teams of <strong>Volkswagen Motorsport, Yamaha and Jeep India</strong>, then seven-plus years building digital funnels for founders and personal brands across <strong>India and Germany</strong>.</p>
+      <p>Somewhere between the two, it became impossible to ignore. So many gifted healers do genuine, beautiful work and stay invisible online. Bookings scattered across WhatsApp chats. Payments chased by screenshot. A centre that doesn't show up on Google Maps. An Instagram profile that says nothing about what they actually do. Not because they aren't good enough, but because technology keeps shifting under their feet, and it was never their calling.</p>
+      <p>So I'm putting the two halves of my life together. I build the website and set up everything around it, carefully and with you, so you can stay with the part only you can do: the healing.</p>
+      <p class="sig">Not as a business. As seva.<small>In gratitude to Master Choa Kok Sui</small></p>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT I SET UP -->
+<section class="setup" id="setup">
+  <div class="wrap">
+    <div class="setup-head">
+      <span class="kicker">What I set up with you</span>
+      <h2>One organised home, and the pieces that make it work.</h2>
+      <p>Everything is created in your name and stays yours. We do the account steps together on a call, so nothing is ever held by someone else.</p>
+    </div>
+    <div class="setup-list">
+      <div class="setup-row">
+        <h3>Your own website<small>The centre of it all</small></h3>
+        <div>
+          <p>A clean, mobile-first website on your own domain that lays out your practice the way a visitor needs it: who you are and your lineage, the healings you offer, courses and meditations, upcoming events, your products, what people say afterwards, and one clear way to book.</p>
+          <ul><li>Healings &amp; sessions</li><li>Courses &amp; events</li><li>Shop for products</li><li>WhatsApp booking</li><li>Testimonials</li></ul>
+        </div>
+      </div>
+      <div class="setup-row">
+        <h3>Razorpay<small>Get paid properly</small></h3>
+        <div>
+          <p>Accept payments for sessions, courses and energised products without chasing screenshots. We open your Razorpay account together, go through KYC step by step, connect payments to your site, and write the privacy, terms and refund pages Razorpay asks for.</p>
+        </div>
+      </div>
+      <div class="setup-row">
+        <h3>Google My Business<small>Be found nearby</small></h3>
+        <div>
+          <p>When someone searches for pranic healing near them, your centre should appear on Google and Maps. We claim and verify your listing, choose the right category, add your hours, photos and services, and link it to your website and booking.</p>
+        </div>
+      </div>
+      <div class="setup-row">
+        <h3>Instagram, set up right<small>Re-set, not started over</small></h3>
+        <div>
+          <p>Most healers already have an account. We reshape it so a new visitor understands you in five seconds: a professional profile, a bio that says who you help and where, a link to your website, highlights for sessions, courses and testimonials, and WhatsApp contact buttons.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WORK -->
+<section class="work" id="work">
+  <div class="wrap">
+    <div class="work-head">
+      <div>
+        <span class="kicker">Websites completed</span>
+        <h2>Healers already live.</h2>
+        <p>Each one built around the healer's own practice. Tap a preview to open the site.</p>
+      </div>
+      <div class="view-toggle" role="group" aria-label="Choose layout">
+        <button type="button" data-view="grid" aria-pressed="true">
+          <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><rect x="1" y="1" width="6" height="6" rx="1.5"/><rect x="9" y="1" width="6" height="6" rx="1.5"/><rect x="1" y="9" width="6" height="6" rx="1.5"/><rect x="9" y="9" width="6" height="6" rx="1.5"/></svg>
+          Grid
+        </button>
+        <button type="button" data-view="list" aria-pressed="false">
+          <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><rect x="1" y="2" width="14" height="3" rx="1.2"/><rect x="1" y="6.5" width="14" height="3" rx="1.2"/><rect x="1" y="11" width="14" height="3" rx="1.2"/></svg>
+          List
+        </button>
+      </div>
+    </div>
+
+    <div class="sites grid" id="sites">
+
+      <!-- Pranatattva -->
+      <article class="site">
+        <a class="preview" href="https://www.pranatattva.com" target="_blank" rel="noopener" aria-label="Open the Pranatattva website in a new tab">
+          <div class="chrome"><span class="dots"><i></i><i></i><i></i></span><span class="url">pranatattva.com</span></div>
+          <!-- To use a screenshot instead of the live preview, add data-shot="shot-pranatattva.jpg" to the div below -->
+          <div class="screen" data-src="https://www.pranatattva.com">
+            <div class="screen-fallback">Pranatattva</div>
+          </div>
+          <span class="visit">Visit site</span>
+        </a>
+        <div class="site-body">
+          <div class="site-top">
+            <h3>Pranatattva</h3>
+            <div class="place">Baner, Pune</div>
+          </div>
+          <ul class="people">
+            <li><b>Pragati Pullewar</b> <span>Founder, Associate Certified Pranic Healer</span></li>
+            <li><b>Santosh Pullewar</b> <span>Co-founder, Associate Certified Pranic Healer</span></li>
+          </ul>
+          <p class="snippet">A Pranic Healing centre with one-to-one healings, courses from Basic Pranic Healing through Arhatic Yoga, free healing camps and full moon Twin Hearts meditation, all on a live schedule visitors can book from.</p>
+          <div class="helped">
+            <div class="helped-label">What we set up together</div>
+            <ul class="caps"><li>Website</li><li>Instagram</li><li>Google My Business</li><li>Razorpay</li></ul>
+          </div>
+        </div>
+      </article>
+
+      <!-- Urjita -->
+      <article class="site">
+        <a class="preview" href="https://urjitapranichealing.com" target="_blank" rel="noopener" aria-label="Open the Urjita Pranic Upchar Kendra website in a new tab">
+          <div class="chrome"><span class="dots"><i></i><i></i><i></i></span><span class="url">urjitapranichealing.com</span></div>
+          <div class="screen" data-src="https://urjitapranichealing.com">
+            <div class="screen-fallback">Urjita</div>
+          </div>
+          <span class="visit">Visit site</span>
+        </a>
+        <div class="site-body">
+          <div class="site-top">
+            <h3>Urjita Pranic Upchar Kendra</h3>
+            <div class="place">Badlapur East and Dombivli East</div>
+          </div>
+          <ul class="people">
+            <li><b>Kshipra Lokare</b> <span>Authorised MCKS Instructor, Counseling Psychologist</span></li>
+            <li><b>Kshitij Lokare</b> <span>Pranic Healing Practitioner</span></li>
+            <li><b>Madhavi Lokare</b> <span>Yoga Teacher, Acupressure Therapist, Healer</span></li>
+          </ul>
+          <p class="snippet">A family practice running since 2014, offering healings, the MCKS Basic Pranic Healing course, free weekly meditation and a shop of energised bath salts, sprays and crystals. The site works in both English and Marathi.</p>
+          <div class="helped">
+            <div class="helped-label">What we set up together</div>
+            <ul class="caps"><li>Website</li><li>Google My Business</li><li>Razorpay</li></ul>
+          </div>
+        </div>
+      </article>
+
+      <!-- The Prana Space -->
+      <article class="site">
+        <a class="preview" href="https://www.thepranaspace.com" target="_blank" rel="noopener" aria-label="Open The Prana Space website in a new tab">
+          <div class="chrome"><span class="dots"><i></i><i></i><i></i></span><span class="url">thepranaspace.com</span></div>
+          <div class="screen" data-src="https://www.thepranaspace.com">
+            <div class="screen-fallback">The Prana Space</div>
+          </div>
+          <span class="visit">Visit site</span>
+        </a>
+        <div class="site-body">
+          <div class="site-top">
+            <h3>The Prana Space</h3>
+            <div class="place">Pune, online and in person</div>
+          </div>
+          <ul class="people">
+            <li><b>Mamta Kaushik</b> <span>Counselling Psychologist, Associate Certified Pranic Healer</span></li>
+          </ul>
+          <p class="snippet">A former French professor and corporate professional who now supports busy professionals and parents, especially those raising neurodivergent children, through Pranic Healing, counselling and community Twin Hearts meditation.</p>
+          <div class="helped">
+            <div class="helped-label">What we set up together</div>
+            <ul class="caps"><li>Website</li><li>Razorpay</li></ul>
+          </div>
+        </div>
+      </article>
+
+    </div>
+    <p class="work-note">More healers' websites are on the way.</p>
+  </div>
+</section>
+
+<!-- STEPS -->
+<section class="steps">
+  <div class="wrap">
+    <span class="kicker">How it works</span>
+    <h2>Simple on your side. The complicated part stays with me.</h2>
+    <ol class="step-list">
+      <li>
+        <h3>Tell me about your practice</h3>
+        <p>Fill the short form below. I'll reach out on WhatsApp to understand your healings, courses, products and what you already have online.</p>
+      </li>
+      <li>
+        <h3>We build it together</h3>
+        <p>I design and build the website around your practice. Razorpay, Google and Instagram we set up together on a call, on your phone.</p>
+      </li>
+      <li>
+        <h3>You go live</h3>
+        <p>Your site goes up on your own domain, and you leave knowing how to update events, products and prices yourself.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- FORM -->
+<section class="talk" id="talk">
+  <div class="wrap talk-grid">
+    <div class="talk-intro">
+      <span class="kicker">Let's begin</span>
+      <h2>Tell me about your practice.</h2>
+      <p>A few details are enough. I read every message personally and reply on WhatsApp.</p>
+      <p>Prefer to message directly?</p>
+      <a class="wa" href="https://wa.me/91XXXXXXXXXX?text=Hi%20Aum%2C%20I%27m%20a%20pranic%20healer%20and%20I%27d%20like%20help%20with%20my%20website." target="_blank" rel="noopener">Message me on WhatsApp</a>
+    </div>
+
+    <form id="healerForm" novalidate>
+      <div class="form-fields">
+        <div class="row2">
+          <div class="field">
+            <label for="f-name">Your name</label>
+            <input id="f-name" name="name" type="text" autocomplete="name" required />
+          </div>
+          <div class="field">
+            <label for="f-phone">WhatsApp number</label>
+            <input id="f-phone" name="whatsapp" type="tel" autocomplete="tel" inputmode="tel" required />
+          </div>
+        </div>
+        <div class="row2">
+          <div class="field">
+            <label for="f-practice">Centre or practice name <small>(optional)</small></label>
+            <input id="f-practice" name="practice" type="text" />
+          </div>
+          <div class="field">
+            <label for="f-city">City</label>
+            <input id="f-city" name="city" type="text" autocomplete="address-level2" required />
+          </div>
+        </div>
+        <div class="field">
+          <label for="f-link">Current website or Instagram <small>(optional)</small></label>
+          <input id="f-link" name="link" type="text" placeholder="e.g. instagram.com/yourpage" />
+        </div>
+        <fieldset>
+          <span class="legend">What would you like help with?</span>
+          <div class="checks">
+            <label class="check"><input type="checkbox" name="needs" value="Website" checked /> Website</label>
+            <label class="check"><input type="checkbox" name="needs" value="Razorpay" /> Razorpay</label>
+            <label class="check"><input type="checkbox" name="needs" value="Google My Business" /> Google My Business</label>
+            <label class="check"><input type="checkbox" name="needs" value="Instagram" /> Instagram</label>
+          </div>
+        </fieldset>
+        <div class="field">
+          <label for="f-msg">Anything you'd like me to know <small>(optional)</small></label>
+          <textarea id="f-msg" name="message" placeholder="Your healings, courses, products, or what feels stuck right now"></textarea>
+        </div>
+        <button class="btn btn-gold" type="submit" id="submitBtn">Send my details</button>
+        <p class="form-msg" id="formMsg" role="status" aria-live="polite"></p>
+      </div>
+      <div class="done" id="formDone">
+        <h3>Details sent.</h3>
+        <p>Thank you. I'll reach out on WhatsApp soon.</p>
+      </div>
+    </form>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-in">
+      <div>
+        <a href="/" class="logo">Growth <b>Arc</b></a>
+        <p style="margin-top:10px">For Pranic Healers is a seva offering, in gratitude to Master Choa Kok Sui.</p>
+      </div>
+      <div class="foot-links">
+        <a href="/">Home</a>
+        <a href="#work">Websites</a>
+        <a href="#talk">Contact</a>
+        <a href="/privacy">Privacy</a>
+      </div>
+    </div>
+    <p class="disclaimer">Pranic Healing complements, and does not replace, medical or psychological care. The websites shown belong to their respective healers and centres.</p>
+  </div>
+</footer>
+
+<script>
+/* ---- Grid / list toggle ---- */
+(function(){
+  const sites = document.getElementById('sites');
+  const buttons = document.querySelectorAll('.view-toggle button');
+  buttons.forEach(btn => btn.addEventListener('click', () => {
+    const view = btn.dataset.view;
+    sites.classList.remove('grid','list');
+    sites.classList.add(view);
+    buttons.forEach(b => b.setAttribute('aria-pressed', String(b === btn)));
+  }));
+})();
+
+/* ---- Hero previews: live site scaled into a small window ---- */
+(function(){
+  const screens = document.querySelectorAll('.screen');
+  const fit = el => {
+    const f = el.querySelector('iframe');
+    if (f) f.style.setProperty('--s', el.clientWidth / 1280);
+  };
+  const ro = 'ResizeObserver' in window ? new ResizeObserver(entries => entries.forEach(e => fit(e.target))) : null;
+
+  const load = el => {
+    if (el.dataset.loaded) return;
+    el.dataset.loaded = '1';
+    if (el.dataset.shot) {
+      const img = new Image();
+      img.src = el.dataset.shot;
+      img.alt = '';
+      img.loading = 'lazy';
+      el.appendChild(img);
+      return;
+    }
+    const f = document.createElement('iframe');
+    f.src = el.dataset.src;
+    f.title = 'Preview';
+    f.setAttribute('aria-hidden', 'true');
+    f.setAttribute('tabindex', '-1');
+    f.setAttribute('scrolling', 'no');
+    f.setAttribute('sandbox', 'allow-scripts allow-same-origin');
+    f.addEventListener('load', () => { const fb = el.querySelector('.screen-fallback'); if (fb) fb.remove(); });
+    el.appendChild(f);
+    fit(el);
+    if (ro) ro.observe(el); else window.addEventListener('resize', () => fit(el));
+  };
+
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(entries => entries.forEach(e => {
+      if (e.isIntersecting) { load(e.target); io.unobserve(e.target); }
+    }), { rootMargin: '300px' });
+    screens.forEach(s => io.observe(s));
+  } else {
+    screens.forEach(load);
+  }
+})();
+
+/* ---- Form → Google Apps Script → Sheet ---- */
+(function(){
+  const ENDPOINT = 'PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE';
+  const form = document.getElementById('healerForm');
+  const msg = document.getElementById('formMsg');
+  const btn = document.getElementById('submitBtn');
+
+  const istNow = () => new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', hour12: false });
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    msg.className = 'form-msg';
+    const name = form.elements['name'].value.trim();
+    const phone = form.elements['whatsapp'].value.trim();
+    const city = form.elements['city'].value.trim();
+    if (!name || !phone || !city) {
+      msg.textContent = 'Add your name, WhatsApp number and city to send your details.';
+      msg.className = 'form-msg err';
+      (!name ? form.elements['name'] : !phone ? form.elements['whatsapp'] : form.elements['city']).focus();
+      return;
+    }
+    const needs = [...form.querySelectorAll('input[name="needs"]:checked')].map(i => i.value);
+    const payload = {
+      form: 'for-pranic-healers',
+      timestamp_ist: istNow(),
+      name, whatsapp: phone, city,
+      practice: form.elements['practice'].value.trim(),
+      link: form.elements['link'].value.trim(),
+      needs: needs.join(', '),
+      message: form.elements['message'].value.trim()
+    };
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+    try {
+      await fetch(ENDPOINT, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload)
+      });
+      form.querySelector('.form-fields').style.display = 'none';
+      document.getElementById('formDone').style.display = 'block';
+    } catch (err) {
+      msg.textContent = 'Your details didn\u2019t send. Check your connection and try again, or message me on WhatsApp.';
+      msg.className = 'form-msg err';
+      btn.disabled = false;
+      btn.textContent = 'Send my details';
+    }
+  });
+})();
+</script>
+</body>
+</html>
